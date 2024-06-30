@@ -4,13 +4,20 @@ import express from "express";
 import dbConn from "./config/dbConn.js";
 import mongoose from "mongoose";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { corsOpt } from "./config/corsOptions.js";
+import { authRouter } from "./routes/authRouter.js";
 
 dbConn();
 const app = express();
 
 //middelwares
 app.use(cors(corsOpt));
+app.use(express.json());
+app.use(cookieParser());
+
+//routes
+app.use("/api/v1/auth/", authRouter);
 
 //server start
 mongoose.connection.once("open", () => {
