@@ -1,6 +1,8 @@
 import { User } from "../../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { settings } from "../../config/settings.js";
+import { jwtTokenCookieOpt } from "../../config/jwtTokenCookieOpt.js";
 
 export default async function loginController(req, res) {
   try {
@@ -25,21 +27,28 @@ export default async function loginController(req, res) {
           username: foundUser.username,
           roles: foundUser.roles,
         },
-        process.env.ACCESS_TOKEN_SECRET
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+          expiresIn: settings.accessTokenExpiry,
+        }
       );
       const refreshToken = jwt.sign(
         {
           username: foundUser.username,
         },
-        process.env.REFRESH_TOKEN_SECRET
+        process.env.REFRESH_TOKEN_SECRET,
+        {
+          expiresIn: settings.refreshTokenExpiry,
+        }
       );
 
       foundUser.refreshToken = refreshToken;
       await foundUser.save();
-      res.cookie("jwt", refreshToken, { httpOnly: true });
+      res.cookie("jwt", refreshToken, jwtTokenCookieOpt);
 
       return res.json({
         accessToken,
+        username: foundUser.username,
       });
     } else {
       return res.status(401).json({ message: "Wrong credentials" });

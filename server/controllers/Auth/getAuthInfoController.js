@@ -2,7 +2,7 @@ export default async function getAuthInfoController(req, res) {
   try {
     const user = req.user;
     if (!user) {
-      return res.status(204).json({ message: "No authenticated User" });
+      return res.status(204).end();
     }
     res.json(user);
   } catch (error) {
