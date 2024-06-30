@@ -19,7 +19,6 @@ const userSchema = new Schema({
   },
   hash: {
     type: String,
-    required: true,
   },
   roles: {
     user: {

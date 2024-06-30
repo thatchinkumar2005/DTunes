@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 export default async function getAuthInfoController(req, res) {
   try {
     const user = req.user;

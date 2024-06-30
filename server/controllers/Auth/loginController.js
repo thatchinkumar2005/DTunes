@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { User } from "../../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -43,7 +45,9 @@ export default async function loginController(req, res) {
       );
 
       foundUser.refreshToken = refreshToken;
+      foundUser.oauth.oauthProvider = "none";
       await foundUser.save();
+
       res.cookie("jwt", refreshToken, jwtTokenCookieOpt);
 
       return res.json({
