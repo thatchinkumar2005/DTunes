@@ -1,4 +1,4 @@
-const allowedOrigins = [];
+export const allowedOrigins = [];
 
 export const corsOpt = {
   origin: (origin, done) => {
@@ -8,5 +8,5 @@ export const corsOpt = {
       done(new Error("Not Allowed By CORS"));
     }
   },
-  credentials: true,
+  optionsSuccessStatus: 200,
 };
