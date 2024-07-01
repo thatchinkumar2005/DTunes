@@ -17,7 +17,7 @@ const playlistSchema = new Schema({
   },
   releaseDate: {
     type: Date,
-    default: new Date.now(),
+    default: Date.now,
   },
   songs: [
     {

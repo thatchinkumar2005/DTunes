@@ -1,4 +1,4 @@
-import { allowedOrigins } from "../config/corsOptions.js";
+import { allowedOrigins } from "../../config/corsOptions.js";
 
 export default function credentials(req, res, next) {
   try {

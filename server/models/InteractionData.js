@@ -13,6 +13,10 @@ const intDataSchema = new Schema({
   intType: {
     type: String,
   },
+  intTime: {
+    type: Date,
+    default: Date.now,
+  },
   like: {
     type: Boolean,
   },

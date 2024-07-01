@@ -8,10 +8,12 @@ import {
   googleOauthTokenExchanger,
   passport,
 } from "../controllers/Auth/oauth/google/google.js";
+import verifyJwt from "../middleware/Auth/verifyJwt.js";
+import verifyRoles from "../middleware/Auth/verifyRoles.js";
 
 const authRouter = express.Router();
 
-authRouter.get("/", getAuthInfoController);
+authRouter.get("/", verifyJwt, verifyRoles(2005, 2009), getAuthInfoController);
 authRouter.post("/register", registerController);
 authRouter.post("/login", loginController);
 authRouter.get("/refresh", refreshController);

@@ -7,17 +7,12 @@ const albumSchema = new Schema({
     required: true,
   },
   artist: {
-    id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-    name: {
-      type: String,
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
   releaseDate: {
     type: Date,
-    default: new Date.now(),
+    default: Date.now,
   },
   songs: [
     {

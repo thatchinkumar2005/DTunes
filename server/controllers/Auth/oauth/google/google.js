@@ -15,7 +15,9 @@ passport.use(
       callbackURL: "http://localhost:5173/auth/oauth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
-      const foundUser = await User.findOne({ "oauth.oauthCode": profile.id });
+      const foundUser = await User.findOne({
+        "oauth.oauthCode": profile.id,
+      });
       if (!foundUser) {
         const user = await User.create({
           fname: profile.name.givenName,
@@ -49,7 +51,7 @@ export async function googleOauthTokenExchanger(req, res, next) {
 
       const roles = Object.values(user.roles).filter(Boolean);
       const accessToken = jwt.sign(
-        { username: user.username, roles },
+        { username: user.username, id: foundUser._id, roles },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: settings.accessTokenExpiry }
       );

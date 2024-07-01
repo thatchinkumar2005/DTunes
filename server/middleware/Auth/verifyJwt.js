@@ -17,7 +17,10 @@ export default async function verifyJwt(req, res, next) {
       if (err) {
         return res.status(409).json({ message: "invalid Access Token" });
       }
-      req.user = decoded;
+      req.user = {};
+      req.user.username = decoded.username;
+      req.user.id = decoded.id;
+      req.user.roles = decoded.roles;
 
       next();
     });

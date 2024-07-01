@@ -8,8 +8,10 @@ import cookieParser from "cookie-parser";
 import passport from "passport";
 import { corsOpt } from "./config/corsOptions.js";
 import { authRouter } from "./routes/authRouter.js";
-import credentials from "./middleware/credentials.js";
+import credentials from "./middleware/general/credentials.js";
 import handleErr from "./middleware/general/handleErr.js";
+import { songsRouter } from "./routes/songsRouter.js";
+import { albumRouter } from "./routes/albumRouter.js";
 
 dbConn();
 const app = express();
@@ -28,7 +30,13 @@ app.use(cookieParser());
 app.use(passport.initialize());
 
 //routes
-app.use("/api/v1/auth/", authRouter);
+
+//public
+app.use("/api/v1/auth/", authRouter); //auth router
+
+//private
+app.use("/api/v1/songs/", songsRouter); //songs router
+app.use("/api/v1/albums/", albumRouter);
 
 //error handler
 app.use(handleErr);

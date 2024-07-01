@@ -6,43 +6,34 @@ const songSchema = new Schema({
     type: String,
     required: true,
   },
-  duration: {
-    type: Number,
-    required: true,
+  url: {
+    type: String,
   },
-  aritist: [
+  artists: [
     {
-      id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-      },
-      name: {
-        type: String,
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      default: [],
     },
   ],
   album: {
-    id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Album",
-      required: true,
-    },
-    name: {
-      type: String,
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Album",
+    required: true,
   },
   releaseDate: {
     type: Date,
-    default: new Date.now(),
+    default: Date.now,
   },
   genre: [
     {
       type: String,
     },
   ],
-
-  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  lyric: {
+    type: String,
+  },
   highlight: {
     from: {
       type: Number,

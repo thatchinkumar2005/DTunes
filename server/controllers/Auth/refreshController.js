@@ -26,6 +26,7 @@ export default async function refreshController(req, res) {
         const accessToken = jwt.sign(
           {
             username: foundUser.username,
+            id: foundUser._id,
             roles,
           },
           process.env.ACCESS_TOKEN_SECRET,
