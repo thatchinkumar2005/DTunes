@@ -22,10 +22,11 @@ export default async function refreshController(req, res) {
         if (err || foundUser.username !== decoded.username)
           return res.status(401).json({ message: "invalid refresh token" });
 
+        const roles = Object.values(foundUser.roles).filter(Boolean);
         const accessToken = jwt.sign(
           {
             username: foundUser.username,
-            roles: foundUser.roles,
+            roles,
           },
           process.env.ACCESS_TOKEN_SECRET,
           {

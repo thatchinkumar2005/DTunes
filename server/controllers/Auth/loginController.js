@@ -24,10 +24,12 @@ export default async function loginController(req, res) {
     const match = await bcrypt.compare(pswd, foundUser.hash);
 
     if (match) {
+      const roles = Object.values(foundUser.roles).filter(Boolean);
+
       const accessToken = jwt.sign(
         {
           username: foundUser.username,
-          roles: foundUser.roles,
+          roles,
         },
         process.env.ACCESS_TOKEN_SECRET,
         {

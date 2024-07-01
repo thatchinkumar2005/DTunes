@@ -47,8 +47,9 @@ export async function googleOauthTokenExchanger(req, res, next) {
       if (err) return res.status(500).json({ message: err.message });
       if (!user) return res.status(401).json({ message: "Oauth failed" });
 
+      const roles = Object.values(user.roles).filter(Boolean);
       const accessToken = jwt.sign(
-        { username: user.username, roles: user.roles },
+        { username: user.username, roles },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: settings.accessTokenExpiry }
       );
