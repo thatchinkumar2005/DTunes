@@ -56,7 +56,7 @@ songsRouter.get(
   getLikesController
 );
 songsRouter.post(
-  "toggleToPlaylist",
+  "/toggleToPlaylist/:id",
   verifyJwt,
   verifyRoles(2005, 2009),
   toggleToPlaylist

@@ -7,24 +7,22 @@ const playlistSchema = new Schema({
     required: true,
   },
   artist: {
-    id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-    name: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  files: {
+    coverArt: {
       type: String,
     },
+  },
+  public: {
+    type: Boolean,
+    default: false,
   },
   releaseDate: {
     type: Date,
     default: Date.now,
   },
-  songs: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Song",
-    },
-  ],
 });
 
 export const Playlist = mongoose.model("Playlist", playlistSchema);

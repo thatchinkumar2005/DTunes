@@ -14,6 +14,7 @@ import credentials from "./middleware/general/credentials.js";
 import handleErr from "./middleware/general/handleErr.js";
 import { songsRouter } from "./routes/songsRouter.js";
 import { albumRouter } from "./routes/albumRouter.js";
+import { playlistRouter } from "./routes/playlistRouter.js";
 
 dbConn();
 const app = express();
@@ -42,7 +43,8 @@ app.use("/api/v1/auth/", authRouter); //auth router
 
 //private
 app.use("/api/v1/songs/", songsRouter); //songs router
-app.use("/api/v1/albums/", albumRouter);
+app.use("/api/v1/albums/", albumRouter); //album router
+app.use("/api/v1/playlists/", playlistRouter); //playlist router
 
 //error handler
 app.use(handleErr);

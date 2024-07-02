@@ -26,7 +26,7 @@ export default async function updateAlbumController(req, res) {
       return res.status(401).json({ message: "Not your album" });
     }
 
-    album.name = name;
+    album.name = name || album.name;
     if (file) {
       const coverArtPath = join(
         __dirname,
