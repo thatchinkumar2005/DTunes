@@ -19,12 +19,6 @@ const albumSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  songs: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Song",
-    },
-  ],
 });
 
 export const Album = mongoose.model("Album", albumSchema);

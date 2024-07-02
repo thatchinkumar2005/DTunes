@@ -84,17 +84,6 @@ export default async function newSongController(req, res) {
     song.files.coverArt = coverImageUrl;
     await song.save();
 
-    //pushing song id to releases in artists
-    for (let artistId of song.artists) {
-      const artist = await User.findOne({ _id: artistId });
-      artist.releases.push(song._id);
-      await artist.save();
-    }
-
-    //pushing song id to the songs field of album
-    album.songs.push(song._id);
-    await album.save();
-
     //responding with song doc
     return res.json(song);
   } catch (error) {

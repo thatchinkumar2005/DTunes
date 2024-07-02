@@ -23,33 +23,26 @@ export default async function deleteAlbumController(req, res) {
     if (!album.artist.equals(user.id))
       return res.status(401).json({ message: "Not your album" });
 
-    for (let songId of album.songs) {
-      const song = await Song.findOne({ _id: songId });
-      if (song) {
-        const audioPath = join(
-          __dirname,
-          "../../STORAGE/Songs",
-          `${song.id}.mp3`
-        );
-        const coverArtPath = join(
-          __dirname,
-          "../../STORAGE/CoverArt",
-          `${song.id}.png`
-        );
-        await unlink(audioPath);
-        await unlink(coverArtPath);
+    const albumSongs = await Song.find({ album: album._id });
 
-        for (let artistId of song.artists) {
-          const artist = await User.findOne({ _id: artistId });
-          artist.releases.splice(artist.releases.indexOf(song._id), 1);
-          await artist.save();
-        }
+    for (let song of albumSongs) {
+      const audioPath = join(
+        __dirname,
+        "../../STORAGE/Songs",
+        `${song.id}.mp3`
+      );
+      const coverArtPath = join(
+        __dirname,
+        "../../STORAGE/CoverArt",
+        `${song.id}.png`
+      );
+      await unlink(audioPath);
+      await unlink(coverArtPath);
 
-        await Like.deleteMany({ song: song._id });
-        await Interaction.deleteMany({ song: song._id });
+      await Like.deleteMany({ song: song._id });
+      await Interaction.deleteMany({ song: song._id });
 
-        await Song.deleteOne({ _id: song._id });
-      }
+      await Song.deleteOne({ _id: song._id });
     }
 
     const coverArtPath = join(
@@ -58,10 +51,6 @@ export default async function deleteAlbumController(req, res) {
       `${album.id}.png`
     );
     await unlink(coverArtPath);
-
-    const userMod = await User.findOne({ _id: user.id });
-    userMod.albums.splice(userMod.albums.indexOf(album._id, 1));
-    await userMod.save();
 
     await Album.deleteOne({ _id: album._id });
 

@@ -43,9 +43,6 @@ export default async function createNewAlbumController(req, res) {
     //saving in album
     album.files.coverArt = coverArtUrl;
     await album.save();
-    //updating albums in user's document
-    userMod.albums.push(album._id);
-    await userMod.save();
     //responding with created album
     return res.json(album);
   } catch (error) {

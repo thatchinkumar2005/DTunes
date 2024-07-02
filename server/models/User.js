@@ -40,10 +40,6 @@ const userSchema = new Schema({
     requested: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     accepted: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
-  albums: [{ type: mongoose.Schema.Types.ObjectId, ref: "Album" }],
-  releases: [{ type: mongoose.Schema.Types.ObjectId, ref: "Song" }],
-
-  playLists: [{ type: mongoose.Schema.Types.ObjectId, ref: "Playlist" }],
   oauth: {
     oauthProvider: { type: String },
     oauthCode: { type: String },

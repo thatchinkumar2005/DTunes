@@ -22,15 +22,6 @@ export default async function deleteSongController(req, res) {
     if (!song.artists.includes(user.id))
       return res.status(401).json({ message: "Not your song" });
 
-    for (let artistId of song.artists) {
-      const artist = await User.findOne({ _id: artistId });
-      artist.releases.splice(artist.releases.indexOf(song._id), 1);
-      await artist.save();
-    }
-    const album = await Album.findOne({ _id: song.album });
-    album.songs.splice(album.songs.indexOf(song._id), 1);
-    await album.save();
-
     await Like.deleteMany({ song: song._id });
     await Interaction.deleteMany({ song: song._id });
 
