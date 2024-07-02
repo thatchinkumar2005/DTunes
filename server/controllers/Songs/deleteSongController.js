@@ -3,6 +3,12 @@ import { Song } from "../../models/Song.js";
 import { unlink } from "fs/promises";
 import { User } from "../../models/User.js";
 import { Album } from "../../models/Album.js";
+import { join } from "path";
+
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export default async function deleteSongController(req, res) {
   try {
@@ -22,7 +28,16 @@ export default async function deleteSongController(req, res) {
     const album = await Album.findOne({ _id: song.album });
     album.songs.splice(album.songs.indexOf(song._id), 1);
     await album.save();
-    await unlink(song.url);
+
+    const audioPath = join(__dirname, "/../../STORAGE/Songs", `${song.id}.mp3`);
+    const coverImagePath = join(
+      __dirname,
+      "../../STORAGE/CoverArt",
+      `${song.id}.png`
+    );
+
+    await unlink(audioPath);
+    await unlink(coverImagePath);
     await Song.deleteOne({ _id: song._id });
     res.json({ message: "deleted" });
   } catch (error) {

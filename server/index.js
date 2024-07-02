@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 import dbConn from "./config/dbConn.js";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -15,9 +17,13 @@ import { albumRouter } from "./routes/albumRouter.js";
 
 dbConn();
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 //middelwares
 
+//static server
+app.use("/serverStorage", express.static(join(__dirname, "STORAGE")));
 //set Access-Control-Allow-Credentials before Cors only for allowed origins
 app.use(credentials);
 //cors

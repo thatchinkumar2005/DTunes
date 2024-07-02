@@ -3,8 +3,8 @@ import { Song } from "../../models/Song.js";
 import { Album } from "../../models/Album.js";
 import { extname, join } from "path";
 import { User } from "../../models/User.js";
-import { v4 as uuidV4 } from "uuid";
-import mongoose from "mongoose";
+import sharp from "sharp";
+import mp3Converter from "../../utils/mp3Converter.js";
 
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -20,18 +20,21 @@ export default async function newSongController(req, res) {
     //bad requests
     if (!(name && albumId && genre))
       return res.status(400).json({ message: "Enter the mandatory fields" });
-    const file = req.file;
-    if (!file) return res.status(400).json({ message: "Select file" });
+    const files = req.files;
+    console.log(files);
+    if (!files?.coverArt || !files?.file)
+      return res.status(400).json({ message: "Select files" });
 
     //finding the album
     const album = await Album.findById(albumId);
     if (!album) {
       return res.status(400).json({ message: "No such album found" });
     }
+    //checking for albums artist
     if (!album.artist._id.equals(user.id)) {
       return res.status(401).json({ message: "Not your album" });
     }
-
+    //array of artists ids
     const artistsObjIds = [user.id]; //artists object id list
     if (artists) {
       const artistsLst = JSON.parse(artists); //list of string object ids
@@ -43,6 +46,7 @@ export default async function newSongController(req, res) {
       }
     }
 
+    //creating a song in database
     const song = await Song.create({
       name,
       artists: artistsObjIds,
@@ -51,27 +55,50 @@ export default async function newSongController(req, res) {
       highlight,
       lyric,
     });
-    const url = join(
+
+    //song path in server
+    const audioPath = join(__dirname, "../../STORAGE/Songs/", `${song.id}.mp3`);
+
+    //cover art path in server
+    const coverImagePath = join(
       __dirname,
-      "../../STORAGE/Songs/",
-      `${song.id}${extname(file.originalname)}`
+      "../../STORAGE/CoverArt/",
+      `${song.id}.png`
     );
 
-    await writeFile(url, file.buffer);
+    //sharp to resize and reformat
+    await sharp(files.coverArt[0].buffer)
+      .resize(1400, 1400)
+      .toFormat("png")
+      .toFile(coverImagePath);
+    await writeFile(audioPath, files.file[0].buffer);
 
-    song.url = url;
+    await mp3Converter({ buffer: files.file[0].buffer, path: audioPath });
+
+    const url = `http://localhost:7777/serverStorage/Songs/${song._id}.mp3`;
+
+    const coverImageUrl = `http://localhost:7777/serverStorage/CoverArt/${song._id}.png`;
+
+    //updating urls in song document
+    song.files.audio = url;
+    song.files.coverArt = coverImageUrl;
     await song.save();
 
+    //pushing song id to releases in artists
     for (let artistId of song.artists) {
       const artist = await User.findOne({ _id: artistId });
       artist.releases.push(song._id);
       await artist.save();
     }
+
+    //pushing song id to the songs field of album
     album.songs.push(song._id);
     await album.save();
 
+    //responding with song doc
     return res.json(song);
   } catch (error) {
+    //error handling
     console.log(error);
     return res.status(500).json({ message: error.message });
   }

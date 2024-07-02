@@ -6,8 +6,13 @@ const songSchema = new Schema({
     type: String,
     required: true,
   },
-  url: {
-    type: String,
+  files: {
+    audio: {
+      type: String,
+    },
+    coverArt: {
+      type: String,
+    },
   },
   artists: [
     {
