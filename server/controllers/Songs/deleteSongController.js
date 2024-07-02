@@ -7,6 +7,8 @@ import { join } from "path";
 
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { Like } from "../../models/Like.js";
+import { Interaction } from "../../models/InteractionData.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -28,6 +30,9 @@ export default async function deleteSongController(req, res) {
     const album = await Album.findOne({ _id: song.album });
     album.songs.splice(album.songs.indexOf(song._id), 1);
     await album.save();
+
+    await Like.deleteMany({ song: song._id });
+    await Interaction.deleteMany({ song: song._id });
 
     const audioPath = join(__dirname, "/../../STORAGE/Songs", `${song.id}.mp3`);
     const coverImagePath = join(

@@ -6,6 +6,11 @@ const albumSchema = new Schema({
     type: String,
     required: true,
   },
+  files: {
+    coverArt: {
+      type: String,
+    },
+  },
   artist: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
