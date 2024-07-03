@@ -16,6 +16,7 @@ import { songsRouter } from "./routes/songsRouter.js";
 import { albumRouter } from "./routes/albumRouter.js";
 import { playlistRouter } from "./routes/playlistRouter.js";
 import { userRouter } from "./routes/userRouter.js";
+import { friendRouter } from "./routes/friendRouter.js";
 
 dbConn();
 const app = express();
@@ -46,8 +47,8 @@ app.use("/api/v1/auth/", authRouter); //auth router
 app.use("/api/v1/songs/", songsRouter); //songs router
 app.use("/api/v1/albums/", albumRouter); //album router
 app.use("/api/v1/playlists/", playlistRouter); //playlist router
-app.use("/api/v1/users/", userRouter);
-
+app.use("/api/v1/users/", userRouter); //user router
+app.use("/api/v1/friend/", friendRouter); //friend router
 //error handler
 app.use(handleErr);
 //server start

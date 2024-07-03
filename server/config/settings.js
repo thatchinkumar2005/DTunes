@@ -1,4 +1,4 @@
 export const settings = {
-  accessTokenExpiry: "10m",
+  accessTokenExpiry: "1d",
   refreshTokenExpiry: "1d",
 };

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { Schema } from "mongoose";
 
 const friendsSchema = new Schema({
-  type: {
+  status: {
     type: String,
   },
   requester: {

@@ -1,5 +1,5 @@
-import { Friend } from "../../models/Friend";
-import { User } from "../../models/User";
+import { Friend } from "../../models/Friend.js";
+import { User } from "../../models/User.js";
 
 export default async function getAllUserFriendsController(req, res) {
   try {
@@ -11,15 +11,23 @@ export default async function getAllUserFriendsController(req, res) {
     if (!resUser) return res.status(400).json({ message: "No such User" });
 
     const friendship = await Friend.findOne({
-      friend: [user._id, resUser._id],
+      friend: { $all: [user.id, resUser._id] },
+      status: "accepted",
     });
 
     if (!friendship) {
       return res.status(403).json({ message: "Not your friend" });
     }
 
-    const friends = await Friend.find({ friend: resUser._id });
-    return res.json(friends);
+    const friends = await Friend.find(
+      { friend: resUser._id, status: "accepted" },
+      { friend: 1 }
+    );
+    console.log(friends);
+    const result = friends.map((lst) => {
+      return lst.friend.find((i) => !i.equals(resUser._id));
+    });
+    return res.json(result);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
