@@ -5,34 +5,9 @@ const partySchema = new Schema({
   name: {
     type: String,
   },
-  leader: {
-    name: {
-      type: String,
-    },
-    id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-    playlists: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Playlist",
-      },
-    ],
-    members: {
-      requested: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-        },
-      ],
-      accepted: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-        },
-      ],
-    },
+  resultantPlaylist: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Playlist",
   },
 });
 

@@ -9,6 +9,9 @@ const userSchema = new Schema({
   lname: {
     type: String,
   },
+  bio: {
+    type: String,
+  },
   username: {
     type: String,
     required: true,
@@ -41,23 +44,20 @@ const userSchema = new Schema({
   },
   genres: [{ type: String }],
   party: {
-    requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Party" }],
-    currentParty: { type: mongoose.Schema.Types.ObjectId, ref: "Party" },
-  },
-  notifications: [
-    {
-      notificationType: {
-        type: String,
-      },
-      msg: {
-        type: String,
-      },
-      read: {
-        type: Boolean,
-        default: false,
-      },
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Party",
     },
-  ],
+    playlist: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Playlist",
+    },
+  },
+  files: {
+    profilePic: {
+      type: String,
+    },
+  },
 });
 
 export const User = mongoose.model("User", userSchema);

@@ -2,7 +2,7 @@ import { Album } from "../../models/Album.js";
 
 export default async function getAllAlbumsController(req, res) {
   try {
-    const queries = req.params;
+    const queries = req.queries;
     const page = queries?.page || 1;
     const limit = queries?.limit || 10;
     const albums = await Album.find()
