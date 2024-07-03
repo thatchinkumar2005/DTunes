@@ -17,6 +17,7 @@ import getAuthUserFriendsController from "../controllers/Users/authUser/getAuthU
 import getAuthUserPartyController from "../controllers/Users/authUser/getAuthUserPartyController.js";
 import getUserPartyController from "../controllers/Users/getUserPartyController.js";
 import getAuthUserFriendRequests from "../controllers/Users/authUser/getAuthUserFriendRequests.js";
+import getAuthUserFrndReln from "../controllers/Users/authUser/getAuthUserFrndRelnController.js";
 
 const userRouter = express.Router();
 
@@ -69,6 +70,13 @@ userRouter.get(
   verifyJwt,
   verifyRoles(2005, 2009),
   getAuthUserFriendRequests
+);
+
+userRouter.get(
+  "/authUser/getReln/:id",
+  verifyJwt,
+  verifyRoles(2005, 2009),
+  getAuthUserFrndReln
 );
 
 userRouter.put(

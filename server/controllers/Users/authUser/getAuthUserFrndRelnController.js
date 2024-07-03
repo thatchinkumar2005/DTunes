@@ -1,4 +1,4 @@
-import { Friend } from "../../../models/Friend";
+import { Friend } from "../../../models/Friend.js";
 import { User } from "../../../models/User.js";
 
 export default async function getAuthUserFrndReln(req, res) {
@@ -11,7 +11,9 @@ export default async function getAuthUserFrndReln(req, res) {
     if (otherUser._id.equals(user.id))
       return res.status(400).json({ message: "You can't provide your id" });
 
-    const relns = await Friend.find({ friend: [user.id, otherUser._id] });
+    const relns = await Friend.find({
+      friend: { $all: [user.id, otherUser._id] },
+    });
     return res.json(relns);
   } catch (error) {
     return res.status(500).json({ message: error.message });
