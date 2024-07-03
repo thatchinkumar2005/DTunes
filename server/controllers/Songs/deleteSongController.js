@@ -9,6 +9,7 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { Like } from "../../models/Like.js";
 import { Interaction } from "../../models/InteractionData.js";
+import { PlaylistSongJunction } from "../../models/Playlist_Song_Junction.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -22,8 +23,10 @@ export default async function deleteSongController(req, res) {
     if (!song.artists.includes(user.id))
       return res.status(401).json({ message: "Not your song" });
 
+    //Junction collections
     await Like.deleteMany({ song: song._id });
     await Interaction.deleteMany({ song: song._id });
+    await PlaylistSongJunction.deleteMany({ song: song._id });
 
     const audioPath = join(__dirname, "/../../STORAGE/Songs", `${song.id}.mp3`);
     const coverImagePath = join(

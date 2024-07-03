@@ -35,11 +35,6 @@ const userSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  friends: {
-    requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    requested: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    accepted: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-  },
   oauth: {
     oauthProvider: { type: String },
     oauthCode: { type: String },

@@ -8,6 +8,7 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { Like } from "../../models/Like.js";
 import { Interaction } from "../../models/InteractionData.js";
+import { PlaylistSongJunction } from "../../models/Playlist_Song_Junction.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -39,8 +40,10 @@ export default async function deleteAlbumController(req, res) {
       await unlink(audioPath);
       await unlink(coverArtPath);
 
+      //junction collecions
       await Like.deleteMany({ song: song._id });
       await Interaction.deleteMany({ song: song._id });
+      await PlaylistSongJunction.deleteMany({ song: song._id });
 
       await Song.deleteOne({ _id: song._id });
     }
