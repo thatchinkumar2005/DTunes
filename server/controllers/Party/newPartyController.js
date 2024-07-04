@@ -1,6 +1,7 @@
 import sharp from "sharp";
 import { Party } from "../../models/Party.js";
 import { Playlist } from "../../models/Playlist.js";
+import { User } from "../../models/User.js";
 
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
@@ -11,6 +12,7 @@ const __dirname = dirname(__filename);
 export default async function newPartyController(req, res) {
   try {
     const user = req.user;
+    const userDoc = await User.findOne({ _id: user.id });
     const { name, contribPlaylistId } = req.body;
     const file = req.file;
 
@@ -34,6 +36,12 @@ export default async function newPartyController(req, res) {
       party: true,
     });
 
+    const party = await Party.create({
+      name,
+      leader: user.id,
+      resultantPlaylist: partyplaylist._id,
+    });
+
     if (file) {
       const coverArtPath = join(
         __dirname,
@@ -53,11 +61,6 @@ export default async function newPartyController(req, res) {
       await partyplaylist.save();
     }
 
-    const party = await Party.create({
-      name,
-      resultantPlaylist: partyplaylist._id,
-    });
-
     const songs = await PlaylistSongJunction.find({
       playlist: contribPlaylist._id,
     });
@@ -68,6 +71,10 @@ export default async function newPartyController(req, res) {
         song: junReln.song,
       });
     }
+
+    userDoc.party.id = party._id;
+    userDoc.party.playlist = contribPlaylist._id;
+    await userDoc.save();
 
     return res.json({
       party,

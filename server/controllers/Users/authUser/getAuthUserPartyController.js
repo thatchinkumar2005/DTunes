@@ -7,9 +7,7 @@ export default async function getAuthUserPartyController(req, res) {
 
     const resUser = await User.findOne({ _id: user.id });
 
-    const party = await Party.findOne({ _id: resUser.party.id });
-
-    return res.json(party);
+    return res.json(resUser.party);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
