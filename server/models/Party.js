@@ -5,6 +5,11 @@ const partySchema = new Schema({
   name: {
     type: String,
   },
+  file : {
+    coverArt : {
+      type : String
+    }
+  },
   resultantPlaylist: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Playlist",

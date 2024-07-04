@@ -1,7 +1,7 @@
 import { writeFile } from "fs/promises";
 import { Song } from "../../models/Song.js";
 import { Album } from "../../models/Album.js";
-import { extname, join } from "path";
+import { join } from "path";
 import { User } from "../../models/User.js";
 import sharp from "sharp";
 import mp3Converter from "../../utils/mp3Converter.js";
@@ -84,6 +84,7 @@ export default async function newSongController(req, res) {
     song.files.coverArt = coverImageUrl;
     await song.save();
 
+    console.log(song)
     //responding with song doc
     return res.json(song);
   } catch (error) {
