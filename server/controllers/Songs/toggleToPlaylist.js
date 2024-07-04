@@ -18,6 +18,7 @@ export default async function toggleToPlaylist(req, res) {
     const reln = await PlaylistSongJunction.findOne({
       song: song._id,
       playlist: playlist._id,
+      junction: [song._id, playlist._id],
     });
 
     if (!reln) {

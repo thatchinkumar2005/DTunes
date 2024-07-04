@@ -10,6 +10,7 @@ const playlistSongJuncSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Playlist",
   },
+  junction: [{ type: mongoose.Schema.Types.ObjectId }],
 });
 
 export const PlaylistSongJunction = mongoose.model(
