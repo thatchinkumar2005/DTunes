@@ -36,6 +36,9 @@ export default async function respondPartyRequestController(req, res) {
           .status(400)
           .json({ message: "You cannot add another party Playlist" });
       }
+
+      if (userDoc?.party?.id)
+        return res.status(400).json({ message: "Already in a party" });
     }
 
     if (response === "accept") {

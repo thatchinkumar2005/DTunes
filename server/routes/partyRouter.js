@@ -5,6 +5,7 @@ import newPartyController from "../controllers/Party/newPartyController.js";
 import { partyUpload } from "../middleware/multer/party.js";
 import togglerequestPartyMemberController from "../controllers/Party/toggleRequestPartyMember.js";
 import respondPartyRequestController from "../controllers/Party/respondPartyReqController.js";
+import deletePartyController from "../controllers/Party/deletePartyController.js";
 
 const partyRouter = express.Router();
 
@@ -28,6 +29,13 @@ partyRouter.post(
   verifyJwt,
   verifyRoles(2005, 2009),
   respondPartyRequestController
+);
+
+partyRouter.delete(
+  "/",
+  verifyJwt,
+  verifyRoles(2005, 2009),
+  deletePartyController
 );
 
 export { partyRouter };

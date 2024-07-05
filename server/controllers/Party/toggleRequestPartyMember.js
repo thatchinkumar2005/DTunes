@@ -18,6 +18,8 @@ export default async function togglerequestPartyMemberController(req, res) {
     if (!requestee) return res.status(400).json({ message: "No such User" });
     if (requestee._id.equals(user.id))
       return res.status(400).json({ message: "You cannot request yourself" });
+    if (requestee?.party?.id)
+      return res.status(400).json({ message: "User already in a Party" });
     if (!party) return res.status(400).json({ message: "No such Party" });
     if (!party.leader.equals(user.id))
       return res.status(401).json({ message: "Not your Party" });

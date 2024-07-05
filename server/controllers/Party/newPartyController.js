@@ -28,6 +28,9 @@ export default async function newPartyController(req, res) {
       return res.status(401).json({ message: "Not your Playlist" });
     if (!contribPlaylist.public)
       return res.status(403).json({ message: "Provide a Public Playlist" });
+    if (userDoc?.party?.id) {
+      return res.status(400).json({ message: "Already in a Party" });
+    }
 
     const partyplaylist = await Playlist.create({
       name,
