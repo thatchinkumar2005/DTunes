@@ -9,8 +9,9 @@ const searchHistorySchema = new Schema({
   query: {
     type: "String",
   },
-  searchType: {
-    type: String,
+  queryCount: {
+    type: Number,
+    default: 1,
   },
   resultsCount: {
     type: Number,

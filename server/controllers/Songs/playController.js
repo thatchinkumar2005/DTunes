@@ -12,14 +12,14 @@ export default async function playController(req, res) {
 
     const intData = await Interaction.findOne({
       song: song._id,
-      user: mongoose.Schema.ObjectId(user.id),
+      user: user.id,
       intType: "play",
     });
 
     if (!intData) {
       const newIntData = await Interaction.create({
         song: song._id,
-        user: mongoose.Schema.ObjectId(user.id),
+        user: user.id,
         intType: "play",
         count: 1,
       });
@@ -30,6 +30,7 @@ export default async function playController(req, res) {
       return res.json(intData);
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       message: error.message,
     });

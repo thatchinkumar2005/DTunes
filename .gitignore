@@ -3,3 +3,4 @@
 /server/.env
 *.png
 *.mp3
+/server/python/.venv

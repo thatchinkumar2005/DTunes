@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
 import { Like } from "../../models/Like.js";
 import { Song } from "../../models/Song.js";
+import { Interaction } from "../../models/InteractionData.js";
 
 export default async function likeController(req, res) {
   try {
@@ -20,11 +20,17 @@ export default async function likeController(req, res) {
         user: user.id,
         song: song._id,
       });
+      await Interaction.create({
+        user: user.id,
+        song: song._id,
+        intType: "like",
+      });
       return res.json({
         liked: true,
       });
     } else {
       await Like.deleteOne({ _id: like._id });
+      await Interaction.deleteOne({ user: user.id, song: song._id });
       return res.json({
         liked: false,
       });

@@ -61,13 +61,13 @@ export default async function searchController(req, res) {
 
       if (history) {
         history.resultsCount = count;
+        history.queryCount++;
         history.timeStamp = Date.now();
         history.save();
       } else {
         await SearchHistory.create({
           user: user.id,
           query: q,
-          searchType: type,
           resultsCount: count,
         });
       }
@@ -97,17 +97,16 @@ export default async function searchController(req, res) {
 
       if (history) {
         history.resultsCount = count;
+        history.queryCount++;
         history.timeStamp = Date.now();
         history.save();
       } else {
         await SearchHistory.create({
           user: user.id,
           query: q,
-          searchType: type,
           resultsCount: count,
         });
       }
-
       return res.json({
         songs: [...nameBasedSongs, ...genreBasedSongs],
       });
@@ -121,17 +120,16 @@ export default async function searchController(req, res) {
 
       if (history) {
         history.resultsCount = count;
+        history.queryCount++;
         history.timeStamp = Date.now();
         history.save();
       } else {
         await SearchHistory.create({
           user: user.id,
           query: q,
-          searchType: type,
           resultsCount: count,
         });
       }
-
       return res.json({
         albums: nameBasedAlbums,
       });
@@ -146,17 +144,16 @@ export default async function searchController(req, res) {
       count += nameBasedPlaylists.length;
       if (history) {
         history.resultsCount = count;
+        history.queryCount++;
         history.timeStamp = Date.now();
         history.save();
       } else {
         await SearchHistory.create({
           user: user.id,
           query: q,
-          searchType: type,
           resultsCount: count,
         });
       }
-
       return res.json({
         playlists: nameBasedPlaylists,
       });
@@ -175,17 +172,16 @@ export default async function searchController(req, res) {
       count += nameBasedArtists.length;
       if (history) {
         history.resultsCount = count;
+        history.queryCount++;
         history.timeStamp = Date.now();
         history.save();
       } else {
         await SearchHistory.create({
           user: user.id,
           query: q,
-          searchType: type,
           resultsCount: count,
         });
       }
-
       return res.json({
         artists: nameBasedArtists,
       });
@@ -204,17 +200,16 @@ export default async function searchController(req, res) {
 
       if (history) {
         history.resultsCount = count;
+        history.queryCount++;
         history.timeStamp = Date.now();
         history.save();
       } else {
         await SearchHistory.create({
           user: user.id,
           query: q,
-          searchType: type,
           resultsCount: count,
         });
       }
-
       return res.json({
         users: nameBasedUsers,
       });
