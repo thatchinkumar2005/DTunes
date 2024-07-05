@@ -6,7 +6,7 @@ export default async function getAllAlbumsController(req, res) {
     const page = queries?.page || 1;
     const limit = queries?.limit || 10;
     const albums = await Album.find()
-      .skip(page - 1)
+      .skip((page - 1) * limit)
       .limit(limit);
 
     return res.json(albums);

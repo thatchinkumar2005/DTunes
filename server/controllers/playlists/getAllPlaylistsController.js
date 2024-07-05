@@ -7,7 +7,7 @@ export default async function getAllPlaylistsController(req, res) {
     const limit = queries?.limit || 10;
 
     const playlists = await Playlist.find({ public: true })
-      .skip(page - 1)
+      .skip((page - 1) * limit)
       .limit(limit);
 
     return res.json(playlists);

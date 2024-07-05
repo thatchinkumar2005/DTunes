@@ -19,7 +19,7 @@ export default async function getAllUsersController(req, res) {
         genres: 1,
       }
     )
-      .skip(page - 1)
+      .skip((page - 1) * limit)
       .limit(limit);
 
     return res.json(users);

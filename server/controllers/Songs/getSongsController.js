@@ -7,7 +7,7 @@ export default async function getSongsController(req, res) {
     const limit = queries?.limit || 10;
 
     const resp = await Song.find()
-      .skip(page - 1)
+      .skip((page - 1) * limit)
       .limit(limit);
 
     return res.json(resp);
