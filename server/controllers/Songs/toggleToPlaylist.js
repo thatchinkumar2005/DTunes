@@ -14,17 +14,20 @@ export default async function toggleToPlaylist(req, res) {
     const playlist = await Playlist.findById(playlistId);
     if (!song || !playlist)
       return res.status(400).json({ message: "invalid id" });
+    if (!playlist.artist.equals(user.id))
+      return res.status(401).json({ message: "Not your playlist" });
 
     const reln = await PlaylistSongJunction.findOne({
       song: song._id,
       playlist: playlist._id,
-      junction: [song._id, playlist._id],
+      junction: { $all: [song._id, playlist._id] },
     });
 
     if (!reln) {
       const newReln = await PlaylistSongJunction.create({
         song: song._id,
         playlist: playlist._id,
+        junction: [song._id, playlist._id],
       });
       return res.json(newReln);
     } else {

@@ -5,8 +5,9 @@ import { User } from "../../models/User.js";
 export default async function togglerequestPartyMemberController(req, res) {
   try {
     const user = req.user;
-    const { id } = req.params;
+    const userDoc = await User.findOne({ _id: user.id });
     const { userId } = req.body;
+    const id = userDoc.party.id;
 
     if (!id) return res.status(400).json({ message: "No party Id given" });
     if (!userId) return res.status(400).json({ message: "No userId Id given" });

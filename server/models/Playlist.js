@@ -21,7 +21,7 @@ const playlistSchema = new Schema({
   },
   party: {
     type: Boolean,
-    default: Boolean,
+    default: false,
   },
   releaseDate: {
     type: Date,

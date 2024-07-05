@@ -71,7 +71,6 @@ export default async function newSongController(req, res) {
       .resize(1400, 1400)
       .toFormat("png")
       .toFile(coverImagePath);
-    await writeFile(audioPath, files.file[0].buffer);
 
     await mp3Converter({ buffer: files.file[0].buffer, path: audioPath });
 
@@ -84,7 +83,7 @@ export default async function newSongController(req, res) {
     song.files.coverArt = coverImageUrl;
     await song.save();
 
-    console.log(song)
+    console.log(song);
     //responding with song doc
     return res.json(song);
   } catch (error) {

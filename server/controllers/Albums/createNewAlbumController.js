@@ -19,8 +19,9 @@ export default async function createNewAlbumController(req, res) {
     //file
     const file = req.file;
     //bad request
-    if (!name || !file)
+    if (!name)
       return res.status(400).json({ message: "No name given to album" });
+    if (!file) return res.status(400).json({ message: "select files" });
     //creating the album
     const album = await Album.create({
       name,

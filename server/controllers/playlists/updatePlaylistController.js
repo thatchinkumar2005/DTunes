@@ -23,7 +23,7 @@ export default async function updatePlaylistController(req, res) {
     const playlist = await Playlist.findById(id);
     if (!playlist) return res.status(400).json({ message: "No such playlist" });
     if (!playlist.artist.equals(user.id))
-      res.status(401).json({ message: "Not your Playlist" });
+      return res.status(401).json({ message: "Not your Playlist" });
 
     playlist.name = name || playlist.name;
     playlist.public = type ? type === "public" : playlist.public;
