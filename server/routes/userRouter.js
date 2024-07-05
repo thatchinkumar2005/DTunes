@@ -18,6 +18,7 @@ import getAuthUserPartyController from "../controllers/Users/authUser/getAuthUse
 import getUserPartyController from "../controllers/Users/getUserPartyController.js";
 import getAuthUserFriendRequests from "../controllers/Users/authUser/getAuthUserFriendRequests.js";
 import getAuthUserFrndReln from "../controllers/Users/authUser/getAuthUserFrndRelnController.js";
+import getAuthUserSearchHistoryController from "../controllers/Users/authUser/getAuthUserSearchHistoryController.js";
 
 const userRouter = express.Router();
 
@@ -77,6 +78,13 @@ userRouter.get(
   verifyJwt,
   verifyRoles(2005, 2009),
   getAuthUserFrndReln
+);
+
+userRouter.get(
+  "/authUser/searchHistory",
+  verifyJwt,
+  verifyRoles(2005, 2009),
+  getAuthUserSearchHistoryController
 );
 
 userRouter.put(
