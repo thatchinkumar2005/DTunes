@@ -2,7 +2,6 @@ import { join } from "path";
 import { unlink } from "fs/promises";
 import { Album } from "../../models/Album.js";
 import { Song } from "../../models/Song.js";
-import { User } from "../../models/User.js";
 
 import { fileURLToPath } from "url";
 import { dirname } from "path";
