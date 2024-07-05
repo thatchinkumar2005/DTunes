@@ -9,7 +9,7 @@ export default async function togglerequestPartyMemberController(req, res) {
     const { userId } = req.body;
     const id = userDoc.party.id;
 
-    if (!id) return res.status(400).json({ message: "No party Id given" });
+    if (!id) return res.status(400).json({ message: "Not in any party" });
     if (!userId) return res.status(400).json({ message: "No userId Id given" });
 
     const requestee = await User.findById(userId);
@@ -49,7 +49,7 @@ export default async function togglerequestPartyMemberController(req, res) {
           await reln.save();
           return res.json(reln);
         case "accepted":
-          return res.json({ message: "Already Friends" });
+          return res.json({ message: "Already in Party" });
       }
     }
   } catch (error) {
