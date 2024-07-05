@@ -19,6 +19,7 @@ import { userRouter } from "./routes/userRouter.js";
 import { friendRouter } from "./routes/friendRouter.js";
 import { partyRouter } from "./routes/partyRouter.js";
 import { searchRouter } from "./routes/searchRouter.js";
+import { recommendRouter } from "./routes/recommendRouter.js";
 
 dbConn();
 const app = express();
@@ -53,6 +54,7 @@ app.use("/api/v1/users/", userRouter); //user router
 app.use("/api/v1/friend/", friendRouter); //friend router
 app.use("/api/v1/party/", partyRouter);
 app.use("/api/v1/search/", searchRouter);
+app.use("/api/v1/recommend/", recommendRouter);
 //error handler
 app.use(handleErr);
 //server start

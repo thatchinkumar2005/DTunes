@@ -7,10 +7,27 @@ client = pymongo.MongoClient("mongodb://localhost:27017")
 db = client["Dtunes"]
 
 
-def getRecommended(user_id, page,limit):
+def getRecommended(user_id,limit):
 
-    popularSongs = db["songs"].find().sort("plays", pymongo.DESCENDING).skip((page - 1)*limit).limit(limit)
+    popularSongs = db["interactions"].aggregate([
+        {"$match" : {"intType" : "play"}},
+        {
+        "$group" : {
+            "_id" : "$song",
+            "totalCount" : {"$sum" : "$count"}
+        }
+        },
+        {
+            "$sort" : {"totalCount" : -1}
+        }, 
+        {
+            "$limit" : limit
+        }
+    ])
+    print(popularSongs)
     candidateSongs = [str(i["_id"]) for i in popularSongs]
+    
+    print(candidateSongs)
 
     interactions = db["interactions"].find({"user" : user_id});
     interactedSongs = []
