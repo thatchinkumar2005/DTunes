@@ -4,7 +4,7 @@ export default async function getSearchRecommendation(req, res) {
   try {
     const q = req.query.query;
     const resp = await SearchHistory.aggregate()
-      .match({ query: { $regex: q, $options: "i" } })
+      .match({ query: { $regex: q, $options: "i" }, resultsCount: { $ne: 0 } })
       .group({
         _id: "$query",
         count: { $sum: "$queryCount" },
