@@ -19,6 +19,7 @@ import getUserPartyController from "../controllers/Users/getUserPartyController.
 import getAuthUserFriendRequests from "../controllers/Users/authUser/getAuthUserFriendRequests.js";
 import getAuthUserFrndReln from "../controllers/Users/authUser/getAuthUserFrndRelnController.js";
 import getAuthUserSearchHistoryController from "../controllers/Users/authUser/getAuthUserSearchHistoryController.js";
+import promoteToArtistController from "../controllers/Users/authUser/promoteToArtistController.js";
 
 const userRouter = express.Router();
 
@@ -93,6 +94,13 @@ userRouter.put(
   verifyJwt,
   verifyRoles(2005, 2009),
   updateAuthUserController
+);
+
+userRouter.post(
+  "/authUser/promote",
+  verifyJwt,
+  verifyRoles(2005, 2009),
+  promoteToArtistController
 );
 
 //all users
