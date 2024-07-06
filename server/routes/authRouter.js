@@ -10,6 +10,7 @@ import {
 } from "../controllers/Auth/oauth/google/google.js";
 import verifyJwt from "../middleware/Auth/verifyJwt.js";
 import verifyRoles from "../middleware/Auth/verifyRoles.js";
+import dauthAuthoriseRedirect from "../controllers/Auth/oauth/Dauth/dauthAuthoriseRedirect.js";
 
 const authRouter = express.Router();
 
@@ -24,5 +25,7 @@ authRouter.get(
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 authRouter.get("/oauth/google/token", googleOauthTokenExchanger);
+
+authRouter.get("/oauth/dauth", dauthAuthoriseRedirect);
 
 export { authRouter };

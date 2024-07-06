@@ -51,7 +51,7 @@ export async function googleOauthTokenExchanger(req, res, next) {
 
       const roles = Object.values(user.roles).filter(Boolean);
       const accessToken = jwt.sign(
-        { username: user.username, id: foundUser._id, roles },
+        { username: user.username, id: user._id, roles },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: settings.accessTokenExpiry }
       );
