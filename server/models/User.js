@@ -58,6 +58,11 @@ const userSchema = new Schema({
       type: String,
     },
   },
+
+  currentPlaying: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Song",
+  },
 });
 
 export const User = mongoose.model("User", userSchema);

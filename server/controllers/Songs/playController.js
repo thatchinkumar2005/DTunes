@@ -1,15 +1,19 @@
 import mongoose from "mongoose";
 import { Interaction } from "../../models/InteractionData.js";
 import { Song } from "../../models/Song.js";
+import { User } from "../../models/User.js";
 
 export default async function playController(req, res) {
   try {
     const user = req.user;
+    const userDoc = await User.findOne({ _id: user.id });
     const { id } = req.params;
     if (!id) return res.status(400).json({ message: "id not given" });
     const song = await Song.findById(id);
     if (!song) return res.status(400).json({ message: "No such song" });
 
+    userDoc.currentPlaying = song._id;
+    await userDoc.save();
     const intData = await Interaction.findOne({
       song: song._id,
       user: user.id,

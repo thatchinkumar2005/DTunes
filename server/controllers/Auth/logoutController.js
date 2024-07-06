@@ -16,6 +16,7 @@ export default async function logoutController(req, res) {
       return res.status(204).end();
     }
 
+    foundUser.currentPlaying = null;
     foundUser.refreshToken = "";
     await foundUser.save();
     res.clearCookie("jwt", jwtTokenCookieOpt);
