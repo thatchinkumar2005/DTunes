@@ -65,6 +65,7 @@ export default async function newSongController(req, res) {
       "../../STORAGE/CoverArt/",
       `${song.id}.png`
     );
+    const url = `http://localhost:7777/serverStorage/Songs/${song._id}.mp3`;
 
     const coverImageUrl = `http://localhost:7777/serverStorage/CoverArt/${song._id}.png`;
 
@@ -82,8 +83,6 @@ export default async function newSongController(req, res) {
       .toFile(coverImagePath);
 
     await mp3Converter({ buffer: files.file[0].buffer, path: audioPath });
-
-    const url = `http://localhost:7777/serverStorage/Songs/${song._id}.mp3`;
 
     //responding with song doc
     return res.json(song);

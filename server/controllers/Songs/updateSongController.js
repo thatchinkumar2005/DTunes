@@ -52,6 +52,8 @@ export default async function updateSongController(req, res) {
     song.artists = artistsObjIds || song.artists;
     song.lyric = lyric || song.lyric;
 
+    await song.save();
+
     //update files if files are provided
     if (files) {
       if (files.file) {

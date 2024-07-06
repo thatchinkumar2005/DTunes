@@ -5,6 +5,16 @@ export default async function getAuthUserAnalyticsController(req, res) {
   try {
     const user = req.user;
 
+    const totalPlayed = await Interaction.aggregate()
+      .match({
+        user: mongoose.Types.ObjectId.createFromHexString(user.id),
+        intType: "play",
+      })
+      .group({
+        _id: "$user",
+        played: { $sum: "$count" },
+      });
+
     const dayWiseAnalysis = await Interaction.aggregate()
       .match({
         user: mongoose.Types.ObjectId.createFromHexString(user.id),
@@ -134,7 +144,12 @@ export default async function getAuthUserAnalyticsController(req, res) {
       },
     ]);
 
-    return res.json({ dayWiseAnalysis, artistAnalysis, genreAnalysis });
+    return res.json({
+      totalPlayed,
+      dayWiseAnalysis,
+      artistAnalysis,
+      genreAnalysis,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: error.message });
