@@ -11,6 +11,7 @@ import {
 import verifyJwt from "../middleware/Auth/verifyJwt.js";
 import verifyRoles from "../middleware/Auth/verifyRoles.js";
 import dauthAuthoriseRedirect from "../controllers/Auth/oauth/Dauth/dauthAuthoriseRedirect.js";
+import dauth from "../controllers/Auth/oauth/Dauth/dauth.js";
 
 const authRouter = express.Router();
 
@@ -27,5 +28,6 @@ authRouter.get(
 authRouter.get("/oauth/google/token", googleOauthTokenExchanger);
 
 authRouter.get("/oauth/dauth", dauthAuthoriseRedirect);
+authRouter.get("/oauth/dauth/token", dauth);
 
 export { authRouter };
