@@ -21,6 +21,7 @@ import getAuthUserFrndReln from "../controllers/Users/authUser/getAuthUserFrndRe
 import getAuthUserSearchHistoryController from "../controllers/Users/authUser/getAuthUserSearchHistoryController.js";
 import promoteToArtistController from "../controllers/Users/authUser/promoteToArtistController.js";
 import getAuthUserAnalyticsController from "../controllers/Users/authUser/getAuthUserAnalytics.js";
+import getAuthUserLikesPlaylistController from "../controllers/Users/authUser/getAuthUserLikesPlaylistController.js";
 
 const userRouter = express.Router();
 
@@ -52,6 +53,13 @@ userRouter.get(
   verifyJwt,
   verifyRoles(2005, 2009),
   getAuthUserPlaylistsController
+);
+
+userRouter.get(
+  "/authUser/likePlaylist",
+  verifyJwt,
+  verifyRoles(2005, 2009),
+  getAuthUserLikesPlaylistController
 );
 
 userRouter.get(

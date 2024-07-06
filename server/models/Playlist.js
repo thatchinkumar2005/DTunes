@@ -23,6 +23,10 @@ const playlistSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  like: {
+    type: Boolean,
+    default: false,
+  },
   releaseDate: {
     type: Date,
     default: Date.now,
