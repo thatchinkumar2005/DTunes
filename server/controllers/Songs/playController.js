@@ -30,6 +30,7 @@ export default async function playController(req, res) {
       return res.json(newIntData);
     } else {
       intData.count++;
+      intData.timeStamp = Date.now();
       await intData.save();
       return res.json(intData);
     }

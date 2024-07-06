@@ -23,6 +23,10 @@ const intDataSchema = new Schema({
   count: {
     type: Number,
   },
+  timeStamp: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 export const Interaction = mongoose.model("Interaction", intDataSchema);
