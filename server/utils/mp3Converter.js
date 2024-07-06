@@ -20,7 +20,7 @@ export default async function mp3Converter({ buffer, path }) {
         })
         .save(path);
     } catch (error) {
-      resolve(error);
+      reject(error);
     }
   });
 }

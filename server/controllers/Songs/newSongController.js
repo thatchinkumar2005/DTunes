@@ -66,6 +66,15 @@ export default async function newSongController(req, res) {
       `${song.id}.png`
     );
 
+    const coverImageUrl = `http://localhost:7777/serverStorage/CoverArt/${song._id}.png`;
+
+    //updating urls in song document
+    song.files.audio = url;
+    song.files.coverArt = coverImageUrl;
+    await song.save();
+
+    console.log(song);
+
     //sharp to resize and reformat
     await sharp(files.coverArt[0].buffer)
       .resize(1400, 1400)
@@ -76,14 +85,6 @@ export default async function newSongController(req, res) {
 
     const url = `http://localhost:7777/serverStorage/Songs/${song._id}.mp3`;
 
-    const coverImageUrl = `http://localhost:7777/serverStorage/CoverArt/${song._id}.png`;
-
-    //updating urls in song document
-    song.files.audio = url;
-    song.files.coverArt = coverImageUrl;
-    await song.save();
-
-    console.log(song);
     //responding with song doc
     return res.json(song);
   } catch (error) {

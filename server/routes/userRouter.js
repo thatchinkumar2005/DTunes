@@ -20,6 +20,7 @@ import getAuthUserFriendRequests from "../controllers/Users/authUser/getAuthUser
 import getAuthUserFrndReln from "../controllers/Users/authUser/getAuthUserFrndRelnController.js";
 import getAuthUserSearchHistoryController from "../controllers/Users/authUser/getAuthUserSearchHistoryController.js";
 import promoteToArtistController from "../controllers/Users/authUser/promoteToArtistController.js";
+import getAuthUserAnalyticsController from "../controllers/Users/authUser/getAuthUserAnalytics.js";
 
 const userRouter = express.Router();
 
@@ -86,6 +87,13 @@ userRouter.get(
   verifyJwt,
   verifyRoles(2005, 2009),
   getAuthUserSearchHistoryController
+);
+
+userRouter.get(
+  "/authUser/analysis",
+  verifyJwt,
+  verifyRoles(2005, 2009),
+  getAuthUserAnalyticsController
 );
 
 userRouter.put(
