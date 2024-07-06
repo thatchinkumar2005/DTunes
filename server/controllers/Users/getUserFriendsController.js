@@ -3,6 +3,9 @@ import { User } from "../../models/User.js";
 
 export default async function getAllUserFriendsController(req, res) {
   try {
+    const queries = req.query;
+    const page = queries?.page || 1;
+    const limit = queries?.limit || 10;
     const user = req.user;
     const { id } = req.params;
     if (!id) return res.status(400).json({ message: "No id given" });
@@ -22,7 +25,9 @@ export default async function getAllUserFriendsController(req, res) {
     const friends = await Friend.find(
       { friend: resUser._id, status: "accepted" },
       { friend: 1 }
-    );
+    )
+      .skip((page - 1) * limit)
+      .limit(limit);
     console.log(friends);
     const result = friends.map((lst) => {
       return lst.friend.find((i) => !i.equals(resUser._id));

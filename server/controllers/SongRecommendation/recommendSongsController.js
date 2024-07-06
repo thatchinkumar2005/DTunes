@@ -7,8 +7,8 @@ export default async function recommendSongsController(req, res) {
   try {
     const user = req.user;
     const userIdStr = user.id;
-    const queries = req.query;
 
+    const queries = req.query;
     const page = queries.page || 1;
     const limit = queries.limit || 10;
 

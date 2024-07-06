@@ -2,7 +2,7 @@ import { Playlist } from "../../models/Playlist.js";
 
 export default async function getAllPlaylistsController(req, res) {
   try {
-    const queries = req.queries;
+    const queries = req.query;
     const page = queries?.page || 1;
     const limit = queries?.limit || 10;
 

@@ -2,7 +2,7 @@ import { Song } from "../../models/Song.js";
 
 export default async function getSongsController(req, res) {
   try {
-    const queries = req.queries;
+    const queries = req.query;
     const page = queries?.page || 1;
     const limit = queries?.limit || 10;
 

@@ -3,7 +3,7 @@ import { User } from "../../models/User.js";
 export default async function getAllUsersController(req, res) {
   try {
     const user = req.user;
-    const queries = req.queries;
+    const queries = req.query;
     const page = queries?.page || 1;
     const limit = queries?.limit || 10;
 

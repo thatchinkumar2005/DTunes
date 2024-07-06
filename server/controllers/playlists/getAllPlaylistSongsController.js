@@ -4,6 +4,10 @@ import { Song } from "../../models/Song.js";
 
 export default async function getAllPlaylistSongsController(req, res) {
   try {
+    const queries = req.query;
+    const page = queries?.page || 1;
+    const limit = queries?.limit || 10;
+
     const user = req.user;
     const { id } = req.params;
 
@@ -19,7 +23,9 @@ export default async function getAllPlaylistSongsController(req, res) {
     const relns = await PlaylistSongJunction.find(
       { playlist: playlist._id },
       { song: 1 }
-    );
+    )
+      .skip((page - 1) * limit)
+      .limit(limit);
     const songs = [];
     for (let songId of relns) {
       const song = await Song.findOne({ _id: songId.song });
