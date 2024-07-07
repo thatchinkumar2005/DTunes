@@ -1,3 +1,3 @@
 export const settings = {
-  serverOrigin: "http://localhost:7777/api/v1/",
+  serverOrigin: "http://localhost:7777/api/v1",
 };

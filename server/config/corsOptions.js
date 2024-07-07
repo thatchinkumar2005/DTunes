@@ -1,4 +1,4 @@
-export const allowedOrigins = [];
+export const allowedOrigins = ["http://localhost:5173"];
 
 export const corsOpt = {
   origin: (origin, done) => {

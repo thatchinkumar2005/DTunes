@@ -5,7 +5,7 @@ import useRefresh from "../auth/useRefresh";
 import { useEffect } from "react";
 
 const axiosPrivate = axios.create({
-  url: settings.serverOrigin,
+  baseURL: settings.serverOrigin,
   withCredentials: true,
 });
 

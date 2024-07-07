@@ -7,4 +7,6 @@ export default function useLogin() {
   const { mutate: login, isPending: isLoggingIn } = useMutation({
     mutationFn: loginApi(axios),
   });
+
+  return { login, isLoggingIn };
 }

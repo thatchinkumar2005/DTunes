@@ -2,7 +2,7 @@ import axios_ from "axios";
 import { settings } from "../../../settings";
 
 const axios = axios_.create({
-  url: settings.serverOrigin,
+  baseURL: settings.serverOrigin,
   withCredentials: true,
 });
 

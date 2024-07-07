@@ -1,25 +1,79 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
-import { TbBrandAuth0 } from "react-icons/tb";
+import { TbBrandAuth0, TbError404Off } from "react-icons/tb";
+import useLogin from "../hooks/useLogin";
+import useAuth from "../../../hooks/auth/useAuth";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
+  const {
+    register,
+    formState: { errors },
+    watch,
+    handleSubmit,
+    setError,
+  } = useForm();
+
+  const { login, isLoggingIn } = useLogin();
+
+  const { setAuth } = useAuth();
+
+  const navigate = useNavigate();
+
+  function onSubmit(formData) {
+    login(formData, {
+      onSuccess: (respData) => {
+        setAuth(respData);
+        navigate("/");
+      },
+      onError: (error) => {
+        setError("root", {
+          message: error.message,
+        });
+        console.log(error);
+      },
+    });
+  }
   return (
-    <form className="h-[500px] w-[400px] bg-primary rounded-lg flex flex-col justify-start items-center">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="h-[500px] w-[400px] bg-primary rounded-lg flex flex-col justify-start items-center"
+    >
       <h1 className="text-3xl mt-2">Login</h1>
+      <h2 className="text-red-500 mt-5">
+        {errors?.root && errors.root?.message}
+      </h2>
       <div className="flex flex-col gap-2 mt-3">
-        <div className="text-red-500"></div>
+        <div className="text-red-500">
+          {errors?.username_email && errors.username_email?.message}
+        </div>
         <input
           className="w-[300px] h-10 bg-transparent border-2 border-secondary rounded-md outline-none focus:shadow-lg"
           type="text"
           placeholder="username or email"
+          {...register("username_email", {
+            required: {
+              value: true,
+              message: "Username or email should be provided",
+            },
+          })}
         />
       </div>
       <div className="flex flex-col gap-2 mt-3">
-        <div className="text-red-500"></div>
+        <div className="text-red-500">
+          {errors?.pswd && errors.pswd?.message}
+        </div>
         <input
           className="w-[300px] h-10 bg-transparent border-2 border-secondary rounded-md outline-none focus:shadow-lg"
-          type="text"
+          type="password"
           placeholder="password"
+          {...register("pswd", {
+            required: {
+              value: true,
+              message: "Password is required",
+            },
+          })}
         />
       </div>
 
