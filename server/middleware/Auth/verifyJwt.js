@@ -15,7 +15,7 @@ export default async function verifyJwt(req, res, next) {
 
     jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
       if (err) {
-        return res.status(409).json({ message: "invalid Access Token" });
+        return res.status(403).json({ message: "invalid Access Token" });
       }
       req.user = {};
       req.user.username = decoded.username;

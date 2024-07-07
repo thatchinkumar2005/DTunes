@@ -35,7 +35,12 @@ export default async function refreshController(req, res) {
           }
         );
 
-        return res.json({ accessToken, username: foundUser.username });
+        return res.json({
+          accessToken,
+          username: foundUser.username,
+          roles,
+          id: foundUser._id,
+        });
       }
     );
   } catch (error) {

@@ -56,6 +56,8 @@ export default async function loginController(req, res) {
       return res.json({
         accessToken,
         username: foundUser.username,
+        roles,
+        id: foundUser._id,
       });
     } else {
       return res.status(401).json({ message: "Wrong credentials" });

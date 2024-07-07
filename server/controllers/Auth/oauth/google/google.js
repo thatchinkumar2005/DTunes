@@ -69,6 +69,8 @@ export async function googleOauthTokenExchanger(req, res, next) {
       return res.json({
         accessToken,
         username: user.username,
+        id: user._id,
+        roles,
       });
     }
   )(req, res, next);
