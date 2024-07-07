@@ -6,7 +6,6 @@ import { Provider } from "react-redux";
 import "./index.css";
 import App from "./App.jsx";
 import AuthContextProvider from "./contexts/authContex.jsx";
-import store from "./redux/store.js";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,14 +18,12 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-      <QueryClientProvider queryClient={queryClient}>
-        <Provider store={store}>
-          <AuthContextProvider>
-            <Routes>
-              <Route path="*" element={<App />} />
-            </Routes>
-          </AuthContextProvider>
-        </Provider>
+      <QueryClientProvider client={queryClient}>
+        <AuthContextProvider>
+          <Routes>
+            <Route path="*" element={<App />} />
+          </Routes>
+        </AuthContextProvider>
       </QueryClientProvider>
     </BrowserRouter>
   </React.StrictMode>
