@@ -7,7 +7,7 @@ export default async function getAuthUserPlaylistsController(req, res) {
     const limit = queries?.limit || 10;
 
     const user = req.user;
-    const playlists = await Playlist.find({ artist: user.id })
+    const playlists = await Playlist.find({ artist: user.id, like: false })
       .skip((page - 1) * limit)
       .limit(limit);
     return res.json(playlists);

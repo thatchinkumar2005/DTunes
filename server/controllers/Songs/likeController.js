@@ -17,27 +17,6 @@ export default async function likeController(req, res) {
       like: true,
     });
 
-    if (!likePlaylist) {
-      const newLikePlaylist = await Playlist.create({
-        name: "Likes",
-        public: false,
-        like: true,
-        artist: user.id,
-      });
-
-      await PlaylistSongJunction.create({
-        song: song._id,
-        playlist: newLikePlaylist._id,
-        junction: [song._id, newLikePlaylist._id],
-      });
-    } else {
-      await PlaylistSongJunction.create({
-        song: song._id,
-        playlist: likePlaylist._id,
-        junction: [song._id, like._id],
-      });
-    }
-
     const like = await Like.findOne({
       user: user.id,
       song: song._id,
@@ -53,12 +32,21 @@ export default async function likeController(req, res) {
         song: song._id,
         intType: "like",
       });
+      await PlaylistSongJunction.create({
+        playlist: likePlaylist._id,
+        song: song._id,
+        junction: [likePlaylist._id, song._id],
+      });
       return res.json({
         liked: true,
       });
     } else {
       await Like.deleteOne({ _id: like._id });
       await Interaction.deleteOne({ user: user.id, song: song._id });
+      await PlaylistSongJunction.deleteOne({
+        playlist: likePlaylist._id,
+        song: song._id,
+      });
       return res.json({
         liked: false,
       });
