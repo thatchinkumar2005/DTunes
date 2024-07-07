@@ -8,8 +8,12 @@ export default async function registerController(req, res) {
   try {
     const { username, fname, lname, email, pswd, roles } = req.body;
     const duplicateUser = await User.findOne({ username }).exec();
+    const duplicateEmail = await User.findOne({ email });
     if (duplicateUser)
-      return res.status(409).json({ message: "User already exits" });
+      return res.status(409).json({ message: "Username already taken" });
+    if (duplicateEmail) {
+      return res.status(409).json({ message: "Email already taken" });
+    }
     const hash = await bcrypt.hash(pswd, 10);
 
     const newUser = await User.create({
