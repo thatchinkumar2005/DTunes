@@ -6,6 +6,8 @@ import NotFoundPage from "./pages/UX/NotFoundPage";
 import PrivateLayout from "./ui/layout/privateLayout";
 import HomePage from "./pages/UX/HomePage";
 import GoogleOauthCallBackPage from "./pages/authentication/GoogleOauthCallBackPage";
+import UauthorisedPage from "./pages/UX/UauthorisedPage";
+import RequireAuth from "./features/authentication/components/RequireAuth";
 
 export default function App() {
   return (
@@ -18,8 +20,11 @@ export default function App() {
         />
       </Route>
 
-      <Route element={<PrivateLayout />}>
-        <Route path="/" element={<HomePage />} />
+      <Route element={<RequireAuth allowedRoles={[2005, 2009]} />}>
+        <Route element={<PrivateLayout />}>
+          <Route path="/" element={<HomePage />} />
+        </Route>
+        <Route path="/unauthorized" element={<UauthorisedPage />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />

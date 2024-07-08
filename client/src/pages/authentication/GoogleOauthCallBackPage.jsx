@@ -9,7 +9,7 @@ export default function GoogleOauthCallBackPage() {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
 
-  const { login, isLoggingIn, isIdle } = useGoogleLogin();
+  const { login, isLoggingIn } = useGoogleLogin();
   const { setAuth } = useAuth();
   const navigate = useNavigate();
 

@@ -46,7 +46,6 @@ export async function googleOauthTokenExchanger(req, res, next) {
     "google",
     { session: false },
     async (err, user, info) => {
-      console.log(err);
       if (err) return res.status(500).json({ message: err.message });
       if (!user) return res.status(401).json({ message: "Oauth failed" });
 
