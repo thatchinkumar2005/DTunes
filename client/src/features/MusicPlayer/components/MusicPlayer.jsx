@@ -8,10 +8,18 @@ const MusicPlayer = () => {
   const audioRef = useRef(null);
   const isPlaying = useSelector((store) => store.musicPlayer.isPlaying);
   const activeSong = useSelector((store) => store.musicPlayer.activeSong);
+
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
   const dispatch = useDispatch();
+
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = Math.floor(timeInSeconds % 60);
+    const formattedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+    return `${minutes}:${formattedSeconds}`;
+  };
 
   useEffect(() => {
     setCurrentTime(0);
@@ -59,6 +67,7 @@ const MusicPlayer = () => {
           max={duration || 0}
           onChange={handleSeek}
         />
+        <div>{`${formatTime(currentTime)}/${formatTime(duration)}`}</div>
       </div>
     </div>
   );
