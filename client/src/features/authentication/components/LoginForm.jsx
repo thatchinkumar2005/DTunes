@@ -4,7 +4,8 @@ import { FcGoogle } from "react-icons/fc";
 import { TbBrandAuth0, TbError404Off } from "react-icons/tb";
 import useLogin from "../hooks/useLogin";
 import useAuth from "../../../hooks/auth/useAuth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { settings } from "../../../../settings";
 
 export default function LoginForm() {
   const {
@@ -77,7 +78,10 @@ export default function LoginForm() {
         />
       </div>
 
-      <button className="h-10 w-32 rounded bg-transparent border-2 mt-10 outline-none text-black hover:scale-105 duration-150 backdrop-blur-0 hover:bg-secondary hover:text-text">
+      <button
+        disabled={isLoggingIn}
+        className="h-10 w-32 rounded bg-transparent border-2 mt-10 outline-none text-black hover:scale-105 duration-150 backdrop-blur-0 hover:bg-secondary hover:text-text"
+      >
         Login
       </button>
 
@@ -88,9 +92,11 @@ export default function LoginForm() {
       <div>Or</div>
 
       <div className="w-full h-24 flex flex-col justify-center items-center gap-3">
-        <div className="w-52 flex gap-1">
+        <div className="w-52 flex gap-1 cursor-pointer">
           <FcGoogle size={30} />
-          continue with google
+          <Link to={`${settings.serverOrigin}/auth/oauth/google`}>
+            continue with google
+          </Link>
         </div>
         <div className="w-52 flex gap-1">
           <TbBrandAuth0 size={30} />
