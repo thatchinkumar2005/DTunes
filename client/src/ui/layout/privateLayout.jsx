@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import SideBar from "../components/SideBar";
-import MusicPlayer from "../../features/MusicPlayer/MusicPlayer";
+import MusicPlayer from "../../features/MusicPlayer/components/MusicPlayer";
 
 export default function PrivateLayout() {
   return (

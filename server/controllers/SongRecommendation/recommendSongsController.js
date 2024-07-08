@@ -48,13 +48,22 @@ export default async function recommendSongsController(req, res) {
     // }
     // return res.json(result);
 
-    const result = await getRecommendation({
+    const resp = await getRecommendation({
       userId: userIdStr,
       page,
       limit,
     });
 
-    return res.json(JSON.parse(result));
+    const result = JSON.parse(resp);
+
+    const songs = await Promise.all(
+      result.map(async (res) => {
+        const song = await Song.findById(res.song);
+        return song;
+      })
+    );
+
+    return res.json(songs);
 
     // return res.json();
   } catch (error) {
