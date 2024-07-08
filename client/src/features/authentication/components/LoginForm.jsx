@@ -87,7 +87,9 @@ export default function LoginForm() {
 
       <div className="mt-[30px] h-0.5 w-full bg-white" />
 
-      <div className="mt-2">I don't have an account. Sign up</div>
+      <div className="mt-2">
+        I don't have an account. <Link to={"/auth/register"}>register</Link>
+      </div>
 
       <div>Or</div>
 

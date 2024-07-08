@@ -8,11 +8,13 @@ import HomePage from "./pages/UX/HomePage";
 import GoogleOauthCallBackPage from "./pages/authentication/GoogleOauthCallBackPage";
 import UauthorisedPage from "./pages/UX/UauthorisedPage";
 import RequireAuth from "./features/authentication/components/RequireAuth";
+import RegisterPage from "./pages/authentication/RegisterPage";
 
 export default function App() {
   return (
     <Routes>
       <Route element={<PublicLayout />}>
+        <Route path="/auth/register" element={<RegisterPage />} />
         <Route path="/auth/login" element={<LoginPage />} />
         <Route
           path="/auth/oauth/google/callback"
