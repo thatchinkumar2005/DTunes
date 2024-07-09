@@ -20,13 +20,12 @@ export default function SongCard({ song }) {
   function handleLike() {
     like(song._id, {
       onSuccess: (data) => {
-        console.log(data);
+        queryClient.invalidateQueries(["getLiked", song._id]);
       },
       onError: (error) => {
         console.log(error);
       },
     });
-    queryClient.invalidateQueries(["getLiked"]);
   }
   return (
     <div className="h-14 w-full bg-secondary rounded-lg flex shrink-0 grow-0 justify-between items-center">

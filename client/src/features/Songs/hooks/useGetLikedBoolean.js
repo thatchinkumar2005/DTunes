@@ -7,6 +7,7 @@ export default function useGetLikedBoolean({ song }) {
   const { data: isLiked, isFetching: isGetting } = useQuery({
     queryKey: ["isLiked", song],
     queryFn: getLikedBoolean(axiosPrivate),
+    gcTime: 0,
   });
 
   return { isLiked, isGetting };
