@@ -6,6 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { play, setActiveSong } from "../../MusicPlayer/slices/songsSlice";
 import useLike from "../hooks/useLike";
 import useGetLikedBoolean from "../hooks/useGetLikedBoolean";
+import { Link } from "react-router-dom";
 
 export default function SongCard({ song }) {
   const dispatch = useDispatch();
@@ -35,9 +36,12 @@ export default function SongCard({ song }) {
           src={song?.files?.coverArt}
           alt="cover art"
         />
-        <div className="w-32 h-12 grow-0 flex justify-center items-center">
+        <Link
+          to={`/song/${song._id}`}
+          className="w-32 h-12 grow-0 flex justify-start items-center hover:underline"
+        >
           {song.name.length > 15 ? `${song.name.slice(0, 14)}...` : song.name}
-        </div>
+        </Link>
       </div>
       <div className="flex justify-center items-center gap-2 mr-2">
         <CiPlay1 onClick={handlePlayPause} className=" h-5 w-5" />

@@ -1,26 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SongCard from "../../Songs/components/SongCard";
+import useRecommendation from "../../Songs/hooks/useRecommendation";
+import Spinner from "../../../ui/components/Spinner";
+import { useInView } from "react-intersection-observer";
 
 export default function RecommendedSongsHomePage() {
+  const { recommendedSongs, fetchNextPage, hasNextPage, status, error } =
+    useRecommendation();
+
+  const { ref, inView } = useInView();
+  useEffect(() => {
+    console.log(recommendedSongs);
+  }, [recommendedSongs]);
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage]);
+
   return (
     <div className="h-48 bg-primary rounded-lg p-3 flex flex-col gap-3 overflow-scroll disable-scrollbars">
-      <SongCard
-        song={{
-          files: {
-            audio:
-              "http://localhost:7777/serverStorage/Songs/668937a10b547094c7b1af8b.mp3",
-            coverArt:
-              "http://localhost:7777/serverStorage/CoverArt/668937a10b547094c7b1af8b.png",
-          },
-          _id: "668937a10b547094c7b1af8b",
-          name: "Sweet Home Alabama Sweet Home Alabama",
-          artists: ["66893527709afbbe20927466"],
-          album: "668935a3709afbbe20927475",
-          genre: ["pop"],
-          releaseDate: "2024-07-06T12:25:05.806Z",
-          __v: 0,
-        }}
-      />
+      {status === "error" && <div>{error}</div>}
+      {status === "pending" && <Spinner />}
+
+      {status === "success" &&
+        recommendedSongs.pages.map((page) =>
+          page.data.map((song) => <SongCard key={song._id} song={song} />)
+        )}
+      <div ref={ref}>
+        {hasNextPage ? <Spinner className="h-5 w-5" /> : "That's it from us"}
+      </div>
     </div>
   );
 }
