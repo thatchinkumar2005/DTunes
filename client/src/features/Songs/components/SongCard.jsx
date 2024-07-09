@@ -2,15 +2,19 @@ import React, { act } from "react";
 import { CiPlay1 } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import { useQueryClient } from "@tanstack/react-query";
 import { play, setActiveSong } from "../../MusicPlayer/slices/songsSlice";
 import useLike from "../hooks/useLike";
+import useGetLikedBoolean from "../hooks/useGetLikedBoolean";
 
 export default function SongCard({ song }) {
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   function handlePlayPause() {
     dispatch(setActiveSong({ song }));
     dispatch(play());
   }
+  const { isLiked, isGetting } = useGetLikedBoolean({ song: song._id });
   const { like, isLiking } = useLike();
   function handleLike() {
     like(song._id, {
@@ -21,6 +25,7 @@ export default function SongCard({ song }) {
         console.log(error);
       },
     });
+    queryClient.invalidateQueries(["getLiked"]);
   }
   return (
     <div className="h-14 w-full bg-secondary rounded-lg flex shrink-0 grow-0 justify-between items-center">
@@ -37,7 +42,7 @@ export default function SongCard({ song }) {
       <div className="flex justify-center items-center gap-2 mr-2">
         <CiPlay1 onClick={handlePlayPause} className=" h-5 w-5" />
         <div onClick={handleLike}>
-          <FaHeart className="fill-blue-500 h-5 w-5" />
+          <FaHeart className={isLiked ? "fill-blue-500" : "fill-white"} />
         </div>
       </div>
     </div>

@@ -23,6 +23,7 @@ import promoteToArtistController from "../controllers/Users/authUser/promoteToAr
 import getAuthUserAnalyticsController from "../controllers/Users/authUser/getAuthUserAnalytics.js";
 import getAuthUserLikesPlaylistController from "../controllers/Users/authUser/getAuthUserLikesPlaylistController.js";
 import getAuthUserTotalPlays from "../controllers/Users/authUser/getAuthUserTotalPlays.js";
+import checkIfLikedController from "../controllers/Users/authUser/checkIfLikedController.js";
 
 const userRouter = express.Router();
 
@@ -61,6 +62,13 @@ userRouter.get(
   verifyJwt,
   verifyRoles(2005, 2009),
   getAuthUserLikesPlaylistController
+);
+
+userRouter.get(
+  "/authUser/checkLike/:id",
+  verifyJwt,
+  verifyRoles(2005, 2009),
+  checkIfLikedController
 );
 
 userRouter.get(

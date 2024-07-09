@@ -35,6 +35,7 @@ export default function useAxiosPrivate() {
           prevReq.sent = true;
           const respAuth = await refresh();
           setAuth(respAuth);
+          prevReq.headers.Authorization = `Bearer ${respAuth.accessToken}`;
           return axiosPrivate(prevReq);
         } else {
           return Promise.reject(error);

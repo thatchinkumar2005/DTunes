@@ -2,6 +2,7 @@ import useAxios from "../axios/useAxios";
 import useAuth from "./useAuth";
 
 export default function useRefresh() {
+  const { setAuth } = useAuth();
   return async () => {
     try {
       const axios = useAxios();
@@ -9,7 +10,7 @@ export default function useRefresh() {
         method: "GET",
         url: "auth/refresh",
       });
-      const { setAuth } = useAuth();
+
       setAuth(resp.data);
       return resp.data;
     } catch (error) {
