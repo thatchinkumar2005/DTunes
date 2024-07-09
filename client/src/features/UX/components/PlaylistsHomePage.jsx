@@ -36,7 +36,7 @@ export default function PlaylistsHomePage() {
             </div>
           ))
         )}
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center text-center">
         <div ref={ref}>
           {hasNextPage ? <Spinner /> : "That's all the playlists"}
         </div>
