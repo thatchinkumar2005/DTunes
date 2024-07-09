@@ -4,6 +4,7 @@ import LibraryHomePageCard from "../../features/UX/components/LibraryHomePageCar
 import RecommendedSongsHomePage from "../../features/UX/components/RecommendedSongsHomePage";
 import TopArtistsHomePage from "../../features/UX/components/TopArtistsHomePage";
 import AlbumsHomePage from "../../features/UX/components/AlbumsHomePage";
+import PlaylistsHomePage from "../../features/UX/components/PlaylistsHomePage";
 
 export default function HomePage() {
   return (
@@ -20,9 +21,13 @@ export default function HomePage() {
         <h1 className="text-xl">Top Artists</h1>
         <TopArtistsHomePage />
       </div>
-      <div className="px-6 grow-1 shrink-1">
+      <div className="px-6 grow-0 shrink-0">
         <h1 className="text-xl">Top Albums</h1>
         <AlbumsHomePage />
+      </div>
+      <div className="px-6 grow-0 shrink-0">
+        <h1 className="text-xl">Top Playlists</h1>
+        <PlaylistsHomePage />
       </div>
     </div>
   );

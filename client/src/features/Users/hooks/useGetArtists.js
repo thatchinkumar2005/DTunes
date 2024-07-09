@@ -17,7 +17,6 @@ export default function useGetArtists() {
     queryFn: getArtistsApi(axiosPrivate),
     getNextPageParam: (lastPage) => lastPage.nextPageParam,
     initialPageParam: 1,
-    gcTime: 0,
   });
 
   return {

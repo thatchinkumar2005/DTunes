@@ -1,29 +1,29 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import getAlbumsApi from "../../../services/albums/getAlbumsApi";
 import useAxiosPrivate from "../../../hooks/axios/useAxiosPrivate";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import getPlaylistsApi from "../../../services/playlists/getPlaylistsApi";
 
-export default function useGetAlbums() {
+export default function useGetPlaylist() {
   const axiosPrivate = useAxiosPrivate();
   const {
-    data: albums,
-    isPending,
-    isError,
-    isSuccess,
+    data: playlists,
     error,
+    isError,
+    isPending,
+    isSuccess,
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery({
-    queryKey: ["albums"],
-    queryFn: getAlbumsApi(axiosPrivate),
+    queryKey: ["playlists"],
+    queryFn: getPlaylistsApi(axiosPrivate),
     getNextPageParam: (lastPage) => lastPage.nextPageParam,
     initialPageParam: 1,
   });
   return {
-    albums,
-    isPending,
-    isError,
-    isSuccess,
+    playlists,
     error,
+    isError,
+    isPending,
+    isSuccess,
     fetchNextPage,
     hasNextPage,
   };

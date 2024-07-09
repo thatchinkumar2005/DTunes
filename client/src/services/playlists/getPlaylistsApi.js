@@ -1,11 +1,10 @@
-export default function getAlbumsApi(axiosPrivate) {
+export default function getPlaylistsApi(axiosPrivate) {
   return async ({ pageParam }) => {
     try {
       const resp = await axiosPrivate({
-        method: "GET",
-        url: `/albums?page=${pageParam}`,
+        method: "Get",
+        url: `/playlists?page=${pageParam}`,
       });
-      console.log(resp.data);
       const nextPageParam = resp.data.length === 0 ? null : pageParam + 1;
       return { data: resp.data, nextPageParam };
     } catch (error) {

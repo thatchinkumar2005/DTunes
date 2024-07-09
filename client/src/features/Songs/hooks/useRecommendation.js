@@ -15,7 +15,6 @@ export default function useRecommendation() {
     queryFn: getRecommendationsApi(axiosPrivate),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextPageParam,
-    gcTime: 0,
   });
 
   return { recommendedSongs, fetchNextPage, status, error, hasNextPage };
