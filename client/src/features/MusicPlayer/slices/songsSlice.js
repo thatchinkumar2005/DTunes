@@ -61,15 +61,23 @@ const musicPlayerSlice = createSlice({
   initialState,
   reducers: {
     setActiveSong: (state, action) => {
-      state.activeSong =
-        action?.payload?.song || state.currentSongs[state.currentIndex];
+      if (action?.payload?.song) {
+        console.log("yes");
+        state.activeSong = action.payload.song;
+        return;
+      } else {
+        state.activeSong = state.currentSongs[state.currentIndex];
+      }
     },
 
     playPause: (state, action) => {
-      if (!state.activeSong) {
-        state.activeSong = state.currentSongs[state.currentIndex];
-      }
+      // if (!state.activeSong) {
+      //   state.activeSong = state.currentSongs[state.currentIndex];
+      // }
       state.isPlaying = !state.isPlaying;
+    },
+    play: (state, action) => {
+      state.isPlaying = true;
     },
     nextSong: (state, payload) => {
       state.currentIndex =
@@ -90,5 +98,5 @@ const musicPlayerSlice = createSlice({
 
 const musicPlayerReducer = musicPlayerSlice.reducer;
 export default musicPlayerReducer;
-export const { setActiveSong, playPause, nextSong, prevSong } =
+export const { setActiveSong, playPause, nextSong, prevSong, play } =
   musicPlayerSlice.actions;

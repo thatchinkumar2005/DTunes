@@ -205,7 +205,7 @@ function Title() {
       </div>
 
       <Link
-        to={`/song/${activeSong._id}`}
+        to={`/song/${activeSong?._id}`}
         className="grow-0 shrink-0 hover:underline"
       >
         {activeSong?.name}
