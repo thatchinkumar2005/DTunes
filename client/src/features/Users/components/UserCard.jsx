@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function UserCard({ user }) {
   return (
-    <div className="w-24 h-28 rounded-lg bg-secondary md:w-32 md:h-36 flex flex-col items-center justify-start gap-2">
+    <div className="w-24 h-28 rounded-lg bg-secondary md:w-32 md:h-36 flex flex-col items-center justify-start gap-2 grow-0 shrink-0 ">
       {user?.files?.profilePic ? (
         <img className="h-16 rounded-full mt-1" src={user?.files?.profilePic} />
       ) : (

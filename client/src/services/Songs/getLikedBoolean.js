@@ -5,10 +5,8 @@ export default function getLikedBoolean(axiosPrivate) {
       const resp = await axiosPrivate({
         url: `/users/authUser/checkLike/${song}`,
       });
-      console.log(resp);
+
       return resp.data.liked;
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 }

@@ -9,9 +9,6 @@ export default function RecommendedSongsHomePage() {
     useRecommendation();
 
   const { ref, inView } = useInView();
-  useEffect(() => {
-    console.log(recommendedSongs);
-  }, [recommendedSongs]);
 
   useEffect(() => {
     if (inView) {
@@ -20,7 +17,7 @@ export default function RecommendedSongsHomePage() {
   }, [inView, fetchNextPage]);
 
   return (
-    <div className="h-48 bg-primary rounded-lg p-3 flex flex-col gap-3 overflow-scroll disable-scrollbars">
+    <div className="h-48 w-full bg-primary rounded-lg p-3 flex flex-col gap-3 overflow-scroll disable-scrollbars">
       {status === "error" && <div>{error}</div>}
       {status === "pending" && <Spinner />}
 
@@ -28,9 +25,7 @@ export default function RecommendedSongsHomePage() {
         recommendedSongs.pages.map((page) =>
           page.data.map((song) => <SongCard key={song._id} song={song} />)
         )}
-      <div ref={ref}>
-        {hasNextPage ? <Spinner className="h-5 w-5" /> : "That's it from us"}
-      </div>
+      <div ref={ref}>{hasNextPage ? <Spinner /> : "That's it from us"}</div>
     </div>
   );
 }
