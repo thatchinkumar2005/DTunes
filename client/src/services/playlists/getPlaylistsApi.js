@@ -2,7 +2,7 @@ export default function getPlaylistsApi(axiosPrivate) {
   return async ({ pageParam }) => {
     try {
       const resp = await axiosPrivate({
-        method: "Get",
+        method: "GET",
         url: `/playlists?page=${pageParam}`,
       });
       const nextPageParam = resp.data.length === 0 ? null : pageParam + 1;

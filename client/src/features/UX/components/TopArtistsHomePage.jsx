@@ -29,7 +29,7 @@ export default function TopArtistsHomePage() {
       {isSuccess &&
         artists.pages.map((page) =>
           page.data.map((artist) => (
-            <div className="flex justify-center items-center">
+            <div key={artist._id} className="flex justify-center items-center">
               <UserCard key={artist._id} user={artist} />
             </div>
           ))

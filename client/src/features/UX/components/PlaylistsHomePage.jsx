@@ -18,7 +18,6 @@ export default function PlaylistsHomePage() {
 
   useEffect(() => {
     if (inView) {
-      console.log("fetch Playlists");
       fetchNextPage();
     }
   }, [inView, fetchNextPage]);
@@ -29,7 +28,10 @@ export default function PlaylistsHomePage() {
       {isSuccess &&
         playlists.pages.map((page) =>
           page.data.map((playlist) => (
-            <div className="flex justify-center items-center">
+            <div
+              key={playlist._id}
+              className="flex justify-center items-center"
+            >
               <PlaylistCard key={playlist._id} playlist={playlist} />
             </div>
           ))

@@ -1,6 +1,6 @@
+import useAxiosPrivate from "../../../hooks/axios/useAxiosPrivate";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import getAlbumsApi from "../../../services/albums/getAlbumsApi";
-import useAxiosPrivate from "../../../hooks/axios/useAxiosPrivate";
 
 export default function useGetAlbums() {
   const axiosPrivate = useAxiosPrivate();
@@ -15,13 +15,14 @@ export default function useGetAlbums() {
   } = useInfiniteQuery({
     queryKey: ["albums"],
     queryFn: getAlbumsApi(axiosPrivate),
-    getNextPageParam: (lastPage) => lastPage.nextPageParam,
     initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.nextPageParam,
   });
+
   return {
     albums,
-    isPending,
     isError,
+    isPending,
     isSuccess,
     error,
     fetchNextPage,
