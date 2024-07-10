@@ -33,11 +33,17 @@ const MusicPlayer = () => {
   const dispatch = useDispatch();
   const isPlaying = useSelector((store) => store.musicPlayer.isPlaying);
   const activeSong = useSelector((store) => store.musicPlayer.activeSong);
+  const currentCluster = useSelector(
+    (store) => store.musicPlayer.currentCluster
+  );
+  const currentClusterName = useSelector(
+    (store) => store.musicPlayer.currentClusterName
+  );
 
   const { recommendedSongs, status } = useRecommendation();
   useEffect(() => {
     if (status === "success")
-      dispatch(setCurrentSongs(recommendedSongs.pages[0].data));
+      dispatch(setCurrentSongs({ songs: recommendedSongs.pages[0].data }));
   }, [dispatch, status]);
 
   return (
@@ -53,12 +59,14 @@ const MusicPlayer = () => {
         isPlaying,
         activeSong,
         dispatch,
+        currentCluster,
+        currentClusterName,
       }}
     >
       <div className="bg-bg p-1 flex justify-center items-center overflow-hidden">
-        <div className="flex bg-gray-600 flex-col w-full h-full rounded-lg ">
+        <div className="flex bg-gray-600 flex-col justify-between w-full h-full rounded-lg ">
           <Player />
-          <div className="w-full flex flex-row justify-between items-center">
+          <div className="w-full flex flex-row justify-between items-center p-1 grow-0">
             <Title />
 
             <div className="flex flex-row gap-2 justify-center items-center mr-6 md:mr-32">
@@ -148,7 +156,7 @@ function SeekBar() {
   }
   return (
     <input
-      className="w-full h-1 accent-red-500 mt-2 md:mt-4"
+      className="w-full h-1 accent-red-500 mb-1 "
       type="range"
       value={currentTime}
       max={duration || 0}
@@ -208,23 +216,29 @@ function VolumeBar() {
 }
 
 function Title() {
-  const { activeSong } = useContext(MusicPlayerContext);
+  const { activeSong, currentCluster, currentClusterName } =
+    useContext(MusicPlayerContext);
 
   return (
     <div className="flex flex-row gap-2 w-[140px] overflow-hidden ml-2 justify-start items-center md:w-[300px]">
       <div className="grow-0 shrink-0">
-        <img
-          className="h-12 rounded-lg mt-1.5"
-          src={activeSong?.files?.coverArt}
-        />
+        <img className="h-12 rounded-lg " src={activeSong?.files?.coverArt} />
       </div>
-
-      <Link
-        to={`/song/${activeSong?._id}`}
-        className="grow-0 shrink-0 hover:underline"
-      >
-        {activeSong?.name}
-      </Link>
+      <div className="flex flex-col">
+        <Link
+          to={`/song/${activeSong?._id}`}
+          className="grow-0 shrink-0 hover:underline"
+        >
+          {activeSong?.name.length > 14
+            ? `${activeSong?.name.slice(0, 13)}...`
+            : activeSong?.name}
+        </Link>
+        <Link className="text-xs" to={currentCluster}>
+          {`from ${currentClusterName}`.length > 14
+            ? `from ${currentClusterName}`.slice(0, 13) + "..."
+            : `from ${currentClusterName}`}
+        </Link>
+      </div>
     </div>
   );
 }

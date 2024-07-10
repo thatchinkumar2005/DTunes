@@ -2,8 +2,8 @@ import { createSlice, current } from "@reduxjs/toolkit";
 
 const initialState = {
   currentSongs: [],
-  currentPlaylist: {},
-  playedSongs: [],
+  currentCluster: "/recommend",
+  currentClusterName: "Recommendation",
   currentIndex: 0,
   shuffle: false,
   activeSong: null,
@@ -49,7 +49,10 @@ const musicPlayerSlice = createSlice({
       state.activeSong = state.currentSongs[state.currentIndex];
     },
     setCurrentSongs: (state, action) => {
-      state.currentSongs = action.payload;
+      state.currentSongs = action.payload.songs;
+      state.currentCluster = action.payload?.clusterId || "/recommended";
+      state.currentClusterName =
+        action.payload?.clusterName || "Recommendation";
       state.currentIndex = 0;
       state.activeSong = state.currentSongs[state.currentIndex];
     },

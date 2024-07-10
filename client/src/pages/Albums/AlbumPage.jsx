@@ -9,6 +9,11 @@ import useGetAlbum from "../../features/Albums/hooks/useGetAlbum";
 import useGetAlbumSongs from "../../features/Albums/hooks/useGetAlbumSongs";
 import { useInView } from "react-intersection-observer";
 import SongCard from "../../features/Songs/components/SongCard";
+import { useDispatch } from "react-redux";
+import {
+  play,
+  setCurrentSongs,
+} from "../../features/MusicPlayer/slices/songsSlice";
 
 export default function AlbumPage() {
   const { id } = useParams();
@@ -45,6 +50,21 @@ export default function AlbumPage() {
     }
   }, [inView, fetchNextPage]);
 
+  const dispatch = useDispatch();
+  function handlePlayPause() {
+    if (isPending) return;
+    if (isSuccess && isFetchedAlbum) {
+      dispatch(
+        setCurrentSongs({
+          songs: albumSongs.pages[0].data,
+          clusterId: `/album/${id}`,
+          clusterName: album?.name,
+        })
+      );
+      dispatch(play());
+    }
+  }
+
   return (
     <div className="flex flex-col overflow-scroll disable-scrollbars h-full w-full">
       {(isGettingArtist || isGettingAlbum) && <Spinner />}
@@ -63,7 +83,12 @@ export default function AlbumPage() {
                 {artist.fname}
               </span>
               <div className="mt-7 flex justify-start gap-10 items-center">
-                Album
+                <div className="bg-primary rounded-full h-12 w-12 flex justify-center items-center  hover:bg-slate-500">
+                  <CiPlay1
+                    onClick={handlePlayPause}
+                    className="h-10 w-10 ml-2"
+                  />
+                </div>
               </div>
             </div>
           </div>

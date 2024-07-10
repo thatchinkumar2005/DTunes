@@ -4,7 +4,7 @@ export default function getPlaylistSongs(axiosPrivate) {
       const [_, id] = queryKey;
       const resp = await axiosPrivate({
         method: "GET",
-        url: `/playlists/songs/${id}?page=${pageParam} `,
+        url: `/playlists/songs/${id}?page=${pageParam}&limit=100 `,
       });
       console.log(resp);
       const nextPageParam = resp.data.length === 0 ? null : pageParam + 1;

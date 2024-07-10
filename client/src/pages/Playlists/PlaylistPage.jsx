@@ -10,6 +10,12 @@ import SongCard from "../../features/Songs/components/SongCard";
 
 import useGetPlaylistSongs from "../../features/Playlists/hooks/useGetPlaylistSongs";
 import useGetPlaylist from "../../features/Playlists/hooks/useGetPlaylist";
+import { CiPlay1 } from "react-icons/ci";
+import { useDispatch } from "react-redux";
+import {
+  play,
+  setCurrentSongs,
+} from "../../features/MusicPlayer/slices/songsSlice";
 
 export default function PlaylistPage() {
   const { id } = useParams();
@@ -46,6 +52,21 @@ export default function PlaylistPage() {
     }
   }, [inView, fetchNextPage]);
 
+  const dispatch = useDispatch();
+  function handlePlayPause() {
+    if (isPending) return;
+    if (isSuccess && isFetchedPlaylist) {
+      dispatch(
+        setCurrentSongs({
+          songs: playlistSongs.pages[0].data,
+          clusterId: `/playlist/${id}`,
+          clusterName: playlist?.name,
+        })
+      );
+      dispatch(play());
+    }
+  }
+
   return (
     <div className="flex flex-col overflow-scroll disable-scrollbars h-full w-full">
       {(isGettingArtist || isGettingPlaylist) && <Spinner />}
@@ -63,9 +84,16 @@ export default function PlaylistPage() {
               <span className="text-sm self-start text-gray-500">
                 {artist.fname}
               </span>
+
               <div className="mt-7 flex justify-start gap-10 items-center">
-                Playlist
+                <div className="bg-primary rounded-full h-12 w-12 flex justify-center items-center  hover:bg-slate-500">
+                  <CiPlay1
+                    onClick={handlePlayPause}
+                    className="h-10 w-10 ml-2"
+                  />
+                </div>
               </div>
+              <span>Playlist</span>
             </div>
           </div>
 
