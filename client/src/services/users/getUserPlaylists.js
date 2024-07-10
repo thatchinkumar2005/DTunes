@@ -1,10 +1,10 @@
-export default function getArtistAlbums(axiosPrivate) {
+export default function getUserPlaylists(axiosPrivate) {
   return async ({ pageParam, queryKey }) => {
     try {
       const [_, id] = queryKey;
       const resp = await axiosPrivate({
         method: "GET",
-        url: `/users/albums/${id}?page=${pageParam}`,
+        url: `/users/playlists/${id}?page=${pageParam}`,
       });
       const nextPageParam = resp.data.length === 0 ? null : pageParam + 1;
       return { data: resp.data, nextPageParam };

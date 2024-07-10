@@ -6,6 +6,7 @@ import Spinner from "../../ui/components/Spinner";
 import { FaRegUserCircle } from "react-icons/fa";
 import UserPageSongs from "../../features/Users/components/UserPageSongs";
 import UserPageAlbums from "../../features/Users/components/UserPageAlbums";
+import UserPagePlaylists from "../../features/Users/components/UserPagePlaylists";
 
 export default function UserPage() {
   const { id } = useParams();
@@ -69,6 +70,7 @@ export default function UserPage() {
 
           <div className="px-6 grow-0 shrink-0">
             <h2>Playlists</h2>
+            <UserPagePlaylists id={id} />
           </div>
         </>
       )}
