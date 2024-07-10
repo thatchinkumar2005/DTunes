@@ -10,6 +10,7 @@ import UauthorisedPage from "./pages/UX/UauthorisedPage";
 import RequireAuth from "./features/authentication/components/RequireAuth";
 import RegisterPage from "./pages/authentication/RegisterPage";
 import SongPage from "./pages/Songs/SongPage";
+import AlbumPage from "./pages/Albums/AlbumPage";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
         <Route element={<PrivateLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/song/:id" element={<SongPage />} />
+          <Route path="/album/:id" element={<AlbumPage />} />
           <Route path="/unauthorized" element={<UauthorisedPage />} />
         </Route>
       </Route>

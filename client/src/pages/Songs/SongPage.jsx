@@ -59,7 +59,7 @@ export default function SongPage() {
       {isFetchedArtist && isFetchedSong && (
         <>
           <div className="flex justify-start w-full items-center p-3 h-52 border-b-2 border-primary">
-            <div className="shrink-0 flex flex-col mb-9">
+            <div className="shrink-0 flex flex-col">
               <img className="h-36 rounded-lg" src={song.files.coverArt} />
             </div>
             <div className=" h-full p-4 flex flex-col gap-2 justify-start grow shrink-0">
@@ -86,8 +86,8 @@ export default function SongPage() {
             </div>
           </div>
 
-          <div className="flex justify-center grow flex-col items-center p-3">
-            <p className="w-[80%] h-96 rounded-lg grow overflow-scroll bg-secondary text-2xl p-3 whitespace-pre-line disable-scrollbars">
+          <div className="flex justify-center grow flex-col items-center overflow-scroll p-3 disable-scrollbars">
+            <p className="w-[80%] rounded-lg grow overflow-scroll disable-scrollbars bg-secondary text-2xl p-3 whitespace-pre-line disable-scrollbars">
               {song.lyric ? song.lyric : "No Lyric Found"}
             </p>
           </div>
