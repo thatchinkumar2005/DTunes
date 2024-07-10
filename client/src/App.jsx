@@ -9,6 +9,7 @@ import GoogleOauthCallBackPage from "./pages/authentication/GoogleOauthCallBackP
 import UauthorisedPage from "./pages/UX/UauthorisedPage";
 import RequireAuth from "./features/authentication/components/RequireAuth";
 import RegisterPage from "./pages/authentication/RegisterPage";
+import SongPage from "./pages/Songs/SongPage";
 
 export default function App() {
   return (
@@ -25,8 +26,9 @@ export default function App() {
       <Route element={<RequireAuth allowedRoles={[2005, 2009]} />}>
         <Route element={<PrivateLayout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/song/:id" element={<SongPage />} />
+          <Route path="/unauthorized" element={<UauthorisedPage />} />
         </Route>
-        <Route path="/unauthorized" element={<UauthorisedPage />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />

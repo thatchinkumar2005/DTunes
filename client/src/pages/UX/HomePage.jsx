@@ -18,15 +18,15 @@ export default function HomePage() {
         <RecommendedSongsHomePage />
       </div>
       <div className="px-6 grow-0 shrink-0">
-        <h1 className="text-xl">Top Artists</h1>
+        <h1 className="text-xl">Artists</h1>
         <TopArtistsHomePage />
       </div>
       <div className="px-6 grow-0 shrink-0">
-        <h1 className="text-xl">Top Albums</h1>
+        <h1 className="text-xl">Albums</h1>
         <AlbumsHomePage />
       </div>
       <div className="px-6 grow-0 shrink-0">
-        <h1 className="text-xl">Top Playlists</h1>
+        <h1 className="text-xl">Playlists</h1>
         <PlaylistsHomePage />
       </div>
     </div>
