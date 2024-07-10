@@ -1,30 +1,13 @@
+import { useQuery } from "@tanstack/react-query";
 import useAxiosPrivate from "../../../hooks/axios/useAxiosPrivate";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import getPlaylistsApi from "../../../services/playlists/getPlaylistsApi";
+import getPlaylistApi from "../../../services/playlists/getPlaylistApi";
 
-export default function useGetPlaylist() {
+export default function useGetPlaylist({ id }) {
   const axiosPrivate = useAxiosPrivate();
-  const {
-    data: playlists,
-    error,
-    isError,
-    isPending,
-    isSuccess,
-    fetchNextPage,
-    hasNextPage,
-  } = useInfiniteQuery({
-    queryKey: ["playlists"],
-    queryFn: getPlaylistsApi(axiosPrivate),
-    getNextPageParam: (lastPage) => lastPage.nextPageParam,
-    initialPageParam: 1,
+  const { data, isFetching, isSuccess } = useQuery({
+    queryKey: ["playlist", id],
+    queryFn: getPlaylistApi(axiosPrivate),
+    enabled: !!id,
   });
-  return {
-    playlists,
-    error,
-    isError,
-    isPending,
-    isSuccess,
-    fetchNextPage,
-    hasNextPage,
-  };
+  return { data, isFetching, isSuccess };
 }

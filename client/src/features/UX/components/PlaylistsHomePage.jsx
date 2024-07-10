@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import useGetPlaylist from "../../Playlists/hooks/useGetPlaylist";
+import useGetPlaylists from "../../Playlists/hooks/useGetPlaylists";
 import { useInView } from "react-intersection-observer";
 import Spinner from "../../../ui/components/Spinner";
 import PlaylistCard from "../../Playlists/components/PlaylistCard";
@@ -13,7 +13,7 @@ export default function PlaylistsHomePage() {
     isSuccess,
     fetchNextPage,
     hasNextPage,
-  } = useGetPlaylist();
+  } = useGetPlaylists();
   const { inView, ref } = useInView();
 
   useEffect(() => {

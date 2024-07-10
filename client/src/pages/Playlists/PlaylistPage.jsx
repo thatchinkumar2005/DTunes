@@ -2,40 +2,41 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import Spinner from "../../ui/components/Spinner";
-import { CiPlay1 } from "react-icons/ci";
 
 import useGetArtist from "../../features/Users/hooks/useGetArtist";
-import useGetAlbum from "../../features/Albums/hooks/useGetAlbum";
-import useGetAlbumSongs from "../../features/Albums/hooks/useGetAlbumSongs";
+
 import { useInView } from "react-intersection-observer";
 import SongCard from "../../features/Songs/components/SongCard";
 
-export default function AlbumPage() {
+import useGetPlaylistSongs from "../../features/Playlists/hooks/useGetPlaylistSongs";
+import useGetPlaylist from "../../features/Playlists/hooks/useGetPlaylist";
+
+export default function PlaylistPage() {
   const { id } = useParams();
 
   const {
-    data: album,
-    isFetching: isGettingAlbum,
-    isSuccess: isFetchedAlbum,
-  } = useGetAlbum({ id });
+    data: playlist,
+    isFetching: isGettingPlaylist,
+    isSuccess: isFetchedPlaylist,
+  } = useGetPlaylist({ id });
 
   const {
     artist,
     isFetching: isGettingArtist,
     isSuccess: isFetchedArtist,
   } = useGetArtist({
-    id: album?.artist,
+    id: playlist?.artist,
   });
 
   const {
-    albumSongs,
+    playlistSongs,
     error,
     isError,
     isPending,
     isSuccess,
     fetchNextPage,
     hasNextPage,
-  } = useGetAlbumSongs({ id });
+  } = useGetPlaylistSongs({ id });
 
   const { inView, ref } = useInView();
 
@@ -47,23 +48,23 @@ export default function AlbumPage() {
 
   return (
     <div className="flex flex-col overflow-scroll disable-scrollbars h-full w-full">
-      {(isGettingArtist || isGettingAlbum) && <Spinner />}
-      {isFetchedArtist && isFetchedAlbum && (
+      {(isGettingArtist || isGettingPlaylist) && <Spinner />}
+      {isFetchedArtist && isFetchedPlaylist && (
         <>
           <div className="flex justify-start w-full items-center p-2 h-52 border-b-2 border-primary">
             <div className="shrink-0 flex flex-col self-center">
               <img
                 className="h-36 rounded-lg mb-3"
-                src={album.files.coverArt}
+                src={playlist.files.coverArt}
               />
             </div>
             <div className=" h-full p-4 flex flex-col gap-2 justify-start grow shrink-0">
-              <h1 className="text-3xl ">{album.name}</h1>
+              <h1 className="text-3xl ">{playlist.name}</h1>
               <span className="text-sm self-start text-gray-500">
                 {artist.fname}
               </span>
               <div className="mt-7 flex justify-start gap-10 items-center">
-                Album
+                Playlist
               </div>
             </div>
           </div>
@@ -73,7 +74,7 @@ export default function AlbumPage() {
               {isError && <div>{error}</div>}
               {isPending && <Spinner />}
               {isSuccess &&
-                albumSongs.pages.map((page) =>
+                playlistSongs.pages.map((page) =>
                   page.data.map((song) => (
                     <SongCard key={song._id} song={song} />
                   ))

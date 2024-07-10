@@ -11,6 +11,7 @@ import RequireAuth from "./features/authentication/components/RequireAuth";
 import RegisterPage from "./pages/authentication/RegisterPage";
 import SongPage from "./pages/Songs/SongPage";
 import AlbumPage from "./pages/Albums/AlbumPage";
+import PlaylistPage from "./pages/Playlists/PlaylistPage";
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/song/:id" element={<SongPage />} />
           <Route path="/album/:id" element={<AlbumPage />} />
+          <Route path="/playlist/:id" element={<PlaylistPage />} />
           <Route path="/unauthorized" element={<UauthorisedPage />} />
         </Route>
       </Route>
