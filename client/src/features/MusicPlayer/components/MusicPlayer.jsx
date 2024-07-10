@@ -9,15 +9,19 @@ import { CiPlay1 } from "react-icons/ci";
 import { useSelector, useDispatch } from "react-redux";
 import {
   nextSong,
+  play,
   playPause,
   prevSong,
   setActiveSong,
+  setCurrentSongs,
 } from "../slices/songsSlice";
 import { CiPause1 } from "react-icons/ci";
 import { CiVolumeHigh } from "react-icons/ci";
 import { MdNavigateNext } from "react-icons/md";
 import { MdNavigateBefore } from "react-icons/md";
 import { Link } from "react-router-dom";
+import usePlaySong from "../../Songs/hooks/usePlaySong";
+import useRecommendation from "../../Songs/hooks/useRecommendation";
 
 const MusicPlayerContext = createContext();
 const MusicPlayer = () => {
@@ -30,9 +34,11 @@ const MusicPlayer = () => {
   const isPlaying = useSelector((store) => store.musicPlayer.isPlaying);
   const activeSong = useSelector((store) => store.musicPlayer.activeSong);
 
+  const { recommendedSongs, status } = useRecommendation();
   useEffect(() => {
-    dispatch(setActiveSong());
-  }, [dispatch]);
+    if (status === "success")
+      dispatch(setCurrentSongs(recommendedSongs.pages[0].data));
+  }, [dispatch, status]);
 
   return (
     <MusicPlayerContext.Provider
@@ -84,10 +90,18 @@ function Player() {
     dispatch,
   } = useContext(MusicPlayerContext);
 
+  const { play: playApi } = usePlaySong();
+
   useEffect(() => {
     setCurrentTime(0);
     setDuration(0);
     audioRef.current.currentTime = 0;
+    if (activeSong)
+      playApi(activeSong._id, {
+        onSuccess: (data) => {
+          console.log(data);
+        },
+      });
   }, [activeSong]);
 
   useEffect(() => {
@@ -98,7 +112,8 @@ function Player() {
         audioRef.current.pause();
       }
     }
-  });
+    console.log("hello");
+  }, [isPlaying, activeSong]);
 
   useEffect(() => {
     audioRef.current.volume = vol;
