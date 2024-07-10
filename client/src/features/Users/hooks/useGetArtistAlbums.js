@@ -1,11 +1,11 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import useAxiosPrivate from "../../../hooks/axios/useAxiosPrivate";
-import getArtistSongs from "../../../services/users/getArtistSongs";
+import getArtistAlbums from "../../../services/users/getArtistAlbums";
 
-export default function useGetArtistSongs({ id }) {
+export default function useGetArtistAlbums({ id }) {
   const axiosPrivate = useAxiosPrivate();
   const {
-    data: artistSongs,
+    data: userAlbums,
     error,
     isError,
     isPending,
@@ -13,15 +13,14 @@ export default function useGetArtistSongs({ id }) {
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    queryKey: ["userSongs", id],
-    queryFn: getArtistSongs(axiosPrivate),
+    queryKey: ["userAlbums", id],
+    queryFn: getArtistAlbums(axiosPrivate),
     getNextPageParam: (lastPage) => lastPage.nextPageParam,
     initialPageParam: 1,
-    enabled: !!id,
   });
 
   return {
-    artistSongs,
+    userAlbums,
     error,
     isError,
     isPending,
