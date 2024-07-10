@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import useGetUser from "../../features/Users/hooks/useGetUser";
 import Spinner from "../../ui/components/Spinner";
 import { FaRegUserCircle } from "react-icons/fa";
+import UserPageSongs from "../../features/Users/components/UserPageSongs";
 
 export default function UserPage() {
   const { id } = useParams();
@@ -27,7 +28,7 @@ export default function UserPage() {
   }, [user, isFethchedUser, setArtist]);
 
   return (
-    <div className="h-full w-full disable-scrollbars overflow-scroll flex flex-col gap-10 p-2">
+    <div className="h-full w-full disable-scrollbars overflow-scroll flex flex-col gap-10">
       {isGettingUser && <Spinner />}
       {isFethchedUser && (
         <>
@@ -45,7 +46,7 @@ export default function UserPage() {
               <div className="text-3xl">{user.fname + " " + user.lname}</div>
               <div className="flex justify-between items-center gap-20 ml-1">
                 {artist && <span className="text-lg">Plays:</span>}{" "}
-                <button className="p-1 w-20 h-10 bg-primary rounded-lg">
+                <button className="p-1 w-20 h-10 bg-secondary rounded-lg hover:bg-gray-500 duration-150">
                   request
                 </button>
               </div>
@@ -54,17 +55,18 @@ export default function UserPage() {
 
           {artist && (
             <>
-              <div className="h-48 md:h-64 w-full bg-primary rounded-lg p-3 disable-scrollbars grid grid-cols-3 md:grid-cols-4 gap-y-2 overflow-scroll shrink-0 grow-0">
-                SONGS
+              <div className="px-6 grow-0 shrink-0">
+                <h2>Releases</h2>
+                <UserPageSongs id={id} />
               </div>
-              <div className="h-48 md:h-64 w-full bg-primary rounded-lg p-3 disable-scrollbars grid grid-cols-3 md:grid-cols-4 gap-y-2 overflow-scroll shrink-0 grow-0">
-                ALBUMS
+              <div className="px-6 grow-0 shrink-0">
+                <h2>Albums</h2>
               </div>
             </>
           )}
 
-          <div className="h-48 md:h-64 w-full bg-primary rounded-lg p-3 disable-scrollbars grid grid-cols-3 md:grid-cols-4 gap-y-2 overflow-scroll shrink-0 grow-0">
-            PLAYLISTS
+          <div className="px-6 grow-0 shrink-0">
+            <h2>Playlists</h2>
           </div>
         </>
       )}
