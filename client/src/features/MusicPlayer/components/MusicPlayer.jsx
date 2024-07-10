@@ -220,7 +220,7 @@ function Title() {
     useContext(MusicPlayerContext);
 
   return (
-    <div className="flex flex-row gap-2 w-[140px] overflow-hidden ml-2 justify-start items-center md:w-[300px]">
+    <div className="flex flex-row gap-2 w-[150px] overflow-hidden ml-2 justify-start items-center md:w-[300px]">
       <div className="grow-0 shrink-0">
         <img className="h-12 rounded-lg " src={activeSong?.files?.coverArt} />
       </div>
@@ -233,7 +233,7 @@ function Title() {
             ? `${activeSong?.name.slice(0, 13)}...`
             : activeSong?.name}
         </Link>
-        <Link className="text-xs" to={currentCluster}>
+        <Link className="text-xs hover:underline" to={currentCluster}>
           {`from ${currentClusterName}`.length > 14
             ? `from ${currentClusterName}`.slice(0, 13) + "..."
             : `from ${currentClusterName}`}

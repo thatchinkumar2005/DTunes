@@ -12,6 +12,7 @@ import RegisterPage from "./pages/authentication/RegisterPage";
 import SongPage from "./pages/Songs/SongPage";
 import AlbumPage from "./pages/Albums/AlbumPage";
 import PlaylistPage from "./pages/Playlists/PlaylistPage";
+import UserPage from "./pages/Users/UserPage";
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/song/:id" element={<SongPage />} />
           <Route path="/album/:id" element={<AlbumPage />} />
           <Route path="/playlist/:id" element={<PlaylistPage />} />
+          <Route path="/user/:id" element={<UserPage />} />
           <Route path="/unauthorized" element={<UauthorisedPage />} />
         </Route>
       </Route>

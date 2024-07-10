@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import Spinner from "../../ui/components/Spinner";
 
-import useGetArtist from "../../features/Users/hooks/useGetArtist";
+import useGetArtist from "../../features/Users/hooks/useGetUser";
 
 import { useInView } from "react-intersection-observer";
 import SongCard from "../../features/Songs/components/SongCard";
@@ -27,7 +27,7 @@ export default function PlaylistPage() {
   } = useGetPlaylist({ id });
 
   const {
-    artist,
+    user,
     isFetching: isGettingArtist,
     isSuccess: isFetchedArtist,
   } = useGetArtist({
@@ -82,7 +82,7 @@ export default function PlaylistPage() {
             <div className=" h-full p-4 flex flex-col gap-2 justify-start grow shrink-0">
               <h1 className="text-3xl ">{playlist.name}</h1>
               <span className="text-sm self-start text-gray-500">
-                {artist.fname}
+                {user.fname}
               </span>
 
               <div className="mt-7 flex justify-start gap-10 items-center">

@@ -1,17 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPrivate from "../../../hooks/axios/useAxiosPrivate";
-import getArtistApi from "../../../services/users/getArtistApi";
+import getUserApi from "../../../services/users/getUserApi";
 
-export default function useGetArtist({ id }) {
+export default function useGetUser({ id }) {
   const axiosPrivate = useAxiosPrivate();
   const {
-    data: artist,
+    data: user,
     isFetching,
     isSuccess,
   } = useQuery({
     queryKey: ["artist", id],
-    queryFn: getArtistApi(axiosPrivate),
+    queryFn: getUserApi(axiosPrivate),
     enabled: !!id,
   });
-  return { artist, isFetching, isSuccess };
+  return { user, isFetching, isSuccess };
 }

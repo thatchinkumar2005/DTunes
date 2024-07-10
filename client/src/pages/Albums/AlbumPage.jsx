@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import Spinner from "../../ui/components/Spinner";
 import { CiPlay1 } from "react-icons/ci";
 
-import useGetArtist from "../../features/Users/hooks/useGetArtist";
+import useGetArtist from "../../features/Users/hooks/useGetUser";
 import useGetAlbum from "../../features/Albums/hooks/useGetAlbum";
 import useGetAlbumSongs from "../../features/Albums/hooks/useGetAlbumSongs";
 import { useInView } from "react-intersection-observer";
@@ -25,7 +25,7 @@ export default function AlbumPage() {
   } = useGetAlbum({ id });
 
   const {
-    artist,
+    user,
     isFetching: isGettingArtist,
     isSuccess: isFetchedArtist,
   } = useGetArtist({
@@ -80,7 +80,7 @@ export default function AlbumPage() {
             <div className=" h-full p-4 flex flex-col gap-2 justify-start grow shrink-0">
               <h1 className="text-3xl ">{album.name}</h1>
               <span className="text-sm self-start text-gray-500">
-                {artist.fname}
+                {user.fname}
               </span>
               <div className="mt-7 flex justify-start gap-10 items-center">
                 <div className="bg-primary rounded-full h-12 w-12 flex justify-center items-center  hover:bg-slate-500">

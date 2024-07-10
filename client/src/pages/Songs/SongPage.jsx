@@ -5,7 +5,7 @@ import Spinner from "../../ui/components/Spinner";
 import { CiPlay1 } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
 import { CiMenuKebab } from "react-icons/ci";
-import useGetArtist from "../../features/Users/hooks/useGetArtist";
+import useGetArtist from "../../features/Users/hooks/useGetUser";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import useGetLikedBoolean from "../../features/Songs/hooks/useGetLikedBoolean";
@@ -46,7 +46,7 @@ export default function SongPage() {
   }
 
   const {
-    artist,
+    user,
     isFetching: isGettingArtist,
     isSuccess: isFetchedArtist,
   } = useGetArtist({
@@ -65,7 +65,7 @@ export default function SongPage() {
             <div className=" h-full p-4 flex flex-col gap-2 justify-start grow shrink-0">
               <h1 className="text-3xl ">{song.name}</h1>
               <span className="text-sm self-start text-gray-500">
-                {artist.fname}
+                {user.fname}
               </span>
               <div className="mt-7 flex justify-start gap-10 items-center">
                 <div className="bg-primary rounded-full h-12 w-12 flex justify-center items-center  hover:bg-slate-500">
