@@ -6,35 +6,37 @@ export default function DropDown({ ToggleButton, children, dir }) {
 
   const [isOpen, setOpen] = useState(false);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpen(false);
-      }
-    };
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+  //       setOpen(false);
+  //     }
+  //   };
 
-    document.addEventListener("mousedown", handleClickOutside);
+  //   document.addEventListener("mousedown", handleClickOutside);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
 
   function handleToggle() {
-    setOpen(!isOpen);
+    setOpen((state) => !state);
   }
   return (
-    <div ref={dropdownRef} className="relative flex flex-col">
+    <>
       <ToggleButton onClick={handleToggle} className="h-5 w-5" />
-      {isOpen && (
-        <div
-          className={`p-0.5 md:p-2 rounded-lg bg-primary absolute  ${
-            dir === "right" ? "top-5 left-2" : "top-5 right-2"
-          }`}
-        >
-          {children}
-        </div>
-      )}
-    </div>
+      <div ref={dropdownRef} className="relative flex flex-col">
+        {isOpen && (
+          <div
+            className={`p-0.5 md:p-2 rounded-lg bg-primary absolute  ${
+              dir === "right" ? "top-5 left-2" : "top-5 right-2"
+            }`}
+          >
+            {children}
+          </div>
+        )}
+      </div>
+    </>
   );
 }
