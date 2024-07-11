@@ -15,6 +15,7 @@ import PlaylistPage from "./pages/Playlists/PlaylistPage";
 import UserPage from "./pages/Users/UserPage";
 import CreateAlbumPage from "./pages/Albums/CreateAlbumPage";
 import PersistLogin from "./features/authentication/components/PersistLogin";
+import CreateSongPage from "./pages/Songs/CreateSongPage";
 
 export default function App() {
   return (
@@ -31,8 +32,8 @@ export default function App() {
         <Route element={<PrivateLayout />}>
           <Route element={<RequireAuth allowedRoles={[2009]} />}>
             <Route path="/album/create" element={<CreateAlbumPage />} />
+            <Route path="/song/create/:albumId" element={<CreateSongPage />} />
           </Route>
-
           <Route element={<RequireAuth allowedRoles={[2005, 2009]} />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/song/:id" element={<SongPage />} />

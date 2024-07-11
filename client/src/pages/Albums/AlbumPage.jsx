@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
 import Spinner from "../../ui/components/Spinner";
-import { CiPlay1 } from "react-icons/ci";
+import { CiMenuKebab, CiPlay1 } from "react-icons/ci";
 
 import useGetArtist from "../../features/Users/hooks/useGetUser";
 import useGetAlbum from "../../features/Albums/hooks/useGetAlbum";
@@ -14,9 +14,12 @@ import {
   play,
   setCurrentSongs,
 } from "../../features/MusicPlayer/slices/songsSlice";
+import DropDown from "../../ui/components/DropDown";
+import useAuth from "../../hooks/auth/useAuth";
 
 export default function AlbumPage() {
   const { id } = useParams();
+  const { auth } = useAuth();
 
   const {
     data: album,
@@ -88,6 +91,15 @@ export default function AlbumPage() {
                     onClick={handlePlayPause}
                     className="h-10 w-10 ml-2"
                   />
+                </div>
+                <div>
+                  <DropDown ToggleButton={CiMenuKebab}>
+                    <div className="flex flex-col justify-center items-center w-20 h-10">
+                      {auth.id === album.artist && (
+                        <Link to={`/song/create/${album._id}`}>New Song</Link>
+                      )}
+                    </div>
+                  </DropDown>
                 </div>
               </div>
             </div>
