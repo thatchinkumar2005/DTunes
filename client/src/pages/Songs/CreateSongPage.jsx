@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 export default function CreateSongPage() {
   const { albumId } = useParams();
   return (
-    <div className="h-full w-full overflow-scroll disable-scrollbars flex justify-center items-center">
+    <div className="h-full w-full overflow-scroll disable-scrollbars flex justify-center items-center p-2">
       <CreateSongForm albumId={albumId} />
     </div>
   );

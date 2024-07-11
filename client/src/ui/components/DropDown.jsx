@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-export default function DropDown({ ToggleButton, children }) {
+export default function DropDown({ ToggleButton, children, dir }) {
   const dropdownRef = useRef();
 
   const [isOpen, setOpen] = useState(false);
@@ -27,7 +27,11 @@ export default function DropDown({ ToggleButton, children }) {
     <div ref={dropdownRef} className="relative flex flex-col">
       <ToggleButton onClick={handleToggle} className="h-5 w-5" />
       {isOpen && (
-        <div className="p-2 rounded-lg bg-primary absolute top-5 left-2">
+        <div
+          className={`p-0.5 md:p-2 rounded-lg bg-primary absolute  ${
+            dir === "right" ? "top-5 left-2" : "top-5 right-2"
+          }`}
+        >
           {children}
         </div>
       )}

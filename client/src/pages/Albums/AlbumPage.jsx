@@ -93,10 +93,15 @@ export default function AlbumPage() {
                   />
                 </div>
                 <div>
-                  <DropDown ToggleButton={CiMenuKebab}>
-                    <div className="flex flex-col justify-center items-center w-20 h-10">
+                  <DropDown ToggleButton={CiMenuKebab} dir={"right"}>
+                    <div className="flex flex-col justify-center items-center w-20 h-8">
                       {auth.id === album.artist && (
-                        <Link to={`/song/create/${album._id}`}>New Song</Link>
+                        <Link
+                          className="text-sm"
+                          to={`/song/create/${album._id}`}
+                        >
+                          New Song
+                        </Link>
                       )}
                     </div>
                   </DropDown>
