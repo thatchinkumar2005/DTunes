@@ -9,6 +9,7 @@ export default function getRecommendationsApi(axiosPrivate) {
       return { data: resp.data, nextPageParam };
     } catch (error) {
       console.log(error);
+      throw new Error(error.response.data.message);
     }
   };
 }

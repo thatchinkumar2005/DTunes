@@ -10,6 +10,7 @@ import UserPagePlaylists from "../../features/Users/components/UserPagePlaylists
 
 export default function UserPage() {
   const { id } = useParams();
+
   const {
     user,
     isFetching: isGettingUser,

@@ -27,6 +27,7 @@ export default function AlbumCreateForm() {
       setError("Select Cover Art");
       return;
     }
+
     const formData = new FormData();
     formData.append("coverArt", file);
     formData.append("name", name);
