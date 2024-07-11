@@ -4,7 +4,7 @@ import useGetAuthUserLikePlaylist from "../../Users/hooks/useGetAuthUserLikePlay
 import { useNavigate } from "react-router-dom";
 
 export default function LikedPlaylistHomePageCard() {
-  const { data, isFetching, isSuccess } = useGetAuthUserLikePlaylist();
+  const { data, isSuccess } = useGetAuthUserLikePlaylist();
   const navigate = useNavigate();
   function handleClick(e) {
     console.log(data);
