@@ -76,7 +76,7 @@ export default function PlaylistPage() {
             <div className="shrink-0 flex flex-col self-center">
               <img
                 className="h-36 rounded-lg mb-3"
-                src={playlist.files.coverArt}
+                src={playlist?.files?.coverArt}
               />
             </div>
             <div className=" h-full p-4 flex flex-col gap-2 justify-start grow shrink-0">
