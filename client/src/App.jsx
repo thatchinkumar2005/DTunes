@@ -28,11 +28,15 @@ export default function App() {
         />
       </Route>
       <Route element={<PersistLogin />}>
-        <Route element={<RequireAuth allowedRoles={[2005, 2009]} />}>
-          <Route element={<PrivateLayout />}>
+        <Route element={<PrivateLayout />}>
+          <Route element={<RequireAuth allowedRoles={[2009]} />}>
+            <Route path="/album/create" element={<CreateAlbumPage />} />
+          </Route>
+
+          <Route element={<RequireAuth allowedRoles={[2005, 2009]} />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/song/:id" element={<SongPage />} />
-            <Route path="/album/create" element={<CreateAlbumPage />} />
+
             <Route path="/album/:id" element={<AlbumPage />} />
             <Route path="/playlist/:id" element={<PlaylistPage />} />
             <Route path="/user/:id" element={<UserPage />} />
