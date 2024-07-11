@@ -25,7 +25,7 @@ export default function DropDown({ ToggleButton, children, dir }) {
   }
   return (
     <>
-      <ToggleButton onClick={handleToggle} className="h-5 w-5" />
+      <ToggleButton onClick={handleToggle} />
       <div ref={dropdownRef} className="relative flex flex-col">
         {isOpen && (
           <div

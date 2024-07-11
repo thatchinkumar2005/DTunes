@@ -17,6 +17,10 @@ import {
 import DropDown from "../../ui/components/DropDown";
 import useAuth from "../../hooks/auth/useAuth";
 
+function DropDownMenu({ onClick }) {
+  return <CiMenuKebab onClick={onClick} className="h-5 w-5" />;
+}
+
 export default function AlbumPage() {
   const { id } = useParams();
   const { auth } = useAuth();
@@ -93,7 +97,7 @@ export default function AlbumPage() {
                   />
                 </div>
                 <div>
-                  <DropDown ToggleButton={CiMenuKebab} dir={"right"}>
+                  <DropDown ToggleButton={DropDownMenu} dir={"right"}>
                     <div className="flex flex-col justify-center items-center w-20 h-8">
                       {auth.id === album.artist && (
                         <Link

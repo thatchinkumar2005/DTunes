@@ -3,7 +3,7 @@ import { RxCross1 } from "react-icons/rx";
 
 const ModalContext = createContext();
 
-export default function Modal({ children, ToggleElement }) {
+export default function Modal({ children, ToggleElement, parentOpen = true }) {
   const [isOpen, setOpen] = useState(false);
   function handleToggle() {
     setOpen((state) => !state);
@@ -12,7 +12,7 @@ export default function Modal({ children, ToggleElement }) {
   return (
     <ModalContext.Provider value={{ isOpen, setOpen, children }}>
       <ToggleElement onClick={handleToggle} />
-      <div className="relative">{isOpen && <ModalWindow />}</div>
+      <div className="relative">{isOpen && parentOpen && <ModalWindow />}</div>
     </ModalContext.Provider>
   );
 }
@@ -24,7 +24,7 @@ function ModalWindow() {
   }
   return (
     <div className=" backdrop-blur-sm fixed top-0 bottom-0 left-0 right-0 w-screen h-screen flex flex-col justify-center items-center">
-      <div className=" p-5 bg-primary rounded-lg">
+      <div className=" p-5 bg-secondary rounded-lg">
         <div className="flex flex-col mb-2">
           <button onClick={handleClose} className="self-start">
             <RxCross1 />
