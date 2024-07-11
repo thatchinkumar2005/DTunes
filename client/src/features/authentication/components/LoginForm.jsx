@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { TbBrandAuth0, TbError404Off } from "react-icons/tb";
@@ -18,7 +18,15 @@ export default function LoginForm() {
 
   const { login, isLoggingIn } = useLogin();
 
-  const { setAuth } = useAuth();
+  const { setAuth, persist, setPersist } = useAuth();
+
+  const togglePersist = () => {
+    setPersist((prev) => !prev);
+  };
+
+  useEffect(() => {
+    localStorage.setItem("persist", persist);
+  }, [persist]);
 
   const navigate = useNavigate();
 
@@ -84,6 +92,16 @@ export default function LoginForm() {
       >
         Login
       </button>
+
+      <div className="mt-5">
+        <input
+          type="checkbox"
+          id="persist"
+          onChange={togglePersist}
+          checked={persist}
+        />
+        <span className="ml-2">Trust this device</span>
+      </div>
 
       <div className="mt-[30px] h-0.5 w-full bg-white" />
 

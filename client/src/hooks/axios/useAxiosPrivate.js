@@ -34,7 +34,6 @@ export default function useAxiosPrivate() {
         if (error?.response?.status == 403 && !prevReq.sent) {
           prevReq.sent = true;
           const respAuth = await refresh();
-          setAuth(respAuth);
           prevReq.headers.Authorization = `Bearer ${respAuth.accessToken}`;
           return axiosPrivate(prevReq);
         } else {

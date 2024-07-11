@@ -13,6 +13,8 @@ import SongPage from "./pages/Songs/SongPage";
 import AlbumPage from "./pages/Albums/AlbumPage";
 import PlaylistPage from "./pages/Playlists/PlaylistPage";
 import UserPage from "./pages/Users/UserPage";
+import CreateAlbumPage from "./pages/Albums/CreateAlbumPage";
+import PersistLogin from "./features/authentication/components/PersistLogin";
 
 export default function App() {
   return (
@@ -25,15 +27,17 @@ export default function App() {
           element={<GoogleOauthCallBackPage />}
         />
       </Route>
-
-      <Route element={<RequireAuth allowedRoles={[2005, 2009]} />}>
-        <Route element={<PrivateLayout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/song/:id" element={<SongPage />} />
-          <Route path="/album/:id" element={<AlbumPage />} />
-          <Route path="/playlist/:id" element={<PlaylistPage />} />
-          <Route path="/user/:id" element={<UserPage />} />
-          <Route path="/unauthorized" element={<UauthorisedPage />} />
+      <Route element={<PersistLogin />}>
+        <Route element={<RequireAuth allowedRoles={[2005, 2009]} />}>
+          <Route element={<PrivateLayout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/song/:id" element={<SongPage />} />
+            <Route path="/album/create" element={<CreateAlbumPage />} />
+            <Route path="/album/:id" element={<AlbumPage />} />
+            <Route path="/playlist/:id" element={<PlaylistPage />} />
+            <Route path="/user/:id" element={<UserPage />} />
+            <Route path="/unauthorized" element={<UauthorisedPage />} />
+          </Route>
         </Route>
       </Route>
 
