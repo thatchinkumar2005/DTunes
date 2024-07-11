@@ -1,22 +1,54 @@
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import useCreateAlbum from "../hooks/useCreateAlbum";
+import { useNavigate } from "react-router-dom";
 
 export default function AlbumCreateForm() {
   const [file, setFile] = useState(null);
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
   const onDrop = useCallback((acceptedFiles) => {
     const acceptedFile = acceptedFiles[0];
     acceptedFile.preview = URL.createObjectURL(acceptedFile);
     setFile(acceptedFile);
     console.log(acceptedFile);
   });
+  const { createAlbum, isCreatingAlbum } = useCreateAlbum();
+  const navigate = useNavigate();
 
-  function handleSubmit() {}
+  function handleSubmit(e) {
+    e.preventDefault();
+    setError("");
+    if (!name) {
+      setError("Enter name of the album");
+      return;
+    }
+    if (!file) {
+      setError("Select Cover Art");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("coverArt", file);
+    formData.append("name", name);
+
+    createAlbum(formData, {
+      onSuccess: (data) => {
+        console.log(data);
+        navigate("/");
+      },
+      onError: (err) => {
+        console.log(err);
+        setError(err.message);
+      },
+    });
+  }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   return (
-    <div className="flex flex-col gap-10 justify-center items-center">
-      <form onSubmit={handleSubmit}>
+    <div className="flex flex-col gap-6 justify-center items-center">
+      <h1 className="text-3xl font-bold">Create Album</h1>
+      {error && <div className="text-red-500">{error}</div>}
+      <form>
         <input
           className="w-60 h-10 bg-primary rounded-lg outline-none focus:shadow-lg p-1"
           type="text"
@@ -42,19 +74,23 @@ export default function AlbumCreateForm() {
           {isDragActive
             ? "Drop Here"
             : file?.preview
-            ? "click or drop to select a different file"
+            ? "Click or drop to select a different file"
             : "Cover Art: Drag and Drop here. Or Click to select File"}
         </div>
       </div>
 
-      <div className="h-60 w-60 bg-secondary flex">
+      <div className="h-60 w-60 bg-secondary flex rounded-lg p-2">
         {file?.preview ? (
-          <img src={file.preview} />
+          <img className="h-full w-full" src={file.preview} />
         ) : (
           <span className="text-gray-500">Preview...</span>
         )}
       </div>
-      <button className="h-16 w-32 bg-secondary rounded-lg p-3">
+      <button
+        onClick={handleSubmit}
+        disabled={isCreatingAlbum}
+        className="h-16 w-32 bg-secondary rounded-lg p-3"
+      >
         Create Album
       </button>
     </div>

@@ -16,8 +16,10 @@ export default async function createNewAlbumController(req, res) {
     const userMod = await User.findOne({ _id: user.id });
     //name in body
     const { name } = req.body;
+    console.log(name);
     //file
     const file = req.file;
+    console.log(file);
     //bad request
     if (!name)
       return res.status(400).json({ message: "No name given to album" });
