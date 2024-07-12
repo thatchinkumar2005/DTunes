@@ -64,7 +64,7 @@ const MusicPlayer = () => {
       }}
     >
       <div className="bg-bg p-1 flex justify-center items-center overflow-hidden">
-        <div className="flex bg-gray-600 flex-col justify-between w-full h-full rounded-lg ">
+        <div className="flex bg-gray-950 flex-col justify-between w-full h-full rounded-lg ">
           <Player />
           <div className="w-full flex flex-row justify-between items-center p-1 grow-0">
             <Title />
@@ -188,9 +188,9 @@ function TimeStamp() {
   const { currentTime, duration } = useContext(MusicPlayerContext);
 
   return (
-    <div className="mt-3 ml-auto">{`${formatTime(currentTime)}/${formatTime(
-      duration
-    )}`}</div>
+    <div className="mt-3 ml-auto text-sm text-gray-500">{`${formatTime(
+      currentTime
+    )}/${formatTime(duration)}`}</div>
   );
 }
 

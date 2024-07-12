@@ -30,7 +30,7 @@ function ProfileButton({ onClick }) {
 export default function NavBar() {
   const { data, isPending, isSuccess } = useGetAuthUser();
   return (
-    <div className="flex bg-gray-800 flex-row items-center md:gap-3 md:col-start-1 md:col-end-3 border-b-2 border-primary">
+    <div className="flex bg-layout flex-row items-center md:gap-3 md:col-start-1 md:col-end-3 border-b-2 border-primary">
       <h1 className="text-2xl md:text-2xl mx-3">Dtunes</h1>
       <Link className="hidden md:block md:mx-10 hover:scale-125  md:hover:scale-150 duration-100 ">
         Home
