@@ -1,4 +1,4 @@
-import React, { act, useEffect } from "react";
+import React, { act, useEffect, useState } from "react";
 import { CiMenuKebab, CiPlay1 } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,6 +29,8 @@ function AddToPlaylistBtn({ onClick }) {
 export default function SongCard({ song }) {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   function handlePlayPause() {
     dispatch(setActiveSong({ song }));
     dispatch(play());
@@ -81,9 +83,17 @@ export default function SongCard({ song }) {
         <div onClick={handleLike}>
           <FaHeart className={isLiked ? "fill-blue-500" : "fill-white"} />
         </div>
-        <DropDown ToggleButton={DropDownMenu}>
+        <DropDown
+          ToggleButton={DropDownMenu}
+          isOpen={isDropDownOpen}
+          setOpen={setIsDropDownOpen}
+        >
           <div className="flex flex-col justify-center items-center w-32 h-8 ">
-            <Modal ToggleElement={AddToPlaylistBtn}>
+            <Modal
+              ToggleElement={AddToPlaylistBtn}
+              isOpen={isModalOpen}
+              setOpen={setIsModalOpen}
+            >
               <div className="w-72 h-96 flex flex-col ">
                 {isPending && <Spinner />}
                 {isError && <div>{error}</div>}

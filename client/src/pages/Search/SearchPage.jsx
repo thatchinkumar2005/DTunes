@@ -14,7 +14,7 @@ export default function SearchBar() {
   const inputRef = useRef();
   const searchBoxRef = useRef();
   const [query, setQuery] = useState("");
-  const [recommedation, setRecommendation] = useState([]);
+  const [recommedation, setRecommendation] = useState(null);
   const [results, setResults] = useState(null);
   const [focus, setFocus] = useState(false);
   const [all, setAll] = useState(true);
@@ -150,6 +150,7 @@ export default function SearchBar() {
                     className=" hover:underline"
                     onClick={(e) => {
                       e.preventDefault();
+                      setQuery(r._id);
                       search(
                         { query: r._id, type: all ? "all" : "user" },
                         {
@@ -176,6 +177,7 @@ export default function SearchBar() {
                       className=" hover:underline"
                       onClick={(e) => {
                         e.preventDefault();
+                        setQuery(h);
                         search(
                           { query: h, type: all ? "all" : "user" },
                           {

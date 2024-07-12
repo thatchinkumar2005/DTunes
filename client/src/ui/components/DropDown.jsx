@@ -1,10 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-export default function DropDown({ ToggleButton, children, dir }) {
+export default function DropDown({
+  ToggleButton,
+  children,
+  dir,
+  isOpen,
+  setOpen,
+}) {
   const dropdownRef = useRef();
-
-  const [isOpen, setOpen] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {

@@ -3,8 +3,7 @@ import { RxCross1 } from "react-icons/rx";
 
 const ModalContext = createContext();
 
-export default function Modal({ children, ToggleElement, parentOpen = true }) {
-  const [isOpen, setOpen] = useState(false);
+export default function Modal({ children, ToggleElement, isOpen, setOpen }) {
   function handleToggle() {
     setOpen((state) => !state);
     console.log(isOpen);
@@ -12,7 +11,7 @@ export default function Modal({ children, ToggleElement, parentOpen = true }) {
   return (
     <ModalContext.Provider value={{ isOpen, setOpen, children }}>
       <ToggleElement onClick={handleToggle} />
-      <div className="relative">{isOpen && parentOpen && <ModalWindow />}</div>
+      <div className="relative">{isOpen && <ModalWindow />}</div>
     </ModalContext.Provider>
   );
 }
