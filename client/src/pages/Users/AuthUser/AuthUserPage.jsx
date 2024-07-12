@@ -5,6 +5,7 @@ import useGetAuthUser from "../../../features/Users/hooks/useGetAuthUser";
 import UserPageSongs from "../../../features/Users/components/UserPageSongs";
 import UserPageAlbums from "../../../features/Users/components/UserPageAlbums";
 import AuthUserPlaylists from "../../../features/Users/components/AuthUserPlaylists";
+import { Link } from "react-router-dom";
 
 export default function AuthUserPage() {
   const {
@@ -47,6 +48,22 @@ export default function AuthUserPage() {
               </div>
               <div className="flex justify-between items-center gap-20 ml-1">
                 {artist && <span className="text-lg">Plays:</span>}
+              </div>
+              <div className="flex gap-2">
+                {artist && (
+                  <Link
+                    to={"/album/create"}
+                    className="bg-secondary p-2 rounded-lg hover:underline"
+                  >
+                    New Album
+                  </Link>
+                )}
+                <Link
+                  to={"/playlist/create"}
+                  className="bg-secondary p-2 rounded-lg hover:underline"
+                >
+                  New Playlist
+                </Link>
               </div>
             </div>
           </div>

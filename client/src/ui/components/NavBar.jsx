@@ -48,7 +48,9 @@ export default function NavBar() {
         <div className="flex flex-col gap-1 px-3 py-1">
           <div className="flex gap-1 items-center">
             <AiOutlineProfile />
-            <Link className="hover:underline">Profile</Link>
+            <Link to={"/profile"} className="hover:underline">
+              Profile
+            </Link>
           </div>
           <div className="flex gap-1 items-center">
             <MdManageAccounts />
