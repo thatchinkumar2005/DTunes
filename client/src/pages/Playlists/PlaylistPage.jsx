@@ -71,7 +71,7 @@ export default function PlaylistPage() {
   function handlePlayPause() {
     if (isPending) return;
     if (isSuccess && isFetchedPlaylist) {
-      if (playlistSongs.pages[0].length) {
+      if (playlistSongs.pages[0].data.length) {
         dispatch(
           setCurrentSongs({
             songs: playlistSongs.pages[0].data,

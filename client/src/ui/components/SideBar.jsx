@@ -7,7 +7,10 @@ export default function SideBar() {
       <Link className="mx-8 text-sm md:hidden hover:scale-125  duration-100 ">
         Home
       </Link>
-      <Link className="mx-8 text-sm md:hidden hover:scale-125  duration-100 ">
+      <Link
+        to={"/search"}
+        className="mx-8 text-sm md:hidden hover:scale-125  duration-100 "
+      >
         Search
       </Link>
       <Link className="mx-8 text-sm md:hidden hover:scale-125  duration-100 ">

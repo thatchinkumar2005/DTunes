@@ -19,6 +19,7 @@ import CreateSongPage from "./pages/Songs/CreateSongPage";
 import CreatePlaylistPage from "./pages/Playlists/CreatePlaylistPage";
 import AuthUserPage from "./pages/Users/AuthUser/AuthUserPage";
 import Logout from "./pages/authentication/Logout";
+import SearchPage from "./pages/Search/SearchPage";
 
 export default function App() {
   return (
@@ -39,6 +40,7 @@ export default function App() {
           </Route>
           <Route element={<RequireAuth allowedRoles={[2005, 2009]} />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/song/:id" element={<SongPage />} />
 
             <Route path="/album/:id" element={<AlbumPage />} />
