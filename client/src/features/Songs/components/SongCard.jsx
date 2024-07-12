@@ -1,4 +1,4 @@
-import React, { act } from "react";
+import React, { act, useEffect } from "react";
 import { CiMenuKebab, CiPlay1 } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +12,7 @@ import Modal from "../../../ui/components/Modal";
 import useGetAuthUserPlaylists from "../../Users/hooks/useGetAuthUserPlaylists";
 import Spinner from "../../../ui/components/Spinner";
 import PlaylistStrip from "../../Playlists/components/PlaylistStrip";
+import { useInView } from "react-intersection-observer";
 
 function DropDownMenu({ onClick }) {
   return <CiMenuKebab onClick={onClick} className="h-5 w-5" />;
@@ -34,7 +35,22 @@ export default function SongCard({ song }) {
   }
   const { isLiked } = useGetLikedBoolean({ song: song._id });
   const { like, isLiking } = useLike();
-  const { authUserPlaylists, isGetting, isSuccess } = useGetAuthUserPlaylists();
+  const {
+    authUserPlaylists,
+    isError,
+    isPending,
+    isSuccess,
+    hasNextPage,
+    fetchNextPage,
+    error,
+  } = useGetAuthUserPlaylists();
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage]);
   function handleLike() {
     like(song._id, {
       onSuccess: (data) => {
@@ -69,15 +85,19 @@ export default function SongCard({ song }) {
           <div className="flex flex-col justify-center items-center w-32 h-8 ">
             <Modal ToggleElement={AddToPlaylistBtn}>
               <div className="w-72 h-96 flex flex-col ">
-                {isGetting && <Spinner />}
+                {isPending && <Spinner />}
+                {isError && <div>{error}</div>}
                 {isSuccess &&
-                  authUserPlaylists.map((playlist) => (
-                    <PlaylistStrip
-                      key={playlist._id}
-                      playlist={playlist}
-                      songId={song._id}
-                    />
-                  ))}
+                  authUserPlaylists.pages.map((page) =>
+                    page.data.map((playlist) => (
+                      <PlaylistStrip
+                        key={playlist._id}
+                        playlist={playlist}
+                        songId={song._id}
+                      />
+                    ))
+                  )}
+                <div ref={ref}>{hasNextPage && <Spinner />}</div>
               </div>
             </Modal>
           </div>
