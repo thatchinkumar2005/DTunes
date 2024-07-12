@@ -7,9 +7,13 @@ import { FaRegUserCircle } from "react-icons/fa";
 import UserPageSongs from "../../features/Users/components/UserPageSongs";
 import UserPageAlbums from "../../features/Users/components/UserPageAlbums";
 import UserPagePlaylists from "../../features/Users/components/UserPagePlaylists";
+import useGetAuthUserFrndReln from "../../features/Users/hooks/useGetAuthUserFrndReln";
+import useFriendRequest from "../../features/Social/hooks/useFriendRequest";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function UserPage() {
   const { id } = useParams();
+  const queryClient = useQueryClient();
 
   const {
     user,
@@ -19,6 +23,27 @@ export default function UserPage() {
 
   const [artist, setArtist] = useState(false);
 
+  const { data: frndReln, isSuccess: gotFrndReln } = useGetAuthUserFrndReln({
+    id,
+  });
+
+  const { request, isRequesting } = useFriendRequest();
+
+  function handleRequest() {
+    if (frndReln?.status === "accepted") {
+      return;
+    }
+    if (isFethchedUser)
+      request(user._id, {
+        onSuccess: () => {
+          queryClient.invalidateQueries(["authUserFrndReln", id]);
+        },
+        onError: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
   useEffect(() => {
     if (isFethchedUser) {
       if (user.roles?.artist === 2009) {
@@ -27,7 +52,6 @@ export default function UserPage() {
         setArtist(false);
       }
     }
-    console.log(user);
   }, [user, isFethchedUser, setArtist]);
 
   return (
@@ -49,9 +73,27 @@ export default function UserPage() {
               <div className="text-3xl">{user.fname + " " + user.lname}</div>
               <div className="flex justify-between items-center gap-20 ml-1">
                 {artist && <span className="text-lg">Plays:</span>}{" "}
-                <button className="p-1 w-20 h-10 bg-secondary rounded-lg hover:bg-gray-500 duration-150">
-                  request
-                </button>
+                {(frndReln?.status === "rejected" || !frndReln) && (
+                  <button
+                    onClick={handleRequest}
+                    disabled={isRequesting}
+                    className="p-1 w-20 h-10 bg-button rounded-lg hover:bg-gray-500 duration-150"
+                  >
+                    Request
+                  </button>
+                )}
+                {frndReln?.status === "requested" && (
+                  <button
+                    onClick={handleRequest}
+                    disabled={isRequesting}
+                    className="p-1 w-20 h-10 bg-button rounded-lg hover:bg-gray-500 duration-150"
+                  >
+                    Requested
+                  </button>
+                )}
+                {frndReln && frndReln?.status === "accepted" && (
+                  <span>Friends</span>
+                )}
               </div>
             </div>
           </div>

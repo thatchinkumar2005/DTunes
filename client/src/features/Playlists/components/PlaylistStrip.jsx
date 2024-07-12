@@ -33,7 +33,11 @@ export default function PlaylistStrip({ playlist, songId }) {
       <div className="flex gap-2 justify-center items-center grow-0 overflow-hidden ml-2">
         <img
           className="h-10 grow-0"
-          src={playlist?.files?.coverArt}
+          src={
+            playlist?.files?.coverArt
+              ? playlist.files.coverArt
+              : "/LikedPlaylist.jpg"
+          }
           alt="cover art"
         />
         <div className="w-32 h-12 grow-0 flex justify-start items-center hover:underline">

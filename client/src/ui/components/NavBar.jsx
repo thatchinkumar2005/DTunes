@@ -6,6 +6,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { AiOutlineProfile } from "react-icons/ai";
 import { MdManageAccounts } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa";
 
 function ProfileButton({ onClick }) {
   const { data: user } = useGetAuthUser();
@@ -18,10 +19,7 @@ function ProfileButton({ onClick }) {
           onClick={onClick}
         />
       ) : (
-        <FaRegUserCircle
-          onClick={onClick}
-          className="h-10 w-10 ml-auto mr-3 "
-        />
+        <FaRegUserCircle onClick={onClick} className="h-10 w-10 ml-auto" />
       )}
     </>
   );
@@ -46,7 +44,10 @@ export default function NavBar() {
         Library
       </Link>
 
-      <div className="mt-1 ml-auto mr-3">
+      <div className="mt-1 ml-auto flex gap-5 items-center">
+        <Link to={"/requests"}>
+          <FaHeart className="w-5 h-5 hover:fill-red-500 duration-150" />
+        </Link>
         <DropDown
           ToggleButton={ProfileButton}
           isOpen={openDropDown}
