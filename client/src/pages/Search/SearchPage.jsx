@@ -8,6 +8,7 @@ import AlbumCard from "../../features/Albums/components/AlbumCard";
 import PlaylistCard from "../../features/Playlists/components/PlaylistCard";
 import UserCard from "../../features/Users/components/UserCard";
 import { useQueryClient } from "@tanstack/react-query";
+import { RxHalf1 } from "react-icons/rx";
 
 export default function SearchBar() {
   const inputRef = useRef();
@@ -197,7 +198,7 @@ export default function SearchBar() {
       </div>
       {all && results && (
         <div className="flex flex-col gap-10">
-          {!!results?.songs.length && (
+          {!!results?.songs?.length && (
             <div className="px-6 grow-0 shrink-0">
               <h2>Songs</h2>
               <div className="h-48 w-full bg-primary rounded-lg p-3 flex flex-col gap-3 overflow-scroll disable-scrollbars">
@@ -207,7 +208,7 @@ export default function SearchBar() {
               </div>
             </div>
           )}
-          {!!results?.albums.length && (
+          {!!results?.albums?.length && (
             <div className="px-6 grow-0 shrink-0">
               <h2>Albums</h2>
               <div className="h-48 w-full bg-primary rounded-lg p-3 flex flex-col gap-3 overflow-scroll disable-scrollbars">
@@ -223,7 +224,7 @@ export default function SearchBar() {
             </div>
           )}
 
-          {!!results?.playlists.length && (
+          {!!results?.playlists?.length && (
             <div className="px-6 grow-0 shrink-0">
               <h2>Playlists</h2>
               <div className="h-48 w-full bg-primary rounded-lg p-3 flex flex-col gap-3 overflow-scroll disable-scrollbars">
@@ -239,7 +240,7 @@ export default function SearchBar() {
             </div>
           )}
 
-          {!!results?.artists.length && (
+          {!!results?.artists?.length && (
             <div className="px-6 grow-0 shrink-0">
               <h2>Artists</h2>
               <div className="h-32 md:h-40 w-full bg-primary rounded-lg p-3 disable-scrollbars grid grid-cols-3 md:grid-cols-4 gap-y-2 overflow-scroll">
@@ -254,6 +255,34 @@ export default function SearchBar() {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {!all && results && (
+        <div>
+          {results?.users?.length && (
+            <div className="px-6 grow-0 shrink-0">
+              <h2>Users</h2>
+              <div className="h-32 md:h-40 w-full bg-primary rounded-lg p-3 disable-scrollbars grid grid-cols-3 md:grid-cols-4 gap-y-2 overflow-scroll">
+                {results.users.map((user) => (
+                  <div
+                    key={user._id}
+                    className="flex justify-center items-center"
+                  >
+                    <UserCard user={user} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {!results && (
+        <div className="grow flex justify-center ">
+          <h1 className="text-3xl text-bold text-primary mt-20">
+            Search Something
+          </h1>
         </div>
       )}
     </div>

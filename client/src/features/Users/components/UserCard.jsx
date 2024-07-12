@@ -15,7 +15,9 @@ export default function UserCard({ user }) {
           ? `${(user.fname + " " + user.lname).slice(0, 11)}...`
           : user.fname + " " + user.lname}
       </Link>
-      <span className="self-end text-gray-500 text-xs mr-2 mb-1">Artist</span>
+      <span className="self-end text-gray-500 text-xs mr-2 mb-1">
+        {user.roles?.artist === 2009 ? "Artist" : "User"}
+      </span>
     </div>
   );
 }
