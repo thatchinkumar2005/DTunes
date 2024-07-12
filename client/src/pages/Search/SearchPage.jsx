@@ -1,5 +1,5 @@
 import React from "react";
-import SearchBar from "../../features/Search/SearchBar";
+import SearchBar from "../../features/Search/components/SearchBar";
 
 export default function SearchPage() {
   return (
