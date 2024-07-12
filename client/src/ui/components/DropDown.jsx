@@ -29,7 +29,7 @@ export default function DropDown({ ToggleButton, children, dir }) {
       <div ref={dropdownRef} className="relative flex flex-col">
         {isOpen && (
           <div
-            className={`p-0.5 md:p-2 rounded-lg bg-primary absolute  ${
+            className={`p-1 md:p-2 rounded-lg bg-primary absolute  ${
               dir === "right" ? "top-5 left-2" : "top-5 right-2"
             }`}
           >

@@ -229,8 +229,8 @@ function Title() {
           to={`/song/${activeSong?._id}`}
           className="grow-0 shrink-0 hover:underline"
         >
-          {activeSong?.name.length > 14
-            ? `${activeSong?.name.slice(0, 13)}...`
+          {activeSong?.name.length > 11
+            ? `${activeSong?.name.slice(0, 10)}...`
             : activeSong?.name}
         </Link>
         <Link className="text-xs hover:underline" to={currentCluster}>

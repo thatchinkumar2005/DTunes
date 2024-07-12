@@ -16,6 +16,8 @@ import {
 } from "../../features/MusicPlayer/slices/songsSlice";
 import DropDown from "../../ui/components/DropDown";
 import useAuth from "../../hooks/auth/useAuth";
+import { MdDelete } from "react-icons/md";
+import { IoMdAdd } from "react-icons/io";
 
 function DropDownMenu({ onClick }) {
   return <CiMenuKebab onClick={onClick} className="h-5 w-5" />;
@@ -24,12 +26,19 @@ function DropDownMenu({ onClick }) {
 export default function AlbumPage() {
   const { id } = useParams();
   const { auth } = useAuth();
+  const [owner, setOwner] = useState(false);
 
   const {
     data: album,
     isFetching: isGettingAlbum,
     isSuccess: isFetchedAlbum,
   } = useGetAlbum({ id });
+
+  useEffect(() => {
+    if (isFetchedAlbum) {
+      setOwner(album.artist === auth.id);
+    }
+  }, [album, isFetchedAlbum, owner]);
 
   const {
     user,
@@ -61,14 +70,16 @@ export default function AlbumPage() {
   function handlePlayPause() {
     if (isPending) return;
     if (isSuccess && isFetchedAlbum) {
-      dispatch(
-        setCurrentSongs({
-          songs: albumSongs.pages[0].data,
-          clusterId: `/album/${id}`,
-          clusterName: album?.name,
-        })
-      );
-      dispatch(play());
+      if (albumSongs.pages[0].data.length) {
+        dispatch(
+          setCurrentSongs({
+            songs: albumSongs.pages[0].data,
+            clusterId: `/album/${id}`,
+            clusterName: album?.name,
+          })
+        );
+        dispatch(play());
+      }
     }
   }
 
@@ -97,20 +108,28 @@ export default function AlbumPage() {
                   />
                 </div>
                 <div>
-                  <DropDown ToggleButton={DropDownMenu} dir={"right"}>
-                    <div className="flex flex-col justify-center items-center w-20 h-8">
-                      {auth.id === album.artist && (
-                        <Link
-                          className="text-sm"
-                          to={`/song/create/${album._id}`}
-                        >
-                          New Song
-                        </Link>
-                      )}
-                    </div>
-                  </DropDown>
+                  {owner && (
+                    <DropDown ToggleButton={DropDownMenu} dir={"right"}>
+                      <div className="flex flex-col justify-center items-start gap-3 py-2 w-32">
+                        <div className="flex gap-1 items-center justify-center">
+                          <MdDelete className="fill-red-500" />
+                          <span>Delete Playlist</span>
+                        </div>
+                        <div className="flex gap-1 items-center justify-center">
+                          <IoMdAdd />
+                          <Link
+                            className="text-sm"
+                            to={`/song/create/${album._id}`}
+                          >
+                            New Song
+                          </Link>
+                        </div>
+                      </div>
+                    </DropDown>
+                  )}
                 </div>
               </div>
+              <span className="self-end text-sm text-gray-500">Album</span>
             </div>
           </div>
 
