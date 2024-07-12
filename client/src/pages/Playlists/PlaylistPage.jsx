@@ -114,7 +114,7 @@ export default function PlaylistPage() {
                   />
                 </div>
                 <div>
-                  {owner && (
+                  {owner && !playlist.like && (
                     <DropDown ToggleButton={DropDownMenu} dir={"right"}>
                       <div className="flex flex-col justify-center items-start gap-3 py-2 w-32">
                         <div className="flex gap-1 items-center justify-center">
