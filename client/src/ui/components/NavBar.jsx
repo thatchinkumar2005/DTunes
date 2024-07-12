@@ -56,7 +56,9 @@ export default function NavBar() {
           </div>
           <div className="flex gap-1 items-center">
             <CiLogout />
-            <Link className="hover:underline">Logout</Link>
+            <Link to="/auth/logout" className="hover:underline">
+              Logout
+            </Link>
           </div>
         </div>
       </DropDown>
