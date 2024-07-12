@@ -64,7 +64,7 @@ const MusicPlayer = () => {
       }}
     >
       <div className="bg-bg p-1 flex justify-center items-center overflow-hidden">
-        <div className="flex bg-gray-950 flex-col justify-between w-full h-full rounded-lg ">
+        <div className="flex bg-black flex-col justify-between w-full h-full rounded-lg ">
           <Player />
           <div className="w-full flex flex-row justify-between items-center p-1 grow-0">
             <Title />

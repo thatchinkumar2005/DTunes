@@ -27,7 +27,7 @@ export default function SocialPage() {
         Party
       </button>
       <h2 className="text-3xl font-bold">Friends</h2>
-      <div className="grow overflow-scroll bg-primary rounded-lg p-2 disable-scrollbars">
+      <div className="grow overflow-scroll bg-primary rounded-lg p-2 disable-scrollbars flex flex-col gap-3">
         {isError && <div>{error}</div>}
         {isPending && <Spinner />}
         {isSuccess &&

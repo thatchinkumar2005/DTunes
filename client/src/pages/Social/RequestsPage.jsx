@@ -24,7 +24,7 @@ export default function RequestsPage() {
   }, [inView, fetchNextPage]);
 
   return (
-    <div className="flex flex-col p-3 overflow-scroll disable-scrollbars">
+    <div className="flex flex-col gap-3 p-3 overflow-scroll disable-scrollbars">
       {isError && <div>{error}</div>}
       {isPending && <Spinner />}
       {isSuccess &&
