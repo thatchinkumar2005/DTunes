@@ -1,9 +1,11 @@
 export default function searchApi(axiosPrivate) {
-  return async ({ query, type }) => {
+  return async ({ query, type, record = true }) => {
     try {
       const resp = await axiosPrivate({
         method: "GET",
-        url: `/search?query=${query}&type=${type}`,
+        url: `/search?query=${query}&type=${type}${
+          record ? "&record=record" : ""
+        }`,
       });
       return resp.data;
     } catch (error) {

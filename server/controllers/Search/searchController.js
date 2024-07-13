@@ -10,6 +10,7 @@ export default async function searchController(req, res) {
     const queries = req.query;
     const page = queries?.page || 1;
     const limit = queries?.limit || 5;
+    const record = queries?.record === "record";
     const q = queries?.query;
     const type = queries?.type || "all";
     const offset = (page - 1) * limit;
@@ -59,18 +60,19 @@ export default async function searchController(req, res) {
         .limit(limit);
       count += nameBasedArtists.length;
 
-      if (history) {
-        history.resultsCount = count;
-        history.queryCount++;
-        history.timeStamp = Date.now();
-        history.save();
-      } else {
-        await SearchHistory.create({
-          user: user.id,
-          query: q,
-          resultsCount: count,
-        });
-      }
+      if (record)
+        if (history) {
+          history.resultsCount = count;
+          history.queryCount++;
+          history.timeStamp = Date.now();
+          history.save();
+        } else {
+          await SearchHistory.create({
+            user: user.id,
+            query: q,
+            resultsCount: count,
+          });
+        }
 
       return res.json({
         songs: [...nameBasedSongs, ...genreBasedSongs],
@@ -95,18 +97,19 @@ export default async function searchController(req, res) {
 
       count += genreBasedSongs.length;
 
-      if (history) {
-        history.resultsCount = count;
-        history.queryCount++;
-        history.timeStamp = Date.now();
-        history.save();
-      } else {
-        await SearchHistory.create({
-          user: user.id,
-          query: q,
-          resultsCount: count,
-        });
-      }
+      if (record)
+        if (history) {
+          history.resultsCount = count;
+          history.queryCount++;
+          history.timeStamp = Date.now();
+          history.save();
+        } else {
+          await SearchHistory.create({
+            user: user.id,
+            query: q,
+            resultsCount: count,
+          });
+        }
       return res.json({
         songs: [...nameBasedSongs, ...genreBasedSongs],
       });
@@ -118,18 +121,19 @@ export default async function searchController(req, res) {
         .limit(limit);
       count += nameBasedAlbums.length;
 
-      if (history) {
-        history.resultsCount = count;
-        history.queryCount++;
-        history.timeStamp = Date.now();
-        history.save();
-      } else {
-        await SearchHistory.create({
-          user: user.id,
-          query: q,
-          resultsCount: count,
-        });
-      }
+      if (record)
+        if (history) {
+          history.resultsCount = count;
+          history.queryCount++;
+          history.timeStamp = Date.now();
+          history.save();
+        } else {
+          await SearchHistory.create({
+            user: user.id,
+            query: q,
+            resultsCount: count,
+          });
+        }
       return res.json({
         albums: nameBasedAlbums,
       });
@@ -142,18 +146,19 @@ export default async function searchController(req, res) {
         .limit(limit);
 
       count += nameBasedPlaylists.length;
-      if (history) {
-        history.resultsCount = count;
-        history.queryCount++;
-        history.timeStamp = Date.now();
-        history.save();
-      } else {
-        await SearchHistory.create({
-          user: user.id,
-          query: q,
-          resultsCount: count,
-        });
-      }
+      if (record)
+        if (history) {
+          history.resultsCount = count;
+          history.queryCount++;
+          history.timeStamp = Date.now();
+          history.save();
+        } else {
+          await SearchHistory.create({
+            user: user.id,
+            query: q,
+            resultsCount: count,
+          });
+        }
       return res.json({
         playlists: nameBasedPlaylists,
       });
@@ -170,18 +175,19 @@ export default async function searchController(req, res) {
         .limit(limit);
 
       count += nameBasedArtists.length;
-      if (history) {
-        history.resultsCount = count;
-        history.queryCount++;
-        history.timeStamp = Date.now();
-        history.save();
-      } else {
-        await SearchHistory.create({
-          user: user.id,
-          query: q,
-          resultsCount: count,
-        });
-      }
+      if (record)
+        if (history) {
+          history.resultsCount = count;
+          history.queryCount++;
+          history.timeStamp = Date.now();
+          history.save();
+        } else {
+          await SearchHistory.create({
+            user: user.id,
+            query: q,
+            resultsCount: count,
+          });
+        }
       return res.json({
         artists: nameBasedArtists,
       });
@@ -198,18 +204,19 @@ export default async function searchController(req, res) {
 
       count += nameBasedUsers.length;
 
-      if (history) {
-        history.resultsCount = count;
-        history.queryCount++;
-        history.timeStamp = Date.now();
-        history.save();
-      } else {
-        await SearchHistory.create({
-          user: user.id,
-          query: q,
-          resultsCount: count,
-        });
-      }
+      if (record)
+        if (history) {
+          history.resultsCount = count;
+          history.queryCount++;
+          history.timeStamp = Date.now();
+          history.save();
+        } else {
+          await SearchHistory.create({
+            user: user.id,
+            query: q,
+            resultsCount: count,
+          });
+        }
       return res.json({
         users: nameBasedUsers,
       });
