@@ -10,6 +10,7 @@ import useGetUserPlaylists from "../../Users/hooks/useGetUserPlaylists";
 import { useInView } from "react-intersection-observer";
 import Spinner from "../../../ui/components/Spinner";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 function ModalToggleButton({ onClick }) {
   return (
@@ -88,7 +89,13 @@ export default function PartyRequestStrip({ request }) {
   // if (gotParty && gotLeader)
   return (
     <div className="w-full h-20 bg-primary flex flex-col md:flex-row justify-between md:items-center p-3 rounded-md">
-      <span className="text-lg">{`${leader?.fname} has invited you to their party`}</span>
+      <span className="text-lg">
+        <Link
+          to={`/user/${leader?._id}`}
+          className="hover:underline"
+        >{`${leader?.fname}`}</Link>
+        {` has invited you to their party`}
+      </span>
       <div className="flex gap-2">
         <Modal
           ToggleElement={ModalToggleButton}

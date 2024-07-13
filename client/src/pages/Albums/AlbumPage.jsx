@@ -27,6 +27,7 @@ export default function AlbumPage() {
   const { id } = useParams();
   const { auth } = useAuth();
   const [owner, setOwner] = useState(false);
+  const [isOpen, setOpen] = useState(false);
 
   const {
     data: album,
@@ -109,7 +110,12 @@ export default function AlbumPage() {
                 </div>
                 <div>
                   {owner && (
-                    <DropDown ToggleButton={DropDownMenu} dir={"right"}>
+                    <DropDown
+                      ToggleButton={DropDownMenu}
+                      dir={"right"}
+                      isOpen={isOpen}
+                      setOpen={setOpen}
+                    >
                       <div className="flex flex-col justify-center items-start gap-3 py-2 w-32">
                         <div className="flex gap-1 items-center justify-center">
                           <MdDelete className="fill-red-500" />

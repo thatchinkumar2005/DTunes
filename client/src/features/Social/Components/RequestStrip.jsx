@@ -2,6 +2,7 @@ import React from "react";
 import useGetUser from "../../Users/hooks/useGetUser";
 import useFriendRespond from "../hooks/useFriendRespond";
 import { useQueryClient } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 
 export default function RequestStrip({ request }) {
   const { respond, isResponding } = useFriendRespond();
@@ -36,7 +37,13 @@ export default function RequestStrip({ request }) {
   if (isSuccess)
     return (
       <div className="w-full h-20 bg-primary flex flex-col md:flex-row justify-between md:items-center p-3 rounded-md">
-        <span className="text-lg">{`${requester.fname} has requested to be your friend`}</span>
+        <span className="text-lg">
+          <Link
+            to={`/user/${requester._id}`}
+            className="hover:underline"
+          >{`${requester.fname}`}</Link>
+          {` has requested to be your friend`}
+        </span>
         <div className="flex gap-2">
           <button
             onClick={handleAccept}

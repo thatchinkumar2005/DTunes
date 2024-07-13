@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import useCreatePlaylist from "../hooks/useCreatePlaylist";
+import toast from "react-hot-toast";
 
 export default function CreatePlaylistForm() {
   const [file, setFile] = useState(null);
@@ -33,6 +34,7 @@ export default function CreatePlaylistForm() {
     createPlaylist(formData, {
       onSuccess: (data) => {
         console.log(data);
+        toast("New playlist created");
         navigate("/");
       },
       onError: (err) => {

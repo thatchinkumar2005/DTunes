@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import useCreateAlbum from "../hooks/useCreateAlbum";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function AlbumCreateForm() {
   const [file, setFile] = useState(null);
@@ -35,7 +36,8 @@ export default function AlbumCreateForm() {
     createAlbum(formData, {
       onSuccess: (data) => {
         console.log(data);
-        navigate("/");
+        toast("New Album Uploaded!");
+        navigate("/profile");
       },
       onError: (err) => {
         console.log(err);

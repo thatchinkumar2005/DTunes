@@ -2,6 +2,7 @@ import React, { useCallback, useRef, useState } from "react";
 import useCreateSong from "../hooks/useCreateSong";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function CreateSongForm({ albumId }) {
   const [error, setError] = useState(null);
@@ -65,7 +66,8 @@ export default function CreateSongForm({ albumId }) {
     createSong(formData, {
       onSuccess: (data) => {
         console.log(data);
-        navigate("/");
+        toast("New Song Uploaded!");
+        navigate(`/profile`);
       },
       onError: (err) => {
         setError(err.message);
