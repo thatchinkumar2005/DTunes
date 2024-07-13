@@ -28,6 +28,7 @@ export default function PlaylistPage() {
   const { id } = useParams();
   const { auth } = useAuth();
   const [owner, setOwner] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const {
     data: playlist,
@@ -94,9 +95,11 @@ export default function PlaylistPage() {
               <img
                 className="h-36 rounded-lg mb-3"
                 src={
-                  playlist.like
+                  playlist?.like
                     ? "/LikedPlaylist.jpg"
                     : playlist?.files?.coverArt
+                    ? playlist?.files?.coverArt
+                    : "/Playlist.jpg"
                 }
               />
             </div>
@@ -115,7 +118,12 @@ export default function PlaylistPage() {
                 </div>
                 <div>
                   {owner && !playlist.like && (
-                    <DropDown ToggleButton={DropDownMenu} dir={"right"}>
+                    <DropDown
+                      ToggleButton={DropDownMenu}
+                      dir={"right"}
+                      isOpen={open}
+                      setOpen={setOpen}
+                    >
                       <div className="flex flex-col justify-center items-start gap-3 py-2 w-32">
                         <div className="flex gap-1 items-center justify-center">
                           <MdDelete className="fill-red-500" />

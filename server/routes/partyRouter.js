@@ -7,8 +7,16 @@ import togglerequestPartyMemberController from "../controllers/Party/toggleReque
 import respondPartyRequestController from "../controllers/Party/respondPartyReqController.js";
 import deletePartyController from "../controllers/Party/deletePartyController.js";
 import leavePartyController from "../controllers/Party/leavePartyController.js";
+import getPartyMembers from "../controllers/Party/getPartyMembers.js";
 
 const partyRouter = express.Router();
+
+partyRouter.get(
+  "/members/:id",
+  verifyJwt,
+  verifyRoles(2005, 2009),
+  getPartyMembers
+);
 
 partyRouter.post(
   "/",

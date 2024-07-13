@@ -52,9 +52,10 @@ export default function NavBar() {
           ToggleButton={ProfileButton}
           isOpen={openDropDown}
           setOpen={setOpenDropDown}
+          className={"top-5 "}
         >
           <div className="flex flex-col gap-1 px-3 py-1">
-            <div className="flex gap-1 items-center">
+            <div className="flex gap-1 items-center text-md">
               <AiOutlineProfile />
               <Link
                 onClick={() => {

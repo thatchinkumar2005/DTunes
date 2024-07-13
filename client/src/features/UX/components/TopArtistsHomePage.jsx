@@ -23,7 +23,7 @@ export default function TopArtistsHomePage() {
     }
   }, [inView, fetchNextPage]);
   return (
-    <div className="h-32 md:h-40 w-full bg-primary rounded-lg p-3 disable-scrollbars grid grid-cols-3 md:grid-cols-4 gap-y-2 overflow-scroll">
+    <div className="h-32 md:h-40 w-full bg-primary rounded-lg p-3 disable-scrollbars grid grid-cols-3 auto-rows-min md:grid-cols-4 gap-y-2 overflow-scroll">
       {isError && <div>{error}</div>}
       {isPending && <Spinner />}
       {isSuccess &&

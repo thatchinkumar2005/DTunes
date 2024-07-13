@@ -7,7 +7,6 @@ export default function DropDown({
   dir,
   isOpen,
   setOpen,
-  className,
 }) {
   const dropdownRef = useRef();
 
@@ -31,17 +30,17 @@ export default function DropDown({
   return (
     <>
       <ToggleButton onClick={handleToggle} />
-      <div ref={dropdownRef} className="relative z-50">
-        {isOpen && (
+      {isOpen && (
+        <div ref={dropdownRef} className="relative flex flex-col z-50">
           <div
-            className={`p-1 md:p-2 rounded-lg bg-primary absolute ${
-              dir === "right" ? "top-0 left-2" : "top-0 right-2"
-            } ${className}`}
+            className={`p-1 md:p-2 rounded-lg bg-primary absolute  ${
+              dir === "right" ? "top-5 left-2" : "top-5 right-2"
+            }`}
           >
             {children}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 }

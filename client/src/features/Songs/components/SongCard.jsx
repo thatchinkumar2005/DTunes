@@ -87,6 +87,7 @@ export default function SongCard({ song }) {
           ToggleButton={DropDownMenu}
           isOpen={isDropDownOpen}
           setOpen={setIsDropDownOpen}
+          className="top-3"
         >
           <div className="flex flex-col justify-center items-center w-32 h-8 ">
             <Modal
