@@ -5,7 +5,13 @@ export default function PlaylistCard({ playlist }) {
   return (
     <div className="h-40 w-28 md:h-52 md:w-36 rounded-lg bg-secondary flex flex-col items-center p-1 gap-1">
       <img
-        src={playlist.like ? "/LikedPlaylist.jpg" : playlist.files.coverArt}
+        src={
+          playlist?.like
+            ? "/LikedPlaylist.jpg"
+            : playlist?.files?.coverArt
+            ? playlist?.files?.coverArt
+            : "/Playlist.jpg"
+        }
         className="h-30 w-30 rounded-lg md:h-28 md:w-28"
       />
       <Link

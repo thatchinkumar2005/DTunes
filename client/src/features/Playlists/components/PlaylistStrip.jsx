@@ -34,9 +34,11 @@ export default function PlaylistStrip({ playlist, songId }) {
         <img
           className="h-10 grow-0"
           src={
-            playlist?.files?.coverArt
-              ? playlist.files.coverArt
-              : "/LikedPlaylist.jpg"
+            playlist?.like
+              ? "/LikedPlaylist.jpg"
+              : playlist?.files?.coverArt
+              ? playlist?.files?.coverArt
+              : "/Playlist.jpg"
           }
           alt="cover art"
         />
