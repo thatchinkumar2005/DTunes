@@ -27,7 +27,6 @@ export default async function deletePartyController(req, res) {
 
     const members = await PartyRequest.find({
       party: party._id,
-      status: "accepted",
     });
     const partyplaylist = await Playlist.findOne({
       _id: party.resultantPlaylist,
@@ -63,6 +62,8 @@ export default async function deletePartyController(req, res) {
         throw error;
       }
     }
+
+    await Party.deleteOne({ _id: party._id });
 
     return res.json({
       message: "deleted",

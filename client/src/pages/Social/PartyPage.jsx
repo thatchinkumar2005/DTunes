@@ -223,6 +223,7 @@ export default function PartyPage() {
                     </div>
                   ))
                 )}
+              <div ref={ref}></div>
             </div>
           </div>
         </>

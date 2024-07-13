@@ -8,8 +8,11 @@ import respondPartyRequestController from "../controllers/Party/respondPartyReqC
 import deletePartyController from "../controllers/Party/deletePartyController.js";
 import leavePartyController from "../controllers/Party/leavePartyController.js";
 import getPartyMembers from "../controllers/Party/getPartyMembers.js";
+import getPartyController from "../controllers/Party/getPartyController.js";
 
 const partyRouter = express.Router();
+
+partyRouter.get("/:id", verifyJwt, verifyRoles(2005, 2009), getPartyController);
 
 partyRouter.get(
   "/members/:id",

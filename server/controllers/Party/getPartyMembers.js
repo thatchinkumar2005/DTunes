@@ -8,7 +8,7 @@ export default async function getPartyMembers(req, res) {
     const limit = queries?.limit || 10;
 
     const { id } = req.params;
-    const relns = await PartyRequest.find({ party: id })
+    const relns = await PartyRequest.find({ party: id, status: "accepted" })
       .skip((page - 1) * limit)
       .limit(limit);
 
