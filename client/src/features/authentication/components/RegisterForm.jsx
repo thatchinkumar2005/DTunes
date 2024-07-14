@@ -55,6 +55,10 @@ export default function RegisterForm() {
               value: true,
               message: "Name is required",
             },
+            maxLength: {
+              value: 17,
+              message: "Name can only contain 18 characters..",
+            },
           })}
         />
       </div>
