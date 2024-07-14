@@ -59,25 +59,27 @@ export default function UserPage() {
       {isGettingUser && <Spinner />}
       {isFethchedUser && (
         <>
-          <div className="flex justify-start w-full items-center p-3 h-52 border-b-2 md:gap-2 border-primary">
-            <div>
-              {user?.file?.profilePic ? (
-                <div className="shrink-0 flex flex-col">
-                  <img className="h-36 rounded-lg" src={song.files.coverArt} />
-                </div>
+          <div className="flex justify-start w-full items-center p-3 h-auto border-b-2 md:gap-2 border-primary ">
+            <div className=" shrink-0">
+              {user?.files?.profilePic ? (
+                <img
+                  className="h-36 rounded-full shrink-0"
+                  src={user?.files?.profilePic}
+                />
               ) : (
                 <FaRegUserCircle className="h-36 w-36 mb-2" />
               )}
             </div>
             <div className=" h-full p-4 flex flex-col gap-5 justify-between grow shrink-0">
               <div className="text-3xl">{user.fname + " " + user.lname}</div>
-              <div className="flex justify-between items-center gap-20 ml-1">
-                {artist && <span className="text-lg">Plays:</span>}{" "}
+              <div className="text-lg text-gray-500 ml-1">{user?.bio}</div>
+              <div className="flex justify-between items-center ml-1">
+                {artist && <span className="text-lg">Plays:</span>}
                 {(frndReln?.status === "rejected" || !frndReln) && (
                   <button
                     onClick={handleRequest}
                     disabled={isRequesting}
-                    className="p-1 w-20 h-10 bg-button rounded-lg hover:bg-gray-500 duration-150"
+                    className="p-4 w-20 h-10 mr-1 bg-button rounded-lg hover:bg-gray-500 duration-150 flex justify-center items-center"
                   >
                     Request
                   </button>
@@ -86,7 +88,7 @@ export default function UserPage() {
                   <button
                     onClick={handleRequest}
                     disabled={isRequesting}
-                    className="p-1 w-20 h-10 bg-button rounded-lg hover:bg-gray-500 duration-150"
+                    className="p-4 w-20 h-10 mr-1 bg-button rounded-lg hover:bg-gray-500 duration-150 flex justify-center items-center"
                   >
                     Requested
                   </button>

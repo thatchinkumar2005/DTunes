@@ -13,6 +13,8 @@ export default async function getAuthUserController(req, res) {
         roles: 1,
         verified: 1,
         genres: 1,
+        files: 1,
+        bio: 1,
       }
     );
 

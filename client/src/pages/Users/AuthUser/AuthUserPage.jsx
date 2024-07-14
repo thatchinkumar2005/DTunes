@@ -32,20 +32,20 @@ export default function AuthUserPage() {
       {isGettingAuthUser && <Spinner />}
       {isFethchedUser && (
         <>
-          <div className="flex justify-start w-full items-center p-3 h-52 border-b-2 md:gap-2 border-primary">
-            <div>
-              {authUser?.file?.profilePic ? (
-                <div className="shrink-0 flex flex-col">
-                  <img className="h-36 rounded-lg" src={song.files.coverArt} />
-                </div>
+          <div className="flex justify-start w-full items-center p-3 h-auto border-b-2 md:gap-2 border-primary shrink-0">
+            <div className=" shrink-0">
+              {authUser?.files?.profilePic ? (
+                <img
+                  className="h-36 rounded-full"
+                  src={authUser?.files?.profilePic}
+                />
               ) : (
                 <FaRegUserCircle className="h-36 w-36 mb-2" />
               )}
             </div>
             <div className=" h-full p-4 flex flex-col gap-5 justify-between grow shrink-0">
-              <div className="text-3xl">
-                {authUser.fname + " " + authUser.lname}
-              </div>
+              <div className="text-3xl">{authUser.fname}</div>
+              <div className="text-lg text-gray-500 ml-1">{authUser?.bio}</div>
               <div className="flex justify-between items-center gap-20 ml-1">
                 {artist && <span className="text-lg">Plays:</span>}
               </div>

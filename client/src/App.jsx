@@ -24,6 +24,7 @@ import RequestsPage from "./pages/Social/RequestsPage";
 import SocialPage from "./pages/Social/SocialPage";
 import PartyPage from "./pages/Social/PartyPage";
 import AccountsPage from "./pages/Accounts/AccountsPage";
+import EditUserPage from "./pages/Users/AuthUser/EditUserPage";
 
 export default function App() {
   return (
@@ -53,6 +54,7 @@ export default function App() {
             <Route path="/profile" element={<AuthUserPage />} />
             <Route path="/social" element={<SocialPage />} />
             <Route path="/party" element={<PartyPage />} />
+            <Route path="/profile/edit" element={<EditUserPage />} />
             <Route path="/user/:id" element={<UserPage />} />
             <Route path="/requests" element={<RequestsPage />} />
             <Route path="/accounts" element={<AccountsPage />} />

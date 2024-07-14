@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { useNavigate } from "react-router-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
-import DropDown from "../../../ui/components/DropDown";
 import Modal from "../../../ui/components/Modal";
 import useAuth from "../../../hooks/auth/useAuth";
 import useGetUserPlaylists from "../../Users/hooks/useGetUserPlaylists";

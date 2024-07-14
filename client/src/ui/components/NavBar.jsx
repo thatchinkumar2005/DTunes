@@ -14,7 +14,7 @@ function ProfileButton({ onClick }) {
     <>
       {user?.files?.profilePic ? (
         <img
-          className="h-16 rounded-full "
+          className="h-12 rounded-full "
           src={user?.files?.profilePic}
           onClick={onClick}
         />
@@ -26,7 +26,6 @@ function ProfileButton({ onClick }) {
 }
 
 export default function NavBar() {
-  const { data, isPending, isSuccess } = useGetAuthUser();
   const [openDropDown, setOpenDropDown] = useState(false);
   return (
     <div className="flex bg-layout flex-row items-center md:gap-3 md:col-start-1 md:col-end-3 border-b-2 border-primary">

@@ -5,14 +5,12 @@ import RecommendedSongsHomePage from "../../features/UX/components/RecommendedSo
 import TopArtistsHomePage from "../../features/UX/components/TopArtistsHomePage";
 import AlbumsHomePage from "../../features/UX/components/AlbumsHomePage";
 import PlaylistsHomePage from "../../features/UX/components/PlaylistsHomePage";
-import useAuth from "../../hooks/auth/useAuth";
-import useGetUser from "../../features/Users/hooks/useGetUser";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import useGetAuthUser from "../../features/Users/hooks/useGetAuthUser";
 
 export default function HomePage() {
-  const { auth } = useAuth();
-  const { user, isSuccess } = useGetUser({ id: auth.id });
+  const { data: user, isSuccess } = useGetAuthUser();
 
   useEffect(() => {
     if (isSuccess) {
