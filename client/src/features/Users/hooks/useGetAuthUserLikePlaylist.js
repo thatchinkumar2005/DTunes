@@ -4,9 +4,9 @@ import getAuthUserLikePlaylist from "../../../services/users/authUser/getAuthUse
 
 export default function useGetAuthUserLikePlaylist() {
   const axiosPrivate = useAxiosPrivate();
-  const { data, isFetching, isSuccess } = useQuery({
+  const { data, isPending, isSuccess } = useQuery({
     queryKey: ["authUserLikePlaylist"],
     queryFn: getAuthUserLikePlaylist(axiosPrivate),
   });
-  return { data, isFetching, isSuccess };
+  return { data, isPending, isSuccess };
 }

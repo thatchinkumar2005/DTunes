@@ -4,11 +4,11 @@ import getAlbumApi from "../../../services/albums/getAlbumApi";
 
 export default function useGetAlbum({ id }) {
   const axiosPrivate = useAxiosPrivate();
-  const { data, isFetching, isSuccess } = useQuery({
+  const { data, isPending, isSuccess } = useQuery({
     queryKey: ["album", id],
     queryFn: getAlbumApi(axiosPrivate),
     enabled: !!id,
   });
 
-  return { data, isFetching, isSuccess };
+  return { data, isPending, isSuccess };
 }

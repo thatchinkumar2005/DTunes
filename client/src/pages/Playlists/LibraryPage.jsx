@@ -9,12 +9,12 @@ import { useInView } from "react-intersection-observer";
 import Spinner from "../../ui/components/Spinner";
 
 export default function LibraryPage() {
-  const { data: likePlaylist, isSuccess: gotLikedPlaylist } =
+  const { data: likePlaylist, isPending: isGettingLikedPlaylist } =
     useGetAuthUserLikePlaylist();
 
-  const { data: authUser, isSuccess: gotAuthUser } = useGetAuthUser();
+  const { data: authUser, isPending: isGettingUser } = useGetAuthUser();
 
-  const { data: authUserParty, isSuccess: gotAuthUserParty } =
+  const { data: authUserParty, isPending: isGettingAuthUserParty } =
     useGetAuthUserParty();
 
   const {
@@ -30,34 +30,46 @@ export default function LibraryPage() {
 
   return (
     <div className="h-full w-full p-3 flex flex-col overflow-scroll disable-scrollbars gap-3">
-      {gotAuthUser && (
-        <h1 className="text-3xl font-bold self-center mt-3">{`${authUser.fname}'s Library`}</h1>
+      {isGettingUser ? (
+        <Spinner />
+      ) : (
+        authUser && (
+          <h1 className="text-3xl font-bold self-center mt-3">{`${authUser.fname}'s Library`}</h1>
+        )
       )}
       <div className="bg-secondary flex flex-col gap-3 p-3">
-        {gotLikedPlaylist && (
-          <div className="w-full flex bg-primary rounded-lg p-2">
-            <div className="flex gap-3 items-center">
-              <img className="h-16 rounded-lg" src="/LikedPlaylist.jpg" />
-              <h1 className="text-3xl hover:underline">
-                <Link to={`/playlist/${likePlaylist._id}`}>Liked</Link>
-              </h1>
+        {isGettingLikedPlaylist ? (
+          <Spinner />
+        ) : (
+          likePlaylist && (
+            <div className="w-full flex bg-primary rounded-lg p-2">
+              <div className="flex gap-3 items-center">
+                <img className="h-16 rounded-lg" src="/LikedPlaylist.jpg" />
+                <h1 className="text-3xl hover:underline">
+                  <Link to={`/playlist/${likePlaylist._id}`}>Liked</Link>
+                </h1>
+              </div>
             </div>
-          </div>
+          )
         )}
-        {gotAuthUserParty && authUserParty && (
-          <div className="w-full flex bg-primary rounded-lg p-2">
-            <div className="flex gap-3 items-center">
-              <img
-                className="h-16 rounded-lg"
-                src={authUserParty?.file?.coverArt || "/Playlist.jpg"}
-              />
-              <h1 className="text-3xl hover:underline">
-                <Link to={`/playlist/${authUserParty.resultantPlaylist}`}>
-                  Party Playlist
-                </Link>
-              </h1>
+        {isGettingAuthUserParty ? (
+          <Spinner />
+        ) : (
+          authUserParty && (
+            <div className="w-full flex bg-primary rounded-lg p-2">
+              <div className="flex gap-3 items-center">
+                <img
+                  className="h-16 rounded-lg"
+                  src={authUserParty?.file?.coverArt || "/Playlist.jpg"}
+                />
+                <h1 className="text-3xl hover:underline">
+                  <Link to={`/playlist/${authUserParty.resultantPlaylist}`}>
+                    Party Playlist
+                  </Link>
+                </h1>
+              </div>
             </div>
-          </div>
+          )
         )}
       </div>
       <div className="bg-primary flex flex-col gap-3 p-3 overflow-scroll disable-scrollbars grow">

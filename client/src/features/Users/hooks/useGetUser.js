@@ -6,12 +6,12 @@ export default function useGetUser({ id }) {
   const axiosPrivate = useAxiosPrivate();
   const {
     data: user,
-    isFetching,
+    isPending,
     isSuccess,
   } = useQuery({
     queryKey: ["artist", id],
     queryFn: getUserApi(axiosPrivate),
     enabled: !!id,
   });
-  return { user, isFetching, isSuccess };
+  return { user, isPending, isSuccess };
 }

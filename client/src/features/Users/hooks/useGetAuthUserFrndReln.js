@@ -4,10 +4,10 @@ import getAuthUserFrndReln from "../../../services/users/authUser/getAuthUserFrn
 
 export default function useGetAuthUserFrndReln({ id }) {
   const axiosPrivate = useAxiosPrivate();
-  const { data, isFetching, isSuccess } = useQuery({
+  const { data, isPending, isSuccess } = useQuery({
     queryKey: ["authUserFrndReln", id],
     queryFn: getAuthUserFrndReln(axiosPrivate),
   });
 
-  return { data, isFetching, isSuccess };
+  return { data, isPending, isSuccess };
 }

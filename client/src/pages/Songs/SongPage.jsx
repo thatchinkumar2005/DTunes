@@ -19,7 +19,7 @@ export default function SongPage() {
   const { id } = useParams();
   const {
     song,
-    isFetching: isGettingSong,
+    isPending: isGettingSong,
     isSuccess: isFetchedSong,
   } = useSong({ id });
 
@@ -47,7 +47,7 @@ export default function SongPage() {
 
   const {
     user,
-    isFetching: isGettingArtist,
+    isPending: isGettingArtist,
     isSuccess: isFetchedArtist,
   } = useGetArtist({
     id: song?.artists[0],
@@ -55,43 +55,52 @@ export default function SongPage() {
 
   return (
     <div className="flex flex-col overflow-scroll disable-scrollbars h-full w-full">
-      {isGettingArtist || (isGettingSong && <Spinner />)}
-      {isFetchedArtist && isFetchedSong && (
-        <>
-          <div className="flex justify-start w-full items-center p-3 h-52 border-b-2 border-primary">
-            <div className="shrink-0 flex flex-col">
-              <img className="h-36 rounded-lg" src={song.files.coverArt} />
-            </div>
-            <div className=" h-full p-4 flex flex-col gap-2 justify-start grow shrink-0">
-              <h1 className="text-3xl ">{song.name}</h1>
-              <span className="text-sm self-start text-gray-500">
-                {user.fname}
-              </span>
-              <div className="mt-7 flex justify-start gap-10 items-center">
-                <div className="bg-primary rounded-full h-12 w-12 flex justify-center items-center  hover:bg-slate-500">
-                  <CiPlay1
-                    onClick={handlePlayPause}
-                    className="h-10 w-10 ml-2"
-                  />
-                </div>
-                <FaHeart
-                  onClick={handleLike}
-                  className={`h-5 w-5 self-end mb-2 ${
-                    isLiked ? "fill-blue-500" : "fill-white"
-                  }`}
-                />
-                <CiMenuKebab className="h-5 w-5 self-end mb-2" />
+      {isGettingSong ? (
+        <Spinner />
+      ) : (
+        song && (
+          <>
+            <div className="flex justify-start w-full items-center p-3 h-52 border-b-2 border-primary">
+              <div className="shrink-0 flex flex-col">
+                <img className="h-36 rounded-lg" src={song.files.coverArt} />
               </div>
-              <span></span>
+              <div className=" h-full p-4 flex flex-col gap-2 justify-start grow shrink-0">
+                <h1 className="text-3xl ">{song.name}</h1>
+                {isGettingArtist ? (
+                  <Spinner className={"h-1 w-1"} />
+                ) : (
+                  user && (
+                    <span className="text-sm self-start text-gray-500">
+                      {user.fname}
+                    </span>
+                  )
+                )}
+                <div className="mt-7 flex justify-start gap-10 items-center">
+                  <div className="bg-primary rounded-full h-12 w-12 flex justify-center items-center  hover:bg-slate-500">
+                    <CiPlay1
+                      onClick={handlePlayPause}
+                      className="h-10 w-10 ml-2"
+                    />
+                  </div>
+                  <FaHeart
+                    onClick={handleLike}
+                    className={`h-5 w-5 self-end mb-2 ${
+                      isLiked ? "fill-blue-500" : "fill-white"
+                    }`}
+                  />
+                  <CiMenuKebab className="h-5 w-5 self-end mb-2" />
+                </div>
+                <span></span>
+              </div>
             </div>
-          </div>
 
-          <div className="flex justify-center grow flex-col items-center overflow-scroll p-3 disable-scrollbars">
-            <p className="w-[80%] rounded-lg grow overflow-scroll disable-scrollbars bg-secondary text-2xl p-3 whitespace-pre-line disable-scrollbars">
-              {song.lyric ? song.lyric : "No Lyric Found"}
-            </p>
-          </div>
-        </>
+            <div className="flex justify-center grow flex-col items-center overflow-scroll p-3 disable-scrollbars">
+              <p className="w-[80%] rounded-lg grow overflow-scroll disable-scrollbars bg-secondary text-2xl p-3 whitespace-pre-line disable-scrollbars">
+                {song.lyric ? song.lyric : "No Lyric Found"}
+              </p>
+            </div>
+          </>
+        )
       )}
     </div>
   );

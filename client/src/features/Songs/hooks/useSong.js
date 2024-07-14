@@ -6,12 +6,12 @@ export default function useSong({ id }) {
   const axiosPrivate = useAxiosPrivate();
   const {
     data: song,
-    isFetching,
+    isPending,
     isSuccess,
   } = useQuery({
     queryKey: ["song", id],
     queryFn: getSongApi(axiosPrivate),
     enabled: !!id,
   });
-  return { song, isFetching, isSuccess };
+  return { song, isPending, isSuccess };
 }

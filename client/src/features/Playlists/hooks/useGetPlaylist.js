@@ -4,10 +4,10 @@ import getPlaylistApi from "../../../services/playlists/getPlaylistApi";
 
 export default function useGetPlaylist({ id }) {
   const axiosPrivate = useAxiosPrivate();
-  const { data, isFetching, isSuccess } = useQuery({
+  const { data, isPending, isSuccess } = useQuery({
     queryKey: ["playlist", id],
     queryFn: getPlaylistApi(axiosPrivate),
     enabled: !!id,
   });
-  return { data, isFetching, isSuccess };
+  return { data, isPending, isSuccess };
 }

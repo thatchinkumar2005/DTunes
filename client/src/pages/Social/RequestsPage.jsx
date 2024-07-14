@@ -29,11 +29,19 @@ export default function RequestsPage() {
     hasNextPage: hasNextPartyPage,
   } = useGetAuthUserPartyRequests();
 
+  const { partyRef, partyInView } = useInView();
+
   useEffect(() => {
     if (inView) {
       fetchNextPage();
     }
   }, [inView, fetchNextPage]);
+
+  useEffect(() => {
+    if (partyInView) {
+      fetchNextPartyPage();
+    }
+  }, [partyInView, fetchNextPartyPage]);
 
   return (
     <div className="flex flex-col gap-3 p-3 overflow-scroll disable-scrollbars">
@@ -59,7 +67,7 @@ export default function RequestsPage() {
               <PartyRequestStrip key={request._id} request={request} />
             ))
           )}
-        <div ref={ref}></div>
+        <div ref={partyRef}></div>
       </div>
     </div>
   );

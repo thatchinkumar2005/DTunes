@@ -92,7 +92,7 @@ export default function CreatePartyForm() {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   return (
-    <div className="flex flex-col gap-6 justify-start h-full items-center bg-slate-600 p-5 px-8 rounded-lg overflow-scroll">
+    <div className="flex flex-col gap-6 justify-start h-full items-center bg-slate-600 p-5 px-8 rounded-lg overflow-scroll disable-scrollbars">
       <h1 className="text-3xl font-bold">Create Party</h1>
       {error && <div className="text-red-500">{error}</div>}
       <form>

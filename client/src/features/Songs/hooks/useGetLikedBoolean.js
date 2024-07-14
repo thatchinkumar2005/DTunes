@@ -4,7 +4,7 @@ import getLikedBoolean from "../../../services/Songs/getLikedBoolean";
 
 export default function useGetLikedBoolean({ song }) {
   const axiosPrivate = useAxiosPrivate();
-  const { data: isLiked, isFetching: isGetting } = useQuery({
+  const { data: isLiked, isPending: isGetting } = useQuery({
     queryKey: ["isLiked", song],
     queryFn: getLikedBoolean(axiosPrivate),
     enabled: !!song,
