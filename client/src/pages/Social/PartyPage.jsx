@@ -114,9 +114,7 @@ export default function PartyPage() {
           <div className="flex justify-start gap-3">
             <img
               src={
-                party?.files?.coverArt
-                  ? party?.files?.coverArt
-                  : "/Playlist.jpg"
+                party?.file?.coverArt ? party?.file?.coverArt : "/Playlist.jpg"
               }
               className="h-32 w-32"
             />
