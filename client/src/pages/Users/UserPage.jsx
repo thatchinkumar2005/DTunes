@@ -10,6 +10,7 @@ import UserPagePlaylists from "../../features/Users/components/UserPagePlaylists
 import useGetAuthUserFrndReln from "../../features/Users/hooks/useGetAuthUserFrndReln";
 import useFriendRequest from "../../features/Social/hooks/useFriendRequest";
 import { useQueryClient } from "@tanstack/react-query";
+import useGetArtistPlays from "../../features/Users/hooks/useGetArtistPlays";
 
 export default function UserPage() {
   const { id } = useParams();
@@ -32,6 +33,12 @@ export default function UserPage() {
       }
     }
   });
+
+  const {
+    data: plays,
+    isPending: isGettingPlays,
+    isSuccess: gotPlays,
+  } = useGetArtistPlays({ id: user?._id });
 
   const [artist, setArtist] = useState(false);
 
@@ -86,7 +93,18 @@ export default function UserPage() {
               <div className="text-3xl">{user.fname + " " + user.lname}</div>
               <div className="text-lg text-gray-500 ml-1">{user?.bio}</div>
               <div className="flex justify-between items-center ml-1">
-                {artist && <span className="text-lg">Plays:</span>}
+                {artist && (
+                  <span className="text-lg">
+                    Plays:{" "}
+                    {isGettingPlays ? (
+                      <Spinner />
+                    ) : plays[0] ? (
+                      plays[0].totalPlays
+                    ) : (
+                      0
+                    )}
+                  </span>
+                )}
                 {(frndReln?.status === "rejected" || !frndReln) && (
                   <button
                     onClick={handleRequest}

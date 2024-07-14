@@ -27,6 +27,7 @@ import checkIfLikedController from "../controllers/Users/authUser/checkIfLikedCo
 import getAllArtistsController from "../controllers/Users/getAllArtistsController.js";
 import getAuthUserPartyRequestsController from "../controllers/Users/authUser/getAuthUserPartyRequestsController.js";
 import getAuthUserPartyPlaylist from "../../client/src/services/users/authUser/getAuthUserPartyPlaylist.js";
+import getArtistPlays from "../controllers/Users/getArtistPlays.js";
 
 const userRouter = express.Router();
 
@@ -199,4 +200,11 @@ userRouter.get(
   verifyJwt,
   verifyRoles(2005, 2009),
   getUserPartyController
+);
+
+userRouter.get(
+  "/plays/:id",
+  verifyJwt,
+  verifyRoles(2005, 2009),
+  getArtistPlays
 );
