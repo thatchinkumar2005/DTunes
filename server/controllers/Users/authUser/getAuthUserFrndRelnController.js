@@ -11,11 +11,18 @@ export default async function getAuthUserFrndReln(req, res) {
     if (otherUser._id.equals(user.id))
       return res.status(400).json({ message: "You can't provide your id" });
 
-    const relns = await Friend.findOne({
+    const acceptedReln = await Friend.findOne({
+      friend: { $all: [user.id, id] },
+      status: "accepted",
+    });
+
+    if (acceptedReln) return res.json(acceptedReln);
+
+    const reln = await Friend.findOne({
       requester: user.id,
       requestee: id,
     });
-    return res.json(relns);
+    return res.json(reln);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
