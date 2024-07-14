@@ -6,8 +6,8 @@ export default async function getAuthUserPartyPlaylistController(req, res) {
     const user = req.user;
     const userDoc = await User.findOne({ _id: user.id });
 
-    if (!userDoc?.party?.id) {
-      return res.status(400).json({ message: "Not in a party" });
+    if (!userDoc?.party) {
+      return res.json(null);
     }
 
     const party = await Party.findOne({ _id: userDoc.party.id });

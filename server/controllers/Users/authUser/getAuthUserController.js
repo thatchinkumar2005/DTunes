@@ -15,6 +15,7 @@ export default async function getAuthUserController(req, res) {
         genres: 1,
         files: 1,
         bio: 1,
+        party: 1,
       }
     );
 

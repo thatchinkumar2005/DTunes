@@ -19,6 +19,7 @@ export default async function getAllUsersController(req, res) {
         genres: 1,
         files: 1,
         bio: 1,
+        party: 1,
       }
     )
       .skip((page - 1) * limit)

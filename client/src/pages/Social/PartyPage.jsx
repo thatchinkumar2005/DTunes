@@ -4,7 +4,7 @@ import Spinner from "../../ui/components/Spinner";
 import CreatePartyForm from "../../features/Social/Components/CreatePartyForm";
 import useGetUser from "../../features/Users/hooks/useGetUser";
 import { FaRegUserCircle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useGetPartyMembers from "../../features/Social/hooks/useGetPartyMembers";
 import { useInView } from "react-intersection-observer";
 import UserCard from "../../features/Users/components/UserCard";
@@ -17,6 +17,8 @@ import Modal from "../../ui/components/Modal";
 import useSearch from "../../features/Search/hooks/useSearch";
 import usePartyRequest from "../../features/Social/hooks/useRequestParty";
 import toast from "react-hot-toast";
+import useDeleteParty from "../../features/Social/hooks/useDeleteParty";
+import { useQueryClient } from "@tanstack/react-query";
 
 function DropDownMenu({ onClick }) {
   return <CiMenuKebab onClick={onClick} className="h-5 w-5" />;
@@ -39,6 +41,8 @@ export default function PartyPage() {
   });
 
   const { auth } = useAuth();
+
+  const queryClient = useQueryClient();
 
   const [isOpen, setOpen] = useState(false);
   const [modalOpen, setModakOpen] = useState(false);
@@ -99,6 +103,9 @@ export default function PartyPage() {
     }
   }, [inView, fetchNextPage]);
 
+  const { deleteParty, isPending: isDeleting } = useDeleteParty();
+  const navigate = useNavigate();
+
   if (isGettingParty) return <Spinner />;
   return (
     <div className="h-full w-full p-3 flex flex-col overflow-scroll disable-scrollbars gap-3">
@@ -129,7 +136,18 @@ export default function PartyPage() {
                   className="top-0"
                 >
                   <div className="flex flex-col justify-center items-start gap-3 py-2 w-32">
-                    <div className="flex gap-1 items-center justify-center">
+                    <div
+                      onClick={() => {
+                        if (isDeleting) return;
+                        deleteParty(null, {
+                          onSuccess: () => {
+                            toast("Deleted Party");
+                            queryClient.invalidateQueries(["authUserParty"]);
+                          },
+                        });
+                      }}
+                      className="flex gap-1 items-center justify-center"
+                    >
                       <MdDelete className="fill-red-500" />
                       <span>Delete Party</span>
                     </div>
