@@ -20,6 +20,7 @@ export default async function getAllUsersController(req, res) {
         files: 1,
         bio: 1,
         party: 1,
+        currentPlaying: 1,
       }
     )
       .skip((page - 1) * limit)

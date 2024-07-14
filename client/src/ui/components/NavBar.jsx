@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import useGetAuthUser from "../../features/Users/hooks/useGetAuthUser";
 import DropDown from "./DropDown";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -14,7 +14,7 @@ function ProfileButton({ onClick }) {
     <>
       {user?.files?.profilePic ? (
         <img
-          className="h-12 rounded-full "
+          className="h-10 rounded-full "
           src={user?.files?.profilePic}
           onClick={onClick}
         />
@@ -30,18 +30,30 @@ export default function NavBar() {
   return (
     <div className="flex bg-layout flex-row items-center md:gap-3 md:col-start-1 md:col-end-3 border-b-2 border-primary">
       <h1 className="text-2xl md:text-2xl mx-3">Dtunes</h1>
-      <Link className="hidden md:block md:mx-10 hover:scale-125  md:hover:scale-150 duration-100 ">
+      <NavLink
+        to={"/"}
+        className="hidden md:block mx-8 text-sm hover:scale-125 duration-100 "
+      >
         Home
-      </Link>
-      <Link className="hidden md:block md:mx-10 hover:scale-125  md:hover:scale-150 duration-100 ">
+      </NavLink>
+      <NavLink
+        to={"/search"}
+        className="hidden md:block mx-8 text-sm hover:scale-125 duration-100 "
+      >
         Search
-      </Link>
-      <Link className="hidden md:block md:mx-10 hover:scale-125  md:hover:scale-150 duration-100 ">
+      </NavLink>
+      <NavLink
+        to={"/social"}
+        className="hidden md:block mx-8 text-sm hover:scale-125 duration-100 "
+      >
         Social
-      </Link>
-      <Link className="hidden md:block md:mx-10 hover:scale-125 md:hover:scale-150 duration-100 ">
+      </NavLink>
+      <NavLink
+        to={"/library"}
+        className="hidden md:block mx-8 text-sm hover:scale-125 duration-100 "
+      >
         Library
-      </Link>
+      </NavLink>
 
       <div className="mt-1 ml-auto flex gap-5 items-center">
         <Link to={"/requests"}>

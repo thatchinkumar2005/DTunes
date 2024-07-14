@@ -24,6 +24,7 @@ export default async function getAllArtistsController(req, res) {
         files: 1,
         bio: 1,
         party: 1,
+        currentPlaying: 1,
       }
     )
       .skip((page - 1) * limit)

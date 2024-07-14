@@ -21,6 +21,7 @@ export default async function getSingleUserController(req, res) {
         files: 1,
         bio: 1,
         party: 1,
+        currentPlaying: 1,
       }
     );
 

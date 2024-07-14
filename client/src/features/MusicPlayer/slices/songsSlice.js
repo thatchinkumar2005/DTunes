@@ -40,6 +40,7 @@ const musicPlayerSlice = createSlice({
           ? 0
           : state.currentIndex + 1;
       state.activeSong = state.currentSongs[state.currentIndex];
+      state.isPlaying = true;
     },
     prevSong: (state, action) => {
       state.currentIndex =
@@ -47,6 +48,7 @@ const musicPlayerSlice = createSlice({
           ? state.currentSongs.length - 1
           : state.currentIndex - 1;
       state.activeSong = state.currentSongs[state.currentIndex];
+      state.isPlaying = true;
     },
     setCurrentSongs: (state, action) => {
       state.currentSongs = action.payload.songs;

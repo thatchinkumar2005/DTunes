@@ -1,32 +1,39 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function SideBar() {
   return (
     <div className="row-start-4 bg-layout row-end-5 flex flex-row justify-center items-center md:col-start-1, md:col-end-2 md:row-start-2 md:row-end-4 md:flex-col ">
-      <Link
+      <NavLink
         to={"/"}
-        className="mx-8 text-sm md:hidden hover:scale-125  duration-100 "
+        className="mx-8 text-sm md:hidden hover:scale-125  duration-100 active:text-blue-500 "
       >
         Home
-      </Link>
-      <Link
+      </NavLink>
+      <NavLink
         to={"/search"}
-        className="mx-8 text-sm md:hidden hover:scale-125  duration-100 "
+        className="mx-8 text-sm md:hidden hover:scale-125  duration-100 active:text-blue-500 "
       >
         Search
-      </Link>
-      <Link
+      </NavLink>
+      <NavLink
         to={"/social"}
-        className="mx-8 text-sm md:hidden hover:scale-125  duration-100 "
+        className="mx-8 text-sm md:hidden hover:scale-125  duration-100 active:text-blue-500 "
       >
         Social
-      </Link>
-      <Link className="mx-8 text-sm md:hidden hover:scale-125 duration-100 ">
+      </NavLink>
+      <NavLink
+        to={"/library"}
+        className="mx-8 text-sm md:hidden hover:scale-125 duration-100 active:text-blue-500 "
+      >
         Library
-      </Link>
+      </NavLink>
 
-      <div className="hidden md:block">SIDEBAR</div>
+      <div className="hidden md:block p-3 h-full w-full">
+        <div className="flex flex-col bg-primary w-full h-full p-1 rounded-lg">
+          <h1 className="text-3xl self-center">Friends</h1>
+        </div>
+      </div>
     </div>
   );
 }
