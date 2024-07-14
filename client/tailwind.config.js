@@ -9,7 +9,7 @@ export default {
         text: "#F4F9F9",
         primary: "#333333",
         secondary: "#2a2a2a",
-        button: "#F2613F",
+        button: "#293133",
       },
     },
   },

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
-import { TbBrandAuth0, TbError404Off } from "react-icons/tb";
+import { TbBrandAuth0 } from "react-icons/tb";
 import useLogin from "../hooks/useLogin";
 import useAuth from "../../../hooks/auth/useAuth";
 import { Link, useNavigate } from "react-router-dom";

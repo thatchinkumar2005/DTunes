@@ -22,7 +22,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
           <AuthContextProvider>
-            <Toaster />
+            <Toaster
+              toastOptions={{
+                style: {
+                  background: "#2a2a2a",
+                  color: "#F4F9F9",
+                },
+              }}
+            />
             <Routes>
               <Route path="*" element={<App />} />
             </Routes>

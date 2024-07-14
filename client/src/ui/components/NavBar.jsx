@@ -70,6 +70,7 @@ export default function NavBar() {
             <div className="flex gap-1 items-center">
               <MdManageAccounts />
               <Link
+                to={"/accounts"}
                 onClick={() => {
                   setOpenDropDown(false);
                 }}

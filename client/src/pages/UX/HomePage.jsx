@@ -5,8 +5,47 @@ import RecommendedSongsHomePage from "../../features/UX/components/RecommendedSo
 import TopArtistsHomePage from "../../features/UX/components/TopArtistsHomePage";
 import AlbumsHomePage from "../../features/UX/components/AlbumsHomePage";
 import PlaylistsHomePage from "../../features/UX/components/PlaylistsHomePage";
+import useAuth from "../../hooks/auth/useAuth";
+import useGetUser from "../../features/Users/hooks/useGetUser";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
+  const { auth } = useAuth();
+  const { user, isSuccess } = useGetUser({ id: auth.id });
+
+  useEffect(() => {
+    if (isSuccess) {
+      if (!user?.files?.profilePic) {
+        toast(
+          (t) => (
+            <div className="flex flex-col h-20 justify-center items-center gap-3">
+              <span>Update your profile Picture</span>
+              <div className="flex flex-row justify-center items-center gap-3">
+                <button
+                  onClick={() => toast.dismiss(t.id)}
+                  className="bg-primary rounded-lg p-2 w-20 hover:underline"
+                >
+                  <Link to={"/profile/edit"}>Update</Link>
+                </button>
+                <button
+                  onClick={() => toast.dismiss(t.id)}
+                  className="bg-primary rounded-lg p-2 w-20 hover:underline"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          ),
+          {
+            duration: Infinity,
+            id: "UpdateToast",
+          }
+        );
+      }
+    }
+  }, [isSuccess, user]);
+
   return (
     <div className="h-full w-full flex flex-col justify-start gap-5 overflow-scroll disable-scrollbars">
       <div className="grid grid-cols-2 h-auto w-auto p-10 px-6 gap-5 ">

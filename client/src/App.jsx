@@ -23,6 +23,7 @@ import SearchPage from "./pages/Search/SearchPage";
 import RequestsPage from "./pages/Social/RequestsPage";
 import SocialPage from "./pages/Social/SocialPage";
 import PartyPage from "./pages/Social/PartyPage";
+import AccountsPage from "./pages/Accounts/AccountsPage";
 
 export default function App() {
   return (
@@ -54,6 +55,7 @@ export default function App() {
             <Route path="/party" element={<PartyPage />} />
             <Route path="/user/:id" element={<UserPage />} />
             <Route path="/requests" element={<RequestsPage />} />
+            <Route path="/accounts" element={<AccountsPage />} />
             <Route path="/auth/logout" element={<Logout />} />
             <Route path="/unauthorized" element={<UauthorisedPage />} />
           </Route>
