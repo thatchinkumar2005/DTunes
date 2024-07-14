@@ -3,8 +3,10 @@ import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import useCreatePlaylist from "../hooks/useCreatePlaylist";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function CreatePlaylistForm() {
+  const queryClient = useQueryClient();
   const [file, setFile] = useState(null);
   const [name, setName] = useState("");
   const [publicPlaylist, setPublic] = useState(false);
@@ -25,6 +27,10 @@ export default function CreatePlaylistForm() {
       setError("Enter name of the album");
       return;
     }
+    if (name.length > 16) {
+      setError("Name can't be more than 16 characters");
+      return;
+    }
 
     const formData = new FormData();
     if (file) formData.append("coverArt", file);
@@ -35,6 +41,9 @@ export default function CreatePlaylistForm() {
       onSuccess: (data) => {
         console.log(data);
         toast("New playlist created");
+        queryClient.invalidateQueries(["playlists"]);
+        queryClient.invalidateQueries(["authUserPlaylists"]);
+        queryClient.invalidateQueries(["userPlaylists"]);
         navigate("/");
       },
       onError: (err) => {

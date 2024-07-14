@@ -4,12 +4,14 @@ import Modal from "../../ui/components/Modal";
 import useAuth from "../../hooks/auth/useAuth";
 import usePromoteArtist from "../../features/Users/hooks/usePromoteArtist";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function AccountsPage() {
   const [openPromoteModal, setOpenPromoteModal] = useState(false);
   const { auth } = useAuth();
   const [artist, setArtist] = useState();
   const { promote, isPromoting } = usePromoteArtist();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     setArtist(auth?.roles.includes(2009));
@@ -53,6 +55,10 @@ export default function AccountsPage() {
                           toast("Promoted to an artist account!", {
                             duration: 10000,
                           });
+                          queryClient.invalidateQueries(
+                            ["authUser"],
+                            ["artist"]
+                          );
                         },
                         onError: (err) => {
                           toast(err.message, {

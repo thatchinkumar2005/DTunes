@@ -3,6 +3,7 @@ import useCreateSong from "../hooks/useCreateSong";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function CreateSongForm({ albumId }) {
   const [error, setError] = useState(null);
@@ -14,6 +15,7 @@ export default function CreateSongForm({ albumId }) {
   const form = useRef();
 
   const { createSong, isCreatingSong } = useCreateSong();
+  const queryClient = useQueryClient();
   const onDrop = useCallback((acceptedFiles) => {
     const acceptedFile = acceptedFiles[0];
     acceptedFile.preview = URL.createObjectURL(acceptedFile);
@@ -48,6 +50,10 @@ export default function CreateSongForm({ albumId }) {
       });
       return;
     }
+    if (name.length > 16) {
+      setError("Name can't be more than 16 characters");
+      return;
+    }
     if (!genre) {
       setError("Enter Genre");
       form.current.scrollTo({
@@ -67,6 +73,8 @@ export default function CreateSongForm({ albumId }) {
       onSuccess: (data) => {
         console.log(data);
         toast("New Song Uploaded!");
+        queryClient.invalidateQueries(["userSongs"]);
+        queryClient.invalidateQueries(["recommendedSongs"]);
         navigate(`/profile`);
       },
       onError: (err) => {

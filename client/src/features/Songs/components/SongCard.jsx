@@ -56,7 +56,7 @@ export default function SongCard({ song }) {
   function handleLike() {
     like(song._id, {
       onSuccess: (data) => {
-        queryClient.invalidateQueries(["isLiked", song._id]);
+        queryClient.invalidateQueries(["isLiked"]);
       },
       onError: (error) => {
         console.log(error);

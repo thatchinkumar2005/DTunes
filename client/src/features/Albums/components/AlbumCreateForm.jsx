@@ -3,8 +3,10 @@ import { useDropzone } from "react-dropzone";
 import useCreateAlbum from "../hooks/useCreateAlbum";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function AlbumCreateForm() {
+  const queryClient = useQueryClient();
   const [file, setFile] = useState(null);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
@@ -24,6 +26,10 @@ export default function AlbumCreateForm() {
       setError("Enter name of the album");
       return;
     }
+    if (name.length > 16) {
+      setError("Name can't be more than 16 characters");
+      return;
+    }
     if (!file) {
       setError("Select Cover Art");
       return;
@@ -37,6 +43,8 @@ export default function AlbumCreateForm() {
       onSuccess: (data) => {
         console.log(data);
         toast("New Album Uploaded!");
+        queryClient.invalidateQueries(["albums"]);
+        queryClient.invalidateQueries(["userAlbums"]);
         navigate("/profile");
       },
       onError: (err) => {

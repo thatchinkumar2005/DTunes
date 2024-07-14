@@ -77,7 +77,11 @@ export default function CreatePartyForm() {
     create(formData, {
       onSuccess: (data) => {
         console.log(data);
-        queryClient.invalidateQueries(["authUserParty"]);
+        queryClient.invalidateQueries(
+          ["authUserParty"],
+          ["authUserPlaylists"],
+          ["userPlaylists"]
+        );
       },
       onError: (err) => {
         console.log(err);

@@ -79,10 +79,10 @@ export default function UserPage() {
                   src={user?.files?.profilePic}
                 />
               ) : (
-                <FaRegUserCircle className="h-36 w-36 mb-2" />
+                <FaRegUserCircle className="h-36 w-36 mb-2 stroke-black" />
               )}
             </div>
-            <div className=" h-full p-4 flex flex-col gap-5 justify-between grow shrink-0">
+            <div className=" h-full p-4 pr-1 flex flex-col gap-5 justify-between grow shrink-0">
               <div className="text-3xl">{user.fname + " " + user.lname}</div>
               <div className="text-lg text-gray-500 ml-1">{user?.bio}</div>
               <div className="flex justify-between items-center ml-1">
