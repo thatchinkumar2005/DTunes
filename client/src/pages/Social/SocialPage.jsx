@@ -35,6 +35,7 @@ export default function SocialPage() {
           authUserFriends.pages.map((page) =>
             page.data.map((user, i) => <UserStrip key={i} id={user} />)
           )}
+        <div ref={ref}></div>
       </div>
     </div>
   );
