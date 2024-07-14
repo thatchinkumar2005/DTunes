@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useAuth from "../../hooks/auth/useAuth";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useGetUser from "../../features/Users/hooks/useGetUser";
 import Spinner from "../../ui/components/Spinner";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -15,11 +15,23 @@ export default function UserPage() {
   const { id } = useParams();
   const queryClient = useQueryClient();
 
+  const navigate = useNavigate();
+
   const {
     user,
     isFetching: isGettingUser,
     isSuccess: isFethchedUser,
   } = useGetUser({ id });
+
+  const { auth } = useAuth();
+
+  useEffect(() => {
+    if (isFethchedUser) {
+      if (auth.id === user._id) {
+        navigate("/profile");
+      }
+    }
+  });
 
   const [artist, setArtist] = useState(false);
 
