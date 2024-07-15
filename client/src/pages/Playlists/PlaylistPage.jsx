@@ -19,6 +19,7 @@ import {
 } from "../../features/MusicPlayer/slices/songsSlice";
 import DropDown from "../../ui/components/DropDown";
 import useAuth from "../../hooks/auth/useAuth";
+import PlaylistDropDown from "../../features/Playlists/components/PlaylistDropDown";
 
 function DropDownMenu({ onClick }) {
   return <CiMenuKebab onClick={onClick} className="h-5 w-5" />;
@@ -28,7 +29,6 @@ export default function PlaylistPage() {
   const { id } = useParams();
   const { auth } = useAuth();
   const [owner, setOwner] = useState(false);
-  const [open, setOpen] = useState(false);
 
   const {
     data: playlist,
@@ -129,15 +129,9 @@ export default function PlaylistPage() {
                       <DropDown
                         ToggleButton={DropDownMenu}
                         dir={"right"}
-                        isOpen={open}
-                        setOpen={setOpen}
+                        playlist={playlist}
                       >
-                        <div className="flex flex-col justify-center items-start gap-3 py-2 w-32">
-                          <div className="flex gap-1 items-center justify-center">
-                            <MdDelete className="fill-red-500" />
-                            <span>Delete Playlist</span>
-                          </div>
-                        </div>
+                        <PlaylistDropDown />
                       </DropDown>
                     )}
                   </div>

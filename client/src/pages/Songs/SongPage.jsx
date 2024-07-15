@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useSong from "../../features/Songs/hooks/useSong";
 import Spinner from "../../ui/components/Spinner";
 import { CiPlay1 } from "react-icons/ci";
@@ -14,6 +14,8 @@ import {
   play,
   setActiveSong,
 } from "../../features/MusicPlayer/slices/songsSlice";
+import DropDown from "../../ui/components/DropDown";
+import SongDropDown from "../../features/Songs/components/SongDropDown";
 
 export default function SongPage() {
   const { id } = useParams();
@@ -75,7 +77,7 @@ export default function SongPage() {
                     </span>
                   )
                 )}
-                <div className="mt-7 flex justify-start gap-10 items-center">
+                <div className="mt-7 flex justify-start gap-6 md:gap-10 items-center">
                   <div className="bg-primary rounded-full h-12 w-12 flex justify-center items-center  hover:bg-slate-500">
                     <CiPlay1
                       onClick={handlePlayPause}
@@ -88,7 +90,20 @@ export default function SongPage() {
                       isLiked ? "fill-blue-500" : "fill-white"
                     }`}
                   />
-                  <CiMenuKebab className="h-5 w-5 self-end mb-2" />
+
+                  <div className="mt-3">
+                    <DropDown
+                      ToggleButton={({ onClick }) => {
+                        return (
+                          <CiMenuKebab className="h-5 w-5" onClick={onClick} />
+                        );
+                      }}
+                      dir={"right"}
+                      song={song}
+                    >
+                      <SongDropDown />
+                    </DropDown>
+                  </div>
                 </div>
                 <span></span>
               </div>

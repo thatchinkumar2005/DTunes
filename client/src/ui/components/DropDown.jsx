@@ -1,14 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { cloneElement, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 export default function DropDown({
   ToggleButton,
   children,
   dir,
-  isOpen,
-  setOpen,
   className,
+  ...props
 }) {
+  const [isOpen, setOpen] = useState(false);
   const dropdownRef = useRef();
 
   useEffect(() => {
@@ -18,10 +18,10 @@ export default function DropDown({
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside, true);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside, true);
     };
   }, []);
 
@@ -38,7 +38,7 @@ export default function DropDown({
               dir === "right" ? "top-0 left-2" : "top-0 right-2"
             } ${className}`}
           >
-            {children}
+            {cloneElement(children, { setOpen, isOpen, dropdownRef, ...props })}
           </div>
         )}
       </div>

@@ -9,10 +9,6 @@ import useGetLikedBoolean from "../hooks/useGetLikedBoolean";
 import { Link } from "react-router-dom";
 import DropDown from "../../../ui/components/DropDown";
 import Modal from "../../../ui/components/Modal";
-import useGetAuthUserPlaylists from "../../Users/hooks/useGetAuthUserPlaylists";
-import Spinner from "../../../ui/components/Spinner";
-import PlaylistStrip from "../../Playlists/components/PlaylistStrip";
-import { useInView } from "react-intersection-observer";
 import PlaylistsListPopUp from "../../Playlists/components/PlaylistsListPopUp";
 
 function DropDownMenu({ onClick }) {
@@ -30,7 +26,6 @@ function AddToPlaylistBtn({ onClick }) {
 export default function SongCard({ song }) {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
-  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   function handlePlayPause() {
     dispatch(setActiveSong({ song }));
     dispatch(play());
@@ -68,12 +63,7 @@ export default function SongCard({ song }) {
         <div onClick={handleLike}>
           <FaHeart className={isLiked ? "fill-blue-500" : "fill-white"} />
         </div>
-        <DropDown
-          ToggleButton={DropDownMenu}
-          isOpen={isDropDownOpen}
-          setOpen={setIsDropDownOpen}
-          className="top-3"
-        >
+        <DropDown ToggleButton={DropDownMenu} className="top-3">
           <div className="flex flex-col justify-center items-center w-32 h-8 ">
             <Modal ToggleElement={AddToPlaylistBtn} song={song}>
               <PlaylistsListPopUp />

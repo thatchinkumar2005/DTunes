@@ -38,7 +38,7 @@ export default async function deleteSongController(req, res) {
     await unlink(audioPath);
     await unlink(coverImagePath);
     await Song.deleteOne({ _id: song._id });
-    res.json({ message: "deleted" });
+    return res.json({ message: "deleted" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

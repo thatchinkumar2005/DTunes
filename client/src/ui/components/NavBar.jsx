@@ -26,7 +26,6 @@ function ProfileButton({ onClick }) {
 }
 
 export default function NavBar() {
-  const [openDropDown, setOpenDropDown] = useState(false);
   return (
     <div className="flex bg-layout flex-row items-center md:gap-3 md:col-start-1 md:col-end-3 border-b-2 border-primary">
       <h1 className="text-2xl md:text-2xl mx-3">Dtunes</h1>
@@ -59,12 +58,7 @@ export default function NavBar() {
         <Link to={"/requests"}>
           <FaHeart className="w-5 h-5 hover:fill-red-500 duration-150" />
         </Link>
-        <DropDown
-          ToggleButton={ProfileButton}
-          isOpen={openDropDown}
-          setOpen={setOpenDropDown}
-          className={"top-5 "}
-        >
+        <DropDown ToggleButton={ProfileButton} className={"top-5 "}>
           <div className="flex flex-col gap-1 px-3 py-1">
             <div className="flex gap-1 items-center text-md">
               <AiOutlineProfile />
