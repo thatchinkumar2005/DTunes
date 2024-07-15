@@ -7,6 +7,7 @@ import { AiOutlineProfile } from "react-icons/ai";
 import { MdManageAccounts } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
+import ProfileDropDown from "./ProfileDropDown";
 
 function ProfileButton({ onClick }) {
   const { data: user } = useGetAuthUser();
@@ -59,44 +60,7 @@ export default function NavBar() {
           <FaHeart className="w-5 h-5 hover:fill-red-500 duration-150" />
         </Link>
         <DropDown ToggleButton={ProfileButton} className={"top-5 "}>
-          <div className="flex flex-col gap-1 px-3 py-1">
-            <div className="flex gap-1 items-center text-md">
-              <AiOutlineProfile />
-              <Link
-                onClick={() => {
-                  setOpenDropDown(false);
-                }}
-                to={"/profile"}
-                className="hover:underline"
-              >
-                Profile
-              </Link>
-            </div>
-            <div className="flex gap-1 items-center">
-              <MdManageAccounts />
-              <Link
-                to={"/accounts"}
-                onClick={() => {
-                  setOpenDropDown(false);
-                }}
-                className="hover:underline"
-              >
-                Account
-              </Link>
-            </div>
-            <div className="flex gap-1 items-center">
-              <CiLogout />
-              <Link
-                onClick={() => {
-                  setOpenDropDown(false);
-                }}
-                to="/auth/logout"
-                className="hover:underline"
-              >
-                Logout
-              </Link>
-            </div>
-          </div>
+          <ProfileDropDown />
         </DropDown>
       </div>
     </div>

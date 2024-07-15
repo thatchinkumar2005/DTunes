@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import DropDown from "../../../ui/components/DropDown";
 import Modal from "../../../ui/components/Modal";
 import PlaylistsListPopUp from "../../Playlists/components/PlaylistsListPopUp";
+import SongCardDropDown from "./SongCardDropDown";
 
 function DropDownMenu({ onClick }) {
   return <CiMenuKebab onClick={onClick} className="h-5 w-5" />;
@@ -63,12 +64,8 @@ export default function SongCard({ song }) {
         <div onClick={handleLike}>
           <FaHeart className={isLiked ? "fill-blue-500" : "fill-white"} />
         </div>
-        <DropDown ToggleButton={DropDownMenu} className="top-3">
-          <div className="flex flex-col justify-center items-center w-32 h-8 ">
-            <Modal ToggleElement={AddToPlaylistBtn} song={song}>
-              <PlaylistsListPopUp />
-            </Modal>
-          </div>
+        <DropDown ToggleButton={DropDownMenu} className="top-3" song={song}>
+          <SongCardDropDown />
         </DropDown>
       </div>
     </div>
