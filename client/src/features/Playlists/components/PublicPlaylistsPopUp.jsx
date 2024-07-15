@@ -5,8 +5,7 @@ import useAuth from "../../../hooks/auth/useAuth";
 import Spinner from "../../../ui/components/Spinner";
 
 export default function PublicPlaylistsPopUp({
-  setContribPlaylistId,
-  setContribPlaylistName,
+  handleSelectPlaylist,
   setOpen,
 }) {
   const { auth } = useAuth();
@@ -28,11 +27,6 @@ export default function PublicPlaylistsPopUp({
     }
   }, [inView, fetchNextPage]);
 
-  function handleSelectPlaylist(playlist) {
-    setContribPlaylistId(playlist._id);
-    setContribPlaylistName(playlist.name);
-    setOpen(false);
-  }
   return (
     <div className="w-72 h-96 flex flex-col ">
       {isError && <div>{playlistsError}</div>}
@@ -44,6 +38,7 @@ export default function PublicPlaylistsPopUp({
               key={playlist._id}
               onClick={() => {
                 handleSelectPlaylist(playlist);
+                setOpen(false);
               }}
               className="h-14 w-full bg-secondary rounded-lg flex shrink-0 grow-0 justify-start items-center gap-3"
             >

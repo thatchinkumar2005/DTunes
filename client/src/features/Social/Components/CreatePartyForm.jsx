@@ -10,6 +10,11 @@ function DropDownButton({ onClick }) {
   return <IoMdArrowDropdown onClick={onClick} />;
 }
 
+function handleSelectPlaylist(playlist) {
+  setContribPlaylistId(playlist._id);
+  setContribPlaylistName(playlist.name);
+}
+
 export default function CreatePartyForm() {
   const [file, setFile] = useState(null);
   const [name, setName] = useState("");
@@ -78,8 +83,7 @@ export default function CreatePartyForm() {
         <span>{contribPlaylistName || "Select Playlist"}</span>
         <Modal
           ToggleElement={DropDownButton}
-          setContribPlaylistId={setContribPlaylistId}
-          setContribPlaylistName={setContribPlaylistName}
+          handleSelectPlaylist={handleSelectPlaylist}
         >
           <PublicPlaylistsPopUp />
         </Modal>
