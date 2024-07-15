@@ -120,7 +120,9 @@ export default function LoginForm() {
         </div>
         <div className="w-52 flex gap-1">
           <TbBrandAuth0 size={30} />
-          continue with Dauth
+          <Link to={`${settings.serverOrigin}/auth/oauth/dauth`}>
+            continue with Dauth
+          </Link>
         </div>
       </div>
     </form>

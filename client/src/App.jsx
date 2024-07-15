@@ -27,6 +27,7 @@ import AccountsPage from "./pages/Accounts/AccountsPage";
 import EditUserPage from "./pages/Users/AuthUser/EditUserPage";
 import LibraryPage from "./pages/Playlists/LibraryPage";
 import UserAnalyticsPage from "./pages/Users/AuthUser/UserAnalyticsPage";
+import DauthOauthCallBackPage from "./pages/authentication/DauthOauthCallBackPage";
 
 export default function App() {
   return (
@@ -37,6 +38,10 @@ export default function App() {
         <Route
           path="/auth/oauth/google/callback"
           element={<GoogleOauthCallBackPage />}
+        />
+        <Route
+          path="/auth/oauth/dauth/callback"
+          element={<DauthOauthCallBackPage />}
         />
       </Route>
       <Route element={<PersistLogin />}>
