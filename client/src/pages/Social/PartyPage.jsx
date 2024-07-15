@@ -20,18 +20,10 @@ import toast from "react-hot-toast";
 import useDeleteParty from "../../features/Social/hooks/useDeleteParty";
 import { useQueryClient } from "@tanstack/react-query";
 import SearchUsersPopUp from "../../features/Users/components/SearchUsersPopUp";
+import PartyDropDown from "../../features/Social/Components/PartyDropDown";
 
 function DropDownMenu({ onClick }) {
   return <CiMenuKebab onClick={onClick} className="h-5 w-5" />;
-}
-
-function ModalOpenButton({ onClick }) {
-  return (
-    <div onClick={onClick} className="flex gap-1 items-center justify-center">
-      <IoAddOutline className="" />
-      <span>Add Members</span>
-    </div>
-  );
 }
 
 export default function PartyPage() {
@@ -65,8 +57,6 @@ export default function PartyPage() {
     }
   }, [inView, fetchNextPage]);
 
-  const { deleteParty, isPending: isDeleting } = useDeleteParty();
-
   if (isGettingParty) return <Spinner />;
   return (
     <div className="h-full w-full p-3 flex flex-col overflow-scroll disable-scrollbars gap-3">
@@ -94,31 +84,10 @@ export default function PartyPage() {
                 {auth.id === party.leader && (
                   <DropDown
                     ToggleButton={DropDownMenu}
-                    setOpen={setOpen}
-                    isOpen={isOpen}
                     dir={"right"}
                     className="top-0"
                   >
-                    <div className="flex flex-col justify-center items-start gap-3 py-2 w-32">
-                      <div
-                        onClick={() => {
-                          if (isDeleting) return;
-                          deleteParty(null, {
-                            onSuccess: () => {
-                              toast("Deleted Party");
-                              queryClient.invalidateQueries(["authUserParty"]);
-                            },
-                          });
-                        }}
-                        className="flex gap-1 items-center justify-center"
-                      >
-                        <MdDelete className="fill-red-500" />
-                        <span>Delete Party</span>
-                      </div>
-                      <Modal ToggleElement={ModalOpenButton}>
-                        <SearchUsersPopUp />
-                      </Modal>
-                    </div>
+                    <PartyDropDown />
                   </DropDown>
                 )}
               </div>
