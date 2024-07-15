@@ -6,6 +6,9 @@ import UserPageSongs from "../../../features/Users/components/UserPageSongs";
 import UserPageAlbums from "../../../features/Users/components/UserPageAlbums";
 import AuthUserPlaylists from "../../../features/Users/components/AuthUserPlaylists";
 import { Link } from "react-router-dom";
+import useGetArtistPlays from "../../../features/Users/hooks/useGetArtistPlays";
+
+let formatter = Intl.NumberFormat("en", { notation: "compact" });
 
 export default function AuthUserPage() {
   const {
@@ -27,6 +30,12 @@ export default function AuthUserPage() {
     console.log(authUser);
   }, [authUser, isFethchedUser, setArtist]);
 
+  const {
+    data: plays,
+    isPending: isGettingPlays,
+    isSuccess: gotPlays,
+  } = useGetArtistPlays({ id: authUser?._id });
+
   return (
     <div className="h-full w-full disable-scrollbars overflow-scroll flex flex-col gap-10">
       {isGettingAuthUser && <Spinner />}
@@ -45,9 +54,20 @@ export default function AuthUserPage() {
             </div>
             <div className=" h-full p-4 flex flex-col gap-5 justify-between grow shrink-0">
               <div className="text-3xl">{authUser.fname}</div>
-              <div className="text-lg text-gray-500 ml-1">{authUser?.bio}</div>
+              <div className="text-lg ml-1">{authUser?.bio}</div>
               <div className="flex justify-between items-center gap-20 ml-1">
-                {artist && <span className="text-lg">Plays:</span>}
+                {artist && (
+                  <span className="text-lg text-gray-500">
+                    Plays:{" "}
+                    {isGettingPlays ? (
+                      <Spinner />
+                    ) : plays[0] ? (
+                      formatter.format(plays[0].totalPlays)
+                    ) : (
+                      0
+                    )}
+                  </span>
+                )}
               </div>
               <div className="flex gap-2">
                 {artist && (

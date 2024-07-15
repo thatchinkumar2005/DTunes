@@ -12,6 +12,8 @@ import useFriendRequest from "../../features/Social/hooks/useFriendRequest";
 import { useQueryClient } from "@tanstack/react-query";
 import useGetArtistPlays from "../../features/Users/hooks/useGetArtistPlays";
 
+const formatter = Intl.NumberFormat("en", { notation: "compact" });
+
 export default function UserPage() {
   const { id } = useParams();
   const queryClient = useQueryClient();
@@ -93,15 +95,15 @@ export default function UserPage() {
               </div>
               <div className=" h-full p-4 pr-1 flex flex-col gap-5 justify-between grow shrink-0">
                 <div className="text-3xl">{user.fname + " " + user.lname}</div>
-                <div className="text-lg text-gray-500 ml-1">{user?.bio}</div>
+                <div className="text-lg ml-1">{user?.bio}</div>
                 <div className="flex justify-between items-center ml-1">
                   {artist && (
-                    <span className="text-lg">
+                    <span className="text-lg text-gray-500">
                       Plays:{" "}
                       {isGettingPlays ? (
                         <Spinner />
                       ) : plays[0] ? (
-                        plays[0].totalPlays
+                        formatter.format(plays[0].totalPlays)
                       ) : (
                         0
                       )}

@@ -6,6 +6,8 @@ import DayWiseAreaChart from "../../../features/Analysis/components/DayWiseAreaC
 import ArtistPieChart from "../../../features/Analysis/components/ArtistPieChart";
 import GenrePieChart from "../../../features/Analysis/components/GenrePieChart";
 
+let formatter = Intl.NumberFormat("en", { notation: "compact" });
+
 export default function UserAnalyticsPage() {
   const { analysis, isGettingAnalysis, gotAnalysis } = useGetAnalytics();
   return (
@@ -18,7 +20,7 @@ export default function UserAnalyticsPage() {
           <div className="w-full grow rounded-lg bg-secondary flex flex-col gap-3 items-center p-2">
             <div className="bg-primary self-start h-24 w-52 rounded-lg flex flex-col justify-center items-center text-2xl">
               <IoIosStats />
-              <span>Played: {analysis.totalPlayed}</span>
+              <span>Played: {formatter.format(analysis.totalPlayed)}</span>
             </div>
             <div className="h-0.5 bg-primary w-full "></div>
             <h2 className="self-start text-xl">Day Wise Chart</h2>
