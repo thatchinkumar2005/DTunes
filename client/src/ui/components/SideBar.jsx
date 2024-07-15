@@ -3,8 +3,11 @@ import { NavLink } from "react-router-dom";
 import useGetAuthUserFriends from "../../features/Users/hooks/useGetAuthUserFriends";
 import { useInView } from "react-intersection-observer";
 import Spinner from "./Spinner";
-import UserStrip from "../../features/Users/components/UserStrip";
 import UserStripForSideBar from "../../features/Users/components/UserStripv2";
+import { IoHomeOutline } from "react-icons/io5";
+import { IoIosSearch } from "react-icons/io";
+import { IoMdPeople } from "react-icons/io";
+import { MdLibraryMusic } from "react-icons/md";
 
 export default function SideBar() {
   const {
@@ -30,25 +33,25 @@ export default function SideBar() {
         to={"/"}
         className="mx-8 text-sm md:hidden hover:scale-125  duration-100 active:text-blue-500 "
       >
-        Home
+        <IoHomeOutline className="h-7 w-7" />
       </NavLink>
       <NavLink
         to={"/search"}
         className="mx-8 text-sm md:hidden hover:scale-125  duration-100 active:text-blue-500 "
       >
-        Search
+        <IoIosSearch className="h-7 w-7" />
       </NavLink>
       <NavLink
         to={"/social"}
         className="mx-8 text-sm md:hidden hover:scale-125  duration-100 active:text-blue-500 "
       >
-        Social
+        <IoMdPeople className="h-7 w-7" />
       </NavLink>
       <NavLink
         to={"/library"}
         className="mx-8 text-sm md:hidden hover:scale-125 duration-100 active:text-blue-500 "
       >
-        Library
+        <MdLibraryMusic className="h-7 w-7" />
       </NavLink>
 
       <div className="hidden md:block p-3 h-full w-full">

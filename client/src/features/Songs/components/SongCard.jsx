@@ -1,4 +1,4 @@
-import React, { act, useEffect, useState } from "react";
+import React from "react";
 import { CiMenuKebab, CiPlay1 } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,20 +8,10 @@ import useLike from "../hooks/useLike";
 import useGetLikedBoolean from "../hooks/useGetLikedBoolean";
 import { Link } from "react-router-dom";
 import DropDown from "../../../ui/components/DropDown";
-import Modal from "../../../ui/components/Modal";
-import PlaylistsListPopUp from "../../Playlists/components/PlaylistsListPopUp";
 import SongCardDropDown from "./SongCardDropDown";
 
 function DropDownMenu({ onClick }) {
   return <CiMenuKebab onClick={onClick} className="h-5 w-5" />;
-}
-
-function AddToPlaylistBtn({ onClick }) {
-  return (
-    <div onClick={onClick} className="text-sm text-center">
-      Add To Playlist
-    </div>
-  );
 }
 
 export default function SongCard({ song }) {

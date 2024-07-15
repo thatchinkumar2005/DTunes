@@ -44,13 +44,13 @@ export default function AccountsPage() {
           )}
           <span className="w-full h-10 bg-primary rounded-lg flex items-center p-1">
             <Link to={"/stats"} className="hover:underline">
-              Show activity
+              Show activities
             </Link>
           </span>
         </div>
       </div>
 
-      <div className="w-full h-auto bg-primary rounded-md p-3 flex flex-col">
+      {/* <div className="w-full h-auto bg-primary rounded-md p-3 flex flex-col">
         <h2 className="text-lg">Privacy and Security</h2>
         <div className="bg-secondary w-full grow rounded-sm flex-col flex p-3 gap-3 justify-center">
           <span className="w-full h-10 bg-primary rounded-lg flex items-center p-1">
@@ -66,7 +66,7 @@ export default function AccountsPage() {
             <Link className="hover:underline">Delete Account</Link>
           </span>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
