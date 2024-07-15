@@ -75,8 +75,19 @@ export default async function getAuthUserAnalyticsController(req, res) {
         $unwind: "$artists",
       },
       {
+        $lookup: {
+          from: "users", // Assuming "users" is the collection name for artists
+          localField: "artists.artist", // Assuming _id in users is the ObjectId of the artist
+          foreignField: "_id",
+          as: "artistDetails",
+        },
+      },
+      {
+        $unwind: "$artistDetails",
+      },
+      {
         $project: {
-          _id: "$artists.artist",
+          artistName: "$artistDetails.fname", // Adjust this based on the structure of your "users" collection
           totalPlays: "$artists.totalPlays",
           percentage: {
             $multiply: [

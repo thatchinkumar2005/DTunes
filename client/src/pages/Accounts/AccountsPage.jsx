@@ -42,6 +42,11 @@ export default function AccountsPage() {
               <ArtistConfirmPopUp />
             </Modal>
           )}
+          <span className="w-full h-10 bg-primary rounded-lg flex items-center p-1">
+            <Link to={"/stats"} className="hover:underline">
+              Show activity
+            </Link>
+          </span>
         </div>
       </div>
 
