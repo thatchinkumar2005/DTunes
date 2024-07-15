@@ -5,7 +5,7 @@ export default function deleteSongApi(axiosPrivate) {
         method: "DELETE",
         url: `/songs/${id}`,
       });
-      console.log(resp.data);
+
       return resp.data;
     } catch (error) {
       console.log(error);

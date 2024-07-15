@@ -21,7 +21,6 @@ export default function RegisterForm() {
     const data = { ...formData, roles: { user: 2005 } };
     registerApi(data, {
       onSuccess: (respData) => {
-        console.log(respData);
         navigate("/auth/login");
       },
       onError: (error) => {

@@ -5,7 +5,7 @@ export default function deleteAlbumApi(axiosPrivate) {
         method: "DELETE",
         url: `/albums/${id}`,
       });
-      console.log(resp.data);
+
       return resp.data;
     } catch (error) {
       console.log(error);

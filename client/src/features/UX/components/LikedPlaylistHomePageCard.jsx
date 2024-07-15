@@ -7,7 +7,6 @@ export default function LikedPlaylistHomePageCard() {
   const { data, isSuccess } = useGetAuthUserLikePlaylist();
   const navigate = useNavigate();
   function handleClick(e) {
-    console.log(data);
     e.preventDefault();
     if (isSuccess) {
       navigate(`/playlist/${data._id}`);

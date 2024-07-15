@@ -20,7 +20,6 @@ export default function CreatePartyForm() {
     const acceptedFile = acceptedFiles[0];
     acceptedFile.preview = URL.createObjectURL(acceptedFile);
     setFile(acceptedFile);
-    console.log(acceptedFile);
   });
 
   const queryClient = useQueryClient();
@@ -51,7 +50,6 @@ export default function CreatePartyForm() {
 
     create(formData, {
       onSuccess: (data) => {
-        console.log(data);
         queryClient.invalidateQueries(
           ["authUserParty"],
           ["authUserPlaylists"],

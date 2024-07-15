@@ -5,7 +5,7 @@ export default function deletePlaylistApi(axiosPrivate) {
         method: "DELETE",
         url: `/playlists/${id}`,
       });
-      console.log(resp.data);
+
       return resp.data;
     } catch (error) {
       console.log(error);

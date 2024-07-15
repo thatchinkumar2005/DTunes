@@ -27,7 +27,6 @@ export default function AuthUserPage() {
         setArtist(false);
       }
     }
-    console.log(authUser);
   }, [authUser, isFethchedUser, setArtist]);
 
   const {

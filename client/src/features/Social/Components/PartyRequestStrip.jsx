@@ -34,7 +34,6 @@ export default function PartyRequestStrip({ request }) {
       { id: request._id, response: "accept", contribPlaylistId: playlistId },
       {
         onSuccess: (data) => {
-          console.log(data);
           queryClient.invalidateQueries(["authUserFriendRequests"]);
           toast("Joined Party!");
         },

@@ -54,8 +54,6 @@ export default function EditUserForm() {
 
     edit(formData, {
       onSuccess: (respData) => {
-        console.log(respData);
-
         toast("User profile updated!", { duration: 10000 });
         navigate("/profile");
       },

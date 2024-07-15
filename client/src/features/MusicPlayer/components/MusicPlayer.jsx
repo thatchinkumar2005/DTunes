@@ -55,7 +55,6 @@ const MusicPlayer = () => {
       } else if (e.key === "u" && vol < 0.99) {
         setVol((vol) => vol + 0.01);
       }
-      console.log(e);
     }
 
     document.addEventListener("keypress", handleSpace);
@@ -123,12 +122,7 @@ function Player() {
     setCurrentTime(0);
     setDuration(0);
     audioRef.current.currentTime = 0;
-    if (activeSong)
-      playApi(activeSong._id, {
-        onSuccess: (data) => {
-          console.log(data);
-        },
-      });
+    if (activeSong) playApi(activeSong._id);
   }, [activeSong]);
 
   useEffect(() => {
@@ -139,7 +133,6 @@ function Player() {
         audioRef.current.pause();
       }
     }
-    console.log("hello");
   }, [isPlaying, activeSong]);
 
   useEffect(() => {

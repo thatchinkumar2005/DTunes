@@ -6,7 +6,7 @@ export default function getParty(axiosPrivate) {
         method: "GET",
         url: `/party/${id}`,
       });
-      console.log(resp.data);
+
       return resp.data;
     } catch (error) {
       console.log(error);

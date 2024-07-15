@@ -6,7 +6,6 @@ export default function getAlbumSongsApi(axiosPrivate) {
         method: "GET",
         url: `/albums/songs/${id}?page=${pageParam} `,
       });
-      console.log(resp);
       const nextPageParam = resp.data.length === 0 ? null : pageParam + 1;
       return { data: resp.data, nextPageParam };
     } catch (error) {

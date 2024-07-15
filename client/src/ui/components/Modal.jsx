@@ -19,7 +19,6 @@ export default function Modal({
   const [isOpen, setOpen] = useState(false);
   function handleToggle() {
     setOpen((state) => !state);
-    console.log(isOpen);
   }
 
   const modalRef = useRef();

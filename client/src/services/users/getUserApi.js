@@ -6,7 +6,6 @@ export default function getArtistApi(axiosPrivate) {
         method: "GET",
         url: `/users/${id}`,
       });
-      console.log(resp.data);
       return resp.data;
     } catch (error) {
       console.log(error);

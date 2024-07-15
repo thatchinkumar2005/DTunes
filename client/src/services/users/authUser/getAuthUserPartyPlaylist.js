@@ -5,7 +5,7 @@ export default function getAuthUserPartyPlaylist(axiosPrivate) {
         method: "GET",
         url: "/users/authUser/party/playlist",
       });
-      console.log(resp.data);
+
       return resp.data;
     } catch (error) {
       console.log(error);

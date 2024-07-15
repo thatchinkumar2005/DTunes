@@ -71,7 +71,6 @@ export default function CreateSongForm({ albumId }) {
     formData.append("coverArt", image);
     createSong(formData, {
       onSuccess: (data) => {
-        console.log(data);
         toast("New Song Uploaded!");
         queryClient.invalidateQueries(["userSongs"]);
         queryClient.invalidateQueries(["recommendedSongs"]);

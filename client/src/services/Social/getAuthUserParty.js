@@ -5,7 +5,7 @@ export default function getAuthUserPartyApi(axiosPrivate) {
         method: "GET",
         url: "/users/authUser/party",
       });
-      console.log(resp.data);
+
       return resp.data;
     } catch (error) {
       console.log(error);

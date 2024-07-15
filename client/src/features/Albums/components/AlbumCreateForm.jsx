@@ -14,7 +14,6 @@ export default function AlbumCreateForm() {
     const acceptedFile = acceptedFiles[0];
     acceptedFile.preview = URL.createObjectURL(acceptedFile);
     setFile(acceptedFile);
-    console.log(acceptedFile);
   });
   const { createAlbum, isCreatingAlbum } = useCreateAlbum();
   const navigate = useNavigate();
@@ -41,14 +40,12 @@ export default function AlbumCreateForm() {
 
     createAlbum(formData, {
       onSuccess: (data) => {
-        console.log(data);
         toast("New Album Uploaded!");
         queryClient.invalidateQueries(["albums"]);
         queryClient.invalidateQueries(["userAlbums"]);
         navigate("/profile");
       },
       onError: (err) => {
-        console.log(err);
         setError(err.message);
       },
     });

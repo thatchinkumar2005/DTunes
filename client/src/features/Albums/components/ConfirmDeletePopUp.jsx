@@ -9,7 +9,6 @@ export default function ConfirmDeletePopUp({ setOpen, album }) {
   function handleDelete() {
     mutate(album._id, {
       onSuccess: (data) => {
-        console.log(data);
         toast("deleted album");
         navigate("/profile");
       },

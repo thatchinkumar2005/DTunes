@@ -15,7 +15,6 @@ export default function CreatePlaylistForm() {
     const acceptedFile = acceptedFiles[0];
     acceptedFile.preview = URL.createObjectURL(acceptedFile);
     setFile(acceptedFile);
-    console.log(acceptedFile);
   });
   const { createPlaylist, isCreating } = useCreatePlaylist();
   const navigate = useNavigate();
@@ -39,7 +38,6 @@ export default function CreatePlaylistForm() {
 
     createPlaylist(formData, {
       onSuccess: (data) => {
-        console.log(data);
         toast("New playlist created");
         queryClient.invalidateQueries(["playlists"]);
         queryClient.invalidateQueries(["authUserPlaylists"]);
