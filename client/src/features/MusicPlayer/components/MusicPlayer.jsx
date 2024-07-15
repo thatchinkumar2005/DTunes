@@ -46,6 +46,21 @@ const MusicPlayer = () => {
       dispatch(setCurrentSongs({ songs: recommendedSongs.pages[0].data }));
   }, [dispatch, status]);
 
+  useEffect(() => {
+    function handleSpace(e) {
+      if (e.key === " ") {
+        dispatch(playPause());
+      }
+      console.log(e);
+    }
+
+    document.addEventListener("keypress", handleSpace);
+
+    return () => {
+      document.removeEventListener("keypress", handleSpace);
+    };
+  });
+
   return (
     <MusicPlayerContext.Provider
       value={{
