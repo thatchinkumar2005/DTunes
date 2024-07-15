@@ -10,11 +10,6 @@ function DropDownButton({ onClick }) {
   return <IoMdArrowDropdown onClick={onClick} />;
 }
 
-function handleSelectPlaylist(playlist) {
-  setContribPlaylistId(playlist._id);
-  setContribPlaylistName(playlist.name);
-}
-
 export default function CreatePartyForm() {
   const [file, setFile] = useState(null);
   const [name, setName] = useState("");
@@ -31,6 +26,11 @@ export default function CreatePartyForm() {
   const queryClient = useQueryClient();
 
   const { mutate: create, isPending: isCreating } = useCreateParty();
+
+  function handleSelectPlaylist(playlist) {
+    setContribPlaylistId(playlist._id);
+    setContribPlaylistName(playlist.name);
+  }
 
   function handleSubmit(e) {
     e.preventDefault();

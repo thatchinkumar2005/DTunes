@@ -109,16 +109,16 @@ export default function LoginForm() {
         I don't have an account. <Link to={"/auth/register"}>register</Link>
       </div>
 
-      <div>Or</div>
+      <div className="mb-3">Or</div>
 
-      <div className="w-full h-24 flex flex-col justify-center items-center gap-3">
-        <div className="w-52 flex gap-1 cursor-pointer">
+      <div className="w-full h-24 flex flex-col justify-center items-center gap-4">
+        <div className="w-52 flex gap-1 bg-secondary p-2 justify-center items-center rounded-md hover:underline">
           <FcGoogle size={30} />
           <Link to={`${settings.serverOrigin}/auth/oauth/google`}>
             continue with google
           </Link>
         </div>
-        <div className="w-52 flex gap-1">
+        <div className="w-52 flex gap-1 bg-secondary p-2 justify-center items-center rounded-md hover:underline">
           <TbBrandAuth0 size={30} />
           <Link to={`${settings.serverOrigin}/auth/oauth/dauth`}>
             continue with Dauth
