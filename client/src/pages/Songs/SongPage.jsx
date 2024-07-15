@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useSong from "../../features/Songs/hooks/useSong";
 import Spinner from "../../ui/components/Spinner";
@@ -16,6 +16,7 @@ import {
 } from "../../features/MusicPlayer/slices/songsSlice";
 import DropDown from "../../ui/components/DropDown";
 import SongDropDown from "../../features/Songs/components/SongDropDown";
+import useAuth from "../../hooks/auth/useAuth";
 
 export default function SongPage() {
   const { id } = useParams();
@@ -35,6 +36,16 @@ export default function SongPage() {
 
   const { isLiked } = useGetLikedBoolean({ song: song?._id });
   const { like } = useLike();
+
+  const { auth } = useAuth();
+
+  const [owner, setOwner] = useState(false);
+
+  useEffect(() => {
+    if (isFetchedSong) {
+      setOwner(auth.id === song.artists[0]);
+    }
+  }, [isFetchedSong, song]);
 
   function handleLike() {
     like(song._id, {
@@ -91,19 +102,24 @@ export default function SongPage() {
                     }`}
                   />
 
-                  <div className="mt-3">
-                    <DropDown
-                      ToggleButton={({ onClick }) => {
-                        return (
-                          <CiMenuKebab className="h-5 w-5" onClick={onClick} />
-                        );
-                      }}
-                      dir={"right"}
-                      song={song}
-                    >
-                      <SongDropDown />
-                    </DropDown>
-                  </div>
+                  {owner && (
+                    <div className="mt-3">
+                      <DropDown
+                        ToggleButton={({ onClick }) => {
+                          return (
+                            <CiMenuKebab
+                              className="h-5 w-5"
+                              onClick={onClick}
+                            />
+                          );
+                        }}
+                        dir={"right"}
+                        song={song}
+                      >
+                        <SongDropDown />
+                      </DropDown>
+                    </div>
+                  )}
                 </div>
                 <span></span>
               </div>

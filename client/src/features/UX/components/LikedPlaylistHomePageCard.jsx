@@ -16,7 +16,7 @@ export default function LikedPlaylistHomePageCard() {
   return (
     <div
       onClick={handleClick}
-      className="bg-secondary p-5  flex flex-row gap-5 justify-center items-center rounded-lg  hover:bg-gray-600"
+      className="bg-secondary p-5  flex flex-row gap-5 justify-center items-center rounded-lg  hover:bg-gray-600 cursor-pointer"
     >
       <FaHeart className="h-7 w-7 fill-blue-500" />
       <span className="text-xl">Liked</span>
