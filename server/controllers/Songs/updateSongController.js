@@ -85,7 +85,6 @@ export default async function updateSongController(req, res) {
     return res.json(song);
   } catch (error) {
     //handle error
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

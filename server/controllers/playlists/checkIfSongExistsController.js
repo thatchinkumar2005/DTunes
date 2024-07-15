@@ -12,7 +12,6 @@ export default async function checkIfSongExistController(req, res) {
 
     return res.json(reln);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

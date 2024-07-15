@@ -13,7 +13,6 @@ export default async function getSingleSongController(req, res) {
 
     return res.json(song);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

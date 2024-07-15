@@ -57,7 +57,6 @@ export default async function respondPartyRequestController(req, res) {
           playlist: partyplaylist._id,
         });
         if (preExits) {
-          console.log("preExists");
         } else {
           await PlaylistSongJunction.create({
             song: reln.song._id,
@@ -86,7 +85,6 @@ export default async function respondPartyRequestController(req, res) {
       return res.json({ message: "Not a valid response" });
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

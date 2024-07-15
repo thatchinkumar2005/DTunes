@@ -29,8 +29,6 @@ export default async function togglerequestPartyMemberController(req, res) {
       user: requestee._id,
     });
 
-    console.log(reln);
-
     if (!reln) {
       const newReln = await PartyRequest.create({
         party: party._id,

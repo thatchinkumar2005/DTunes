@@ -57,7 +57,6 @@ export default async function deletePartyController(req, res) {
       await unlink(coverArtPath);
     } catch (error) {
       if (error.code === "ENOENT") {
-        console.log("file missing");
       } else {
         throw error;
       }
@@ -69,7 +68,6 @@ export default async function deletePartyController(req, res) {
       message: "deleted",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

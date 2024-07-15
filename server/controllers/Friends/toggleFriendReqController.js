@@ -16,7 +16,6 @@ export default async function toggleFriendRequestController(req, res) {
       friend: { $all: [userDoc._id, requestee._id] },
       status: "accepted",
     });
-    console.log(friends);
     if (friends) {
       return res.json({ message: "Already friends" });
     }

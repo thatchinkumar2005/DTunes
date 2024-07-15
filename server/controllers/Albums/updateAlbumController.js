@@ -41,7 +41,6 @@ export default async function updateAlbumController(req, res) {
     }
     return res.json(album);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

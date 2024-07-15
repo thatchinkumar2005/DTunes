@@ -7,7 +7,6 @@ export default async function getLikesController(req, res) {
     const likesCount = await Like.countDocuments({
       song: mongoose.Types.ObjectId.createFromHexString(id),
     });
-    console.log(likesCount);
 
     return res.json({
       likes: likesCount,

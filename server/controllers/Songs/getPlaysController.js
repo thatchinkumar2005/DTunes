@@ -15,7 +15,6 @@ export default async function getPlaysController(req, res) {
 
     return res.json({ plays: plays.plays });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

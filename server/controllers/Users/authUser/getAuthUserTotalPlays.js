@@ -47,7 +47,6 @@ export default async function getAuthUserTotalPlays(req, res) {
 
     return res.json(result);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

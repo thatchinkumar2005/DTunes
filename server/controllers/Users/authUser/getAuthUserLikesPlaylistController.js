@@ -10,7 +10,6 @@ export default async function getAuthUserLikesPlaylistController(req, res) {
 
     return res.json(likePlaylist);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

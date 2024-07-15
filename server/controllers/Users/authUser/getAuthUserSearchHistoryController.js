@@ -14,7 +14,6 @@ export default async function getAuthUserSearchHistoryController(req, res) {
     const results = history.map((h) => h.query);
     return res.json(results);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

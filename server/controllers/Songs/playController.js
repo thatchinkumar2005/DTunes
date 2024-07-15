@@ -35,7 +35,6 @@ export default async function playController(req, res) {
       return res.json(intData);
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: error.message,
     });

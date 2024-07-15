@@ -12,7 +12,6 @@ export default async function getSearchRecommendation(req, res) {
       .sort({ count: -1 });
     res.json(resp);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

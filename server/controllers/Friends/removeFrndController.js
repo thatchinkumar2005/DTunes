@@ -13,7 +13,6 @@ export default async function removeFrndController(req, res) {
       friend: { $all: [user.id, friend._id] },
       status: "accepted",
     });
-    console.log(reln);
     if (!reln) return res.json({ message: "Not friends" });
 
     if (reln.status === "accepted") {

@@ -14,7 +14,6 @@ export default async function getAuthUserPartyPlaylistController(req, res) {
 
     return res.json({ partyPlaylist: party.resultantPlaylist });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

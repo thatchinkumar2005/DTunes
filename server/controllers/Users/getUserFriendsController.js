@@ -28,7 +28,7 @@ export default async function getAllUserFriendsController(req, res) {
     )
       .skip((page - 1) * limit)
       .limit(limit);
-    console.log(friends);
+
     const result = friends.map((lst) => {
       return lst.friend.find((i) => !i.equals(resUser._id));
     });

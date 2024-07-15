@@ -21,7 +21,6 @@ export default async function leavePartyController(req, res) {
 
     return res.json({ message: "deleted" });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

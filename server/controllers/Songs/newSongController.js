@@ -21,7 +21,6 @@ export default async function newSongController(req, res) {
     if (!(name && albumId && genre))
       return res.status(400).json({ message: "Enter the mandatory fields" });
     const files = req.files;
-    console.log(files);
     if (!files?.coverArt || !files?.file)
       return res.status(400).json({ message: "Select files" });
 
@@ -74,8 +73,6 @@ export default async function newSongController(req, res) {
     song.files.coverArt = coverImageUrl;
     await song.save();
 
-    console.log(song);
-
     //sharp to resize and reformat
     await sharp(files.coverArt[0].buffer)
       .resize(1400, 1400)
@@ -88,7 +85,6 @@ export default async function newSongController(req, res) {
     return res.json(song);
   } catch (error) {
     //error handling
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

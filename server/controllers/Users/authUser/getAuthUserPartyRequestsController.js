@@ -15,7 +15,6 @@ export default async function getAuthUserPartyRequestsController(req, res) {
 
     return res.json(requests);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

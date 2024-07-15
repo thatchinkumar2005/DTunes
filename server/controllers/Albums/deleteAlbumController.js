@@ -60,7 +60,6 @@ export default async function deleteAlbumController(req, res) {
       message: "deleted",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

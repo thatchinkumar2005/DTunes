@@ -29,11 +29,9 @@ export default async function getAllArtistsController(req, res) {
     )
       .skip((page - 1) * limit)
       .limit(limit);
-    console.log(artists);
 
     return res.json(artists);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: error.message });
   }
 }
