@@ -5,6 +5,7 @@ import { User } from "../../../../models/User.js";
 import jwt from "jsonwebtoken";
 import { settings } from "../../../../config/settings.js";
 import { jwtTokenCookieOpt } from "../../../../config/jwtTokenCookieOpt.js";
+import { Playlist } from "../../../../models/Playlist.js";
 export default async function dauth(req, res) {
   try {
     const authCode = req.query.code;
@@ -60,6 +61,14 @@ export default async function dauth(req, res) {
           user: 2005,
         },
       });
+
+      const likePlaylist = await Playlist.create({
+        name: "Likes",
+        artist: newUser._id,
+        public: false,
+        like: true,
+      });
+
       const roles = Object.values(newUser.roles).filter(Boolean);
       const accessToken = jwt.sign(
         {
@@ -80,6 +89,9 @@ export default async function dauth(req, res) {
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: settings.refreshTokenExpiry }
       );
+
+      newUser.refreshToken = refreshToken;
+      await newUser.save();
 
       res.cookie("jwt", refreshToken, jwtTokenCookieOpt);
 
@@ -112,6 +124,9 @@ export default async function dauth(req, res) {
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: settings.refreshTokenExpiry }
       );
+
+      foundUser.refreshToken = refreshToken;
+      await foundUser.save();
 
       res.cookie("jwt", refreshToken, jwtTokenCookieOpt);
 

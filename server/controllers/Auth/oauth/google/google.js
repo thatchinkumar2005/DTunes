@@ -6,6 +6,7 @@ import { Strategy } from "passport-google-oauth20";
 import { User } from "../../../../models/User.js";
 import { settings } from "../../../../config/settings.js";
 import { jwtTokenCookieOpt } from "../../../../config/jwtTokenCookieOpt.js";
+import { Playlist } from "../../../../models/Playlist.js";
 
 passport.use(
   new Strategy(
@@ -33,6 +34,13 @@ passport.use(
           },
         });
         console.log("register oauth");
+
+        const likePlaylist = await Playlist.create({
+          name: "Likes",
+          artist: newUser._id,
+          public: false,
+          like: true,
+        });
         done(null, user);
       } else {
         console.log("login oauth");
