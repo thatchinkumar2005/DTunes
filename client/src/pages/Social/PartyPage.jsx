@@ -19,6 +19,7 @@ import usePartyRequest from "../../features/Social/hooks/useRequestParty";
 import toast from "react-hot-toast";
 import useDeleteParty from "../../features/Social/hooks/useDeleteParty";
 import { useQueryClient } from "@tanstack/react-query";
+import SearchUsersPopUp from "../../features/Users/components/SearchUsersPopUp";
 
 function DropDownMenu({ onClick }) {
   return <CiMenuKebab onClick={onClick} className="h-5 w-5" />;
@@ -45,10 +46,7 @@ export default function PartyPage() {
   const queryClient = useQueryClient();
 
   const [isOpen, setOpen] = useState(false);
-  const [modalOpen, setModakOpen] = useState(false);
 
-  const [searchResults, setSearchResults] = useState(null);
-  const [query, setQuery] = useState("");
   const {
     partyMembers,
     error,
@@ -61,42 +59,6 @@ export default function PartyPage() {
 
   const { inView, ref } = useInView();
 
-  const { search, isSearching } = useSearch();
-
-  function handleSearch(e) {
-    e.preventDefault();
-    search(
-      { query, type: "user", record: false },
-      {
-        onSuccess: (data) => {
-          setSearchResults(data.users);
-        },
-      }
-    );
-  }
-
-  function handleChange(e) {
-    setQuery(e.target.value);
-  }
-
-  const { request, isRequesting } = usePartyRequest();
-  function handleRequest(id) {
-    request(id, {
-      onSuccess: (data) => {
-        setModakOpen(false);
-        setOpen(false);
-        if (data?.status === "requested") {
-          toast(data.status);
-        } else {
-          toast(data.message);
-        }
-      },
-      onError: (err) => {
-        toast(err.message);
-      },
-    });
-  }
-
   useEffect(() => {
     if (inView) {
       fetchNextPage();
@@ -104,7 +66,6 @@ export default function PartyPage() {
   }, [inView, fetchNextPage]);
 
   const { deleteParty, isPending: isDeleting } = useDeleteParty();
-  const navigate = useNavigate();
 
   if (isGettingParty) return <Spinner />;
   return (
@@ -154,48 +115,8 @@ export default function PartyPage() {
                         <MdDelete className="fill-red-500" />
                         <span>Delete Party</span>
                       </div>
-                      <Modal
-                        ToggleElement={ModalOpenButton}
-                        setOpen={setModakOpen}
-                        isOpen={modalOpen}
-                      >
-                        <div className="h-96 w-72 flex flex-col gap-2">
-                          <form onSubmit={handleSearch}>
-                            <input
-                              type="text"
-                              className="h-10 w-full bg-primary rounded-lg outline-none p-1"
-                              placeholder="search users"
-                              value={query}
-                              onChange={handleChange}
-                              onFocus={() => {
-                                setSearchResults(null);
-                              }}
-                            />
-                          </form>
-                          <div className="w-full grow rounded-lg flex flex-col gap-2 bg-primary p-1">
-                            {searchResults &&
-                              searchResults.map((user) => (
-                                <div
-                                  key={user._id}
-                                  className="w-full h-12 rounded-lg bg-secondary p-2 flex gap-2 justify-start items-center"
-                                  onClick={() => {
-                                    handleRequest(user._id);
-                                  }}
-                                >
-                                  {" "}
-                                  {user?.files?.profilePic ? (
-                                    <img
-                                      className="h-8 rounded-full "
-                                      src={user?.files?.profilePic}
-                                    />
-                                  ) : (
-                                    <FaRegUserCircle className="h-8 w-8 " />
-                                  )}
-                                  <div>{user.fname}</div>
-                                </div>
-                              ))}
-                          </div>
-                        </div>
+                      <Modal ToggleElement={ModalOpenButton}>
+                        <SearchUsersPopUp />
                       </Modal>
                     </div>
                   </DropDown>

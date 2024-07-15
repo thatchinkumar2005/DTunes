@@ -34,7 +34,8 @@ export default async function getAuthUserAnalyticsController(req, res) {
       })
       .sort({
         _id: 1,
-      });
+      })
+      .limit(1000);
 
     const artistAnalysis = await Interaction.aggregate([
       {
@@ -87,6 +88,9 @@ export default async function getAuthUserAnalyticsController(req, res) {
       },
       {
         $sort: { percentage: -1 },
+      },
+      {
+        $limit: 1000,
       },
     ]);
 
@@ -142,10 +146,13 @@ export default async function getAuthUserAnalyticsController(req, res) {
       {
         $sort: { percentage: -1 },
       },
+      {
+        $limit: 1000,
+      },
     ]);
 
     return res.json({
-      totalPlayed,
+      totalPlayed: totalPlayed[0].played,
       dayWiseAnalysis,
       artistAnalysis,
       genreAnalysis,

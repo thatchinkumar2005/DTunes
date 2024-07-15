@@ -12,7 +12,7 @@ export default function AlbumCard({ album }) {
         to={`/album/${album._id}`}
         className="hover:underline self-start md:text-2xl"
       >
-        {album.name.length > 14 ? `${album.name.slice(0, 13)}...` : album.name}
+        {album.name.length > 12 ? `${album.name.slice(0, 11)}...` : album.name}
       </Link>
       <span className=" self-end text-gray-500 text-xs mt-auto">Album</span>
     </div>

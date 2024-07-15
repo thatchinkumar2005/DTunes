@@ -1,4 +1,9 @@
-import React, { createContext, useContext, useState } from "react";
+import React, {
+  cloneElement,
+  createContext,
+  useContext,
+  useState,
+} from "react";
 import { RxCross1 } from "react-icons/rx";
 
 const ModalContext = createContext();
@@ -6,16 +11,16 @@ const ModalContext = createContext();
 export default function Modal({
   children,
   ToggleElement,
-  isOpen,
-  setOpen,
   className,
+  ...props
 }) {
+  const [isOpen, setOpen] = useState(false);
   function handleToggle() {
     setOpen((state) => !state);
     console.log(isOpen);
   }
   return (
-    <ModalContext.Provider value={{ isOpen, setOpen, children }}>
+    <ModalContext.Provider value={{ isOpen, setOpen, children, ...props }}>
       <ToggleElement onClick={handleToggle} />
       <div className="relative z-50">
         {isOpen && <ModalWindow className={className} />}
@@ -25,7 +30,7 @@ export default function Modal({
 }
 
 function ModalWindow({ className }) {
-  const { children, setOpen } = useContext(ModalContext);
+  const { children, setOpen, isOpen, ...props } = useContext(ModalContext);
   function handleClose() {
     setOpen((state) => !state);
   }
@@ -41,7 +46,7 @@ function ModalWindow({ className }) {
           <div className="h-0.5 border-solid border-b-2"></div>
         </div>
 
-        {children}
+        {cloneElement(children, { setOpen, isOpen, ...props })}
       </div>
     </div>
   );

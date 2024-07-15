@@ -5,14 +5,11 @@ import useAuth from "../../hooks/auth/useAuth";
 import usePromoteArtist from "../../features/Users/hooks/usePromoteArtist";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import ArtistConfirmPopUp from "../../features/Accounts/ArtistConfirmPopUp";
 
 export default function AccountsPage() {
-  const [openPromoteModal, setOpenPromoteModal] = useState(false);
   const { auth } = useAuth();
   const [artist, setArtist] = useState();
-  const { promote, isPromoting } = usePromoteArtist();
-  const queryClient = useQueryClient();
-
   useEffect(() => {
     setArtist(auth?.roles.includes(2009));
   }, [auth]);
@@ -41,47 +38,8 @@ export default function AccountsPage() {
                   </div>
                 </span>
               )}
-              setOpen={setOpenPromoteModal}
-              isOpen={openPromoteModal}
             >
-              <div className="h-32 w-full flex flex-col justify-center items-center gap-3">
-                <div className="text-lg">Do you want to become an artist?</div>
-                <div className="flex gap-3 items-center">
-                  <button
-                    onClick={() => {
-                      setOpenPromoteModal(false);
-                      promote(null, {
-                        onSuccess: (data) => {
-                          toast("Promoted to an artist account!", {
-                            duration: 10000,
-                          });
-                          queryClient.invalidateQueries(
-                            ["authUser"],
-                            ["artist"]
-                          );
-                        },
-                        onError: (err) => {
-                          toast(err.message, {
-                            duration: 10000,
-                          });
-                        },
-                      });
-                    }}
-                    disabled={isPromoting}
-                    className="w-20 bg-primary p-2 rounded-lg hover:underline"
-                  >
-                    Yes
-                  </button>
-                  <button
-                    onClick={() => {
-                      setOpenPromoteModal(false);
-                    }}
-                    className="w-20 bg-primary p-2 rounded-lg hover:underline"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
+              <ArtistConfirmPopUp />
             </Modal>
           )}
         </div>

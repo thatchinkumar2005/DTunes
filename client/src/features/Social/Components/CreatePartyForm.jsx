@@ -2,12 +2,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { IoMdArrowDropdown } from "react-icons/io";
 import Modal from "../../../ui/components/Modal";
-import useAuth from "../../../hooks/auth/useAuth";
-import useGetUserPlaylists from "../../Users/hooks/useGetUserPlaylists";
-import { useInView } from "react-intersection-observer";
-import Spinner from "../../../ui/components/Spinner";
 import useCreateParty from "../hooks/useCreateParty";
 import { useQueryClient } from "@tanstack/react-query";
+import PublicPlaylistsPopUp from "../../Playlists/components/PublicPlaylistsPopUp";
 
 function DropDownButton({ onClick }) {
   return <IoMdArrowDropdown onClick={onClick} />;
@@ -19,7 +16,6 @@ export default function CreatePartyForm() {
   const [contribPlaylistId, setContribPlaylistId] = useState("");
   const [contribPlaylistName, setContribPlaylistName] = useState("");
   const [error, setError] = useState("");
-  const [dropDownOpen, setDropDownOpen] = useState(false);
   const onDrop = useCallback((acceptedFiles) => {
     const acceptedFile = acceptedFiles[0];
     acceptedFile.preview = URL.createObjectURL(acceptedFile);
@@ -29,33 +25,7 @@ export default function CreatePartyForm() {
 
   const queryClient = useQueryClient();
 
-  const { auth } = useAuth();
-
-  const {
-    userPlaylists,
-    isError,
-    isPending,
-    isSuccess,
-    error: playlistsError,
-    fetchNextPage,
-    hasNextPage,
-  } = useGetUserPlaylists({ id: auth.id });
-
-  const { ref, inView } = useInView();
-
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [inView, fetchNextPage]);
-
   const { mutate: create, isPending: isCreating } = useCreateParty();
-
-  function handleSelectPlaylist(playlist) {
-    setContribPlaylistId(playlist._id);
-    setContribPlaylistName(playlist.name);
-    setDropDownOpen(false);
-  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -108,43 +78,10 @@ export default function CreatePartyForm() {
         <span>{contribPlaylistName || "Select Playlist"}</span>
         <Modal
           ToggleElement={DropDownButton}
-          isOpen={dropDownOpen}
-          setOpen={setDropDownOpen}
+          setContribPlaylistId={setContribPlaylistId}
+          setContribPlaylistName={setContribPlaylistName}
         >
-          <div className="w-72 h-96 flex flex-col ">
-            {isError && <div>{playlistsError}</div>}
-            {isPending && <Spinner />}
-            {isSuccess &&
-              userPlaylists.pages.map((page) =>
-                page.data.map((playlist) => (
-                  <div
-                    key={playlist._id}
-                    onClick={() => {
-                      handleSelectPlaylist(playlist);
-                    }}
-                    className="h-14 w-full bg-secondary rounded-lg flex shrink-0 grow-0 justify-start items-center gap-3"
-                  >
-                    <img
-                      className="h-10 grow-0"
-                      src={
-                        playlist?.like
-                          ? "/LikedPlaylist.jpg"
-                          : playlist?.files?.coverArt
-                          ? playlist?.files?.coverArt
-                          : "/Playlist.jpg"
-                      }
-                      alt="cover art"
-                    />
-                    <div className="w-32 h-12 grow-0 flex justify-start items-center hover:underline">
-                      {playlist.name.length > 20
-                        ? `${playlist.name.slice(0, 19)}...`
-                        : playlist.name}
-                    </div>
-                  </div>
-                ))
-              )}
-            <div ref={ref}>{hasNextPage && <Spinner />}</div>
-          </div>
+          <PublicPlaylistsPopUp />
         </Modal>
       </div>
 

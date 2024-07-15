@@ -13,6 +13,7 @@ import useGetAuthUserPlaylists from "../../Users/hooks/useGetAuthUserPlaylists";
 import Spinner from "../../../ui/components/Spinner";
 import PlaylistStrip from "../../Playlists/components/PlaylistStrip";
 import { useInView } from "react-intersection-observer";
+import PlaylistsListPopUp from "../../Playlists/components/PlaylistsListPopUp";
 
 function DropDownMenu({ onClick }) {
   return <CiMenuKebab onClick={onClick} className="h-5 w-5" />;
@@ -30,29 +31,13 @@ export default function SongCard({ song }) {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   function handlePlayPause() {
     dispatch(setActiveSong({ song }));
     dispatch(play());
   }
   const { isLiked } = useGetLikedBoolean({ song: song._id });
   const { like, isLiking } = useLike();
-  const {
-    authUserPlaylists,
-    isError,
-    isPending,
-    isSuccess,
-    hasNextPage,
-    fetchNextPage,
-    error,
-  } = useGetAuthUserPlaylists();
-  const { ref, inView } = useInView();
 
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [inView, fetchNextPage]);
   function handleLike() {
     like(song._id, {
       onSuccess: (data) => {
@@ -90,26 +75,8 @@ export default function SongCard({ song }) {
           className="top-3"
         >
           <div className="flex flex-col justify-center items-center w-32 h-8 ">
-            <Modal
-              ToggleElement={AddToPlaylistBtn}
-              isOpen={isModalOpen}
-              setOpen={setIsModalOpen}
-            >
-              <div className="w-72 h-96 flex flex-col ">
-                {isPending && <Spinner />}
-                {isError && <div>{error}</div>}
-                {isSuccess &&
-                  authUserPlaylists.pages.map((page) =>
-                    page.data.map((playlist) => (
-                      <PlaylistStrip
-                        key={playlist._id}
-                        playlist={playlist}
-                        songId={song._id}
-                      />
-                    ))
-                  )}
-                <div ref={ref}>{hasNextPage && <Spinner />}</div>
-              </div>
+            <Modal ToggleElement={AddToPlaylistBtn} song={song}>
+              <PlaylistsListPopUp />
             </Modal>
           </div>
         </DropDown>
