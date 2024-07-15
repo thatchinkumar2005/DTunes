@@ -50,6 +50,10 @@ const MusicPlayer = () => {
     function handleSpace(e) {
       if (e.key === " ") {
         dispatch(playPause());
+      } else if (e.key === "d" && vol > 0.01) {
+        setVol((vol) => vol - 0.01);
+      } else if (e.key === "u" && vol < 0.99) {
+        setVol((vol) => vol + 0.01);
       }
       console.log(e);
     }
