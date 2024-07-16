@@ -1,11 +1,9 @@
+import dotenv from "dotenv";
+dotenv.config();
 import sharp from "sharp";
-import { unlink } from "fs/promises";
 import { Playlist } from "../../models/Playlist.js";
-
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { s3 } from "../../config/bucketConn.js";
 
 export default async function updatePlaylistController(req, res) {
   try {
@@ -30,18 +28,18 @@ export default async function updatePlaylistController(req, res) {
     await playlist.save();
 
     if (file) {
-      const coverArtPath = join(
-        __dirname,
-        "../../STORAGE/CoverArt",
-        `${playlist.id}.png`
-      );
-
-      await unlink(coverArtPath);
-
-      await sharp(file.buffer)
+      const editedImage = await sharp(file.buffer)
         .resize(1400, 1400)
         .toFormat("png")
-        .toFile(coverArtPath);
+        .toBuffer();
+
+      const command = new PutObjectCommand({
+        Bucket: process.env.BUCKET_NAME,
+        Key: `CoverArt/${playlist.id}.png`,
+        Body: editedImage,
+      });
+
+      await s3.send(command);
     }
     return res.json(playlist);
   } catch (error) {

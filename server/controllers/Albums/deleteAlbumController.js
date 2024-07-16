@@ -1,15 +1,11 @@
-import { join } from "path";
-import { unlink } from "fs/promises";
 import { Album } from "../../models/Album.js";
 import { Song } from "../../models/Song.js";
 
-import { fileURLToPath } from "url";
-import { dirname } from "path";
 import { Like } from "../../models/Like.js";
 import { Interaction } from "../../models/InteractionData.js";
 import { PlaylistSongJunction } from "../../models/Playlist_Song_Junction.js";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { s3 } from "../../config/bucketConn.js";
 
 export default async function deleteAlbumController(req, res) {
   try {
@@ -26,18 +22,16 @@ export default async function deleteAlbumController(req, res) {
     const albumSongs = await Song.find({ album: album._id });
 
     for (let song of albumSongs) {
-      const audioPath = join(
-        __dirname,
-        "../../STORAGE/Songs",
-        `${song.id}.mp3`
-      );
-      const coverArtPath = join(
-        __dirname,
-        "../../STORAGE/CoverArt",
-        `${song.id}.png`
-      );
-      await unlink(audioPath);
-      await unlink(coverArtPath);
+      const audioCommand = new DeleteObjectCommand({
+        Bucket: process.env.BUCKET_NAME,
+        Key: `Songs/${song.id}.mp3`,
+      });
+      const imageCommand = new DeleteObjectCommand({
+        Bucket: process.env.BUCKET_NAME,
+        Key: `CoverArt/${song.id}.png`,
+      });
+      s3.send(audioCommand);
+      s3.send(imageCommand);
 
       //junction collecions
       await Like.deleteMany({ song: song._id });

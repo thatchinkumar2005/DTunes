@@ -1,4 +1,5 @@
-import { unlink, access } from "fs/promises";
+import dotenv from "dotenv";
+dotenv.config();
 import { Party } from "../../models/Party.js";
 import { PartyRequest } from "../../models/PartyRequests.js";
 import { Playlist } from "../../models/Playlist.js";
@@ -7,6 +8,8 @@ import { User } from "../../models/User.js";
 
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { s3 } from "../../config/bucketConn.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -47,20 +50,11 @@ export default async function deletePartyController(req, res) {
     userDoc.party = null;
     await userDoc.save();
 
-    const coverArtPath = join(
-      __dirname,
-      "../STORAGE/CoverArt",
-      `${party.id}.png`
-    );
-    try {
-      await access(coverArtPath);
-      await unlink(coverArtPath);
-    } catch (error) {
-      if (error.code === "ENOENT") {
-      } else {
-        throw error;
-      }
-    }
+    const command = new DeleteObjectCommand({
+      Bucket: process.env.BUCKET_NAME,
+      Key: `CoverArt/${party.id}.png`,
+    });
+    await s3.send(command);
 
     await Party.deleteOne({ _id: party._id });
 

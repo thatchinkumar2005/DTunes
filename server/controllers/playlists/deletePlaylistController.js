@@ -1,11 +1,9 @@
-import { unlink, access } from "fs/promises";
+import dotenv from "dotenv";
+dotenv.config();
 import { Playlist } from "../../models/Playlist.js";
 import { PlaylistSongJunction } from "../../models/Playlist_Song_Junction.js";
-
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { s3 } from "../../config/bucketConn.js";
 
 export default async function deletePlaylistController(req, res) {
   try {
@@ -25,16 +23,12 @@ export default async function deletePlaylistController(req, res) {
       `${playlist._id}.png`
     );
 
-    try {
-      await access(coverArtPath);
-      await unlink(coverArtPath);
-    } catch (error) {
-      if (error.code === "ENOENT") {
-        console.log("file missing");
-      } else {
-        throw error;
-      }
-    }
+    const command = new DeleteObjectCommand({
+      Bucket: process.env.BUCKET_NAME,
+      Key: `CoverArt/${playlist.id}.png`,
+    });
+
+    await s3.send(command);
 
     await PlaylistSongJunction.deleteMany({ playlist: playlist._id });
     await Playlist.deleteOne({ _id: playlist._id });

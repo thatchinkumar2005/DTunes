@@ -1,15 +1,12 @@
-import { writeFile } from "fs/promises";
+import dotenv from "dotenv";
+dotenv.config();
 import { Song } from "../../models/Song.js";
 import { Album } from "../../models/Album.js";
-import { join } from "path";
 import { User } from "../../models/User.js";
 import sharp from "sharp";
 import mp3Converter from "../../utils/mp3Converter.js";
-
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { s3 } from "../../config/bucketConn.js";
 
 export default async function newSongController(req, res) {
   try {
@@ -55,36 +52,38 @@ export default async function newSongController(req, res) {
       lyric,
     });
 
-    //song path in server
-    const audioPath = join(__dirname, "../../STORAGE/Songs/", `${song.id}.mp3`);
-
-    //cover art path in server
-    const coverImagePath = join(
-      __dirname,
-      "../../STORAGE/CoverArt/",
-      `${song.id}.png`
-    );
-    const url = `http://localhost:7777/serverStorage/Songs/${song._id}.mp3`;
-
-    const coverImageUrl = `http://localhost:7777/serverStorage/CoverArt/${song._id}.png`;
-
-    //updating urls in song document
-    song.files.audio = url;
-    song.files.coverArt = coverImageUrl;
-    await song.save();
-
     //sharp to resize and reformat
-    await sharp(files.coverArt[0].buffer)
+    const editedImage = await sharp(files.coverArt[0].buffer)
       .resize(1400, 1400)
       .toFormat("png")
-      .toFile(coverImagePath);
+      .toBuffer();
 
-    await mp3Converter({ buffer: files.file[0].buffer, path: audioPath });
+    const editedAudio = await mp3Converter({
+      buffer: files.file[0].buffer,
+    });
+
+    console.log(editedAudio);
+
+    const imageCommand = new PutObjectCommand({
+      Bucket: process.env.BUCKET_NAME,
+      Key: `CoverArt/${song.id}.png`,
+      Body: editedImage,
+    });
+
+    const audioCommand = new PutObjectCommand({
+      Bucket: process.env.BUCKET_NAME,
+      Key: `Songs/${song.id}.mp3`,
+      Body: editedAudio,
+    });
+
+    await s3.send(imageCommand);
+    await s3.send(audioCommand);
 
     //responding with song doc
     return res.json(song);
   } catch (error) {
     //error handling
+    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

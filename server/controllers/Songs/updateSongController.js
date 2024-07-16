@@ -1,14 +1,11 @@
-import { writeFile, unlink } from "fs/promises";
+import dotenv from "dotenv";
+dotenv.config();
 import { Song } from "../../models/Song.js";
 import { User } from "../../models/User.js";
-import { join } from "path";
-
-import { fileURLToPath } from "url";
-import { dirname } from "path";
 import sharp from "sharp";
 import mp3Converter from "../../utils/mp3Converter.js";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { s3 } from "../../config/bucketConn.js";
 
 export default async function updateSongController(req, res) {
   try {
@@ -58,26 +55,33 @@ export default async function updateSongController(req, res) {
     if (files) {
       if (files.file) {
         //audio file
-        const audioPath = join(
-          __dirname,
-          "../../STORAGE/Songs",
-          `${song.id}.mp3`
-        );
-        await unlink(audioPath);
-        await mp3Converter({ buffer: files.file[0].buffer, path: audioPath });
+        const editedAudio = await mp3Converter({
+          buffer: files.file[0].buffer,
+          path: audioPath,
+        });
+
+        const audioCommand = new PutObjectCommand({
+          Bucket: process.env.BUCKET_NAME,
+          Key: `Songs/${song.id}.mp3`,
+          Body: editedAudio,
+        });
+
+        await s3.send(audioCommand);
       }
       if (files.coverArt) {
         //cover art
-        const coverArtPath = join(
-          __dirname,
-          "../../STORAGE/CoverArt/",
-          `${song.id}.png`
-        );
-        await unlink(coverArtPath);
-        await sharp(files.coverArt[0].buffer)
+        const editedImage = await sharp(files.coverArt[0].buffer)
           .resize(1400, 1400)
           .toFormat("png")
-          .toFile(coverArtPath);
+          .toBuffer();
+
+        const imageCommand = new PutObjectCommand({
+          Bucket: process.env.BUCKET_NAME,
+          Key: `CoverArt/${song.id}.png`,
+          Body: editedImage,
+        });
+
+        await s3.send(imageCommand);
       }
     }
 

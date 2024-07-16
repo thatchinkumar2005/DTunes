@@ -2,12 +2,9 @@ import sharp from "sharp";
 import { Party } from "../../models/Party.js";
 import { Playlist } from "../../models/Playlist.js";
 import { User } from "../../models/User.js";
-
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
 import { PlaylistSongJunction } from "../../models/Playlist_Song_Junction.js";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { s3 } from "../../config/bucketConn.js";
 
 export default async function newPartyController(req, res) {
   try {
@@ -46,22 +43,25 @@ export default async function newPartyController(req, res) {
     });
 
     if (file) {
-      const coverArtPath = join(
-        __dirname,
-        "../../STORAGE/CoverArt",
-        `${party.id}.png`
-      );
-
-      await sharp(file.buffer)
+      const editedFile = await sharp(file.buffer)
         .resize(1400, 1400)
         .toFormat("png")
-        .toFile(coverArtPath);
+        .toBuffer();
 
-      party.file.coverArt = `http://localhost:7777/serverStorage/CoverArt/${party.id}.png`;
-      partyplaylist.files.coverArt = `http://localhost:7777/serverStorage/CoverArt/${party.id}.png`;
+      const command = new PutObjectCommand({
+        Bucket: process.env.BUCKET_NAME,
+        Key: `CoverArt/${party.id}.png`,
+        Body: editedFile,
+      });
 
-      await party.save();
-      await partyplaylist.save();
+      const commandPlaylist = new PutObjectCommand({
+        Bucket: process.env.BUCKET_NAME,
+        Key: `CoverArt/${partyplaylist.id}.png`,
+        Body: editedFile,
+      });
+
+      await s3.send(command);
+      await s3.send(commandPlaylist);
     }
 
     const songs = await PlaylistSongJunction.find({
