@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { join } from "path";
 import sharp from "sharp";
 import { Album } from "../../models/Album.js";
@@ -5,6 +7,8 @@ import { User } from "../../models/User.js";
 
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { s3 } from "../../config/bucketConn.js";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -29,27 +33,25 @@ export default async function createNewAlbumController(req, res) {
       name,
       artist: user.id,
     });
-    //cover art's path
-    const coverArtPath = join(
-      __dirname,
-      "../../STORAGE/CoverArt",
-      `${album.id}.png`
-    );
+
     //save after preproccessing the image buffer
-    await sharp(file.buffer)
+    const editedImage = await sharp(file.buffer)
       .toFormat("png")
       .resize(1400, 1400)
-      .toFile(coverArtPath);
-    //static url for the file
-    const coverArtUrl = `http://localhost:7777/serverStorage/CoverArt/${album.id}.png`;
+      .toBuffer();
 
-    //saving in album
-    album.files.coverArt = coverArtUrl;
-    await album.save();
-    //responding with created album
+    const command = new PutObjectCommand({
+      Bucket: process.env.BUCKET_NAME,
+      Key: `CoverArt/${album.id}.png`,
+      Body: editedImage,
+    });
+
+    await s3.send(command);
+
     return res.json(album);
   } catch (error) {
     //handle errors
+    console.log(error);
     return res.status(500).json({
       message: error.message,
     });
