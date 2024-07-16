@@ -1,4 +1,7 @@
-export const allowedOrigins = ["http://localhost:5173"];
+export const allowedOrigins = [
+  "http://localhost:7777",
+  "http://localhost:5173",
+];
 
 export const corsOpt = {
   origin: (origin, done) => {

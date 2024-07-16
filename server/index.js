@@ -28,6 +28,10 @@ const __dirname = dirname(__filename);
 
 //middelwares
 
+//frontend
+app.use(express.static("dist"));
+console.log("frontend is serving");
+
 //static server
 app.use("/serverStorage", express.static(join(__dirname, "STORAGE")));
 //set Access-Control-Allow-Credentials before Cors only for allowed origins
@@ -60,7 +64,7 @@ app.use(handleErr);
 //server start
 mongoose.connection.once("open", () => {
   console.log("connected to mongodb");
-  app.listen(process.env.SERVER_PORT, () => {
+  app.listen(process.env.SERVER_PORT || 7777, () => {
     console.log(`server up and running in port ${process.env.SERVER_PORT}`);
   });
 });
