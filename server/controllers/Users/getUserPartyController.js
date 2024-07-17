@@ -1,6 +1,11 @@
+import dotenv from "dotenv";
+dotenv.config();
+import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { Friend } from "../../models/Friend.js";
 import { Party } from "../../models/Party.js";
 import { User } from "../../models/User.js";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { s3 } from "../../config/bucketConn.js";
 
 export default async function getUserPartyController(req, res) {
   try {
@@ -21,6 +26,14 @@ export default async function getUserPartyController(req, res) {
     }
 
     const party = await Party.findOne({ _id: resUser.party.id });
+
+    const command = new GetObjectCommand({
+      Bucket: process.env.BUCKET_NAME,
+      Key: `CoverArt/${party.id}.png`,
+    });
+    const url = await getSignedUrl(s3, command, { expiresIn: 3600 * 24 });
+
+    party.file.coverArt = url;
 
     return res.json(party);
   } catch (error) {

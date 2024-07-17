@@ -1,11 +1,11 @@
-import { unlink, access } from "fs/promises";
+import dotenv from "dotenv";
+dotenv.config();
 import { User } from "../../../models/User.js";
 
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
 import sharp from "sharp";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import { s3 } from "../../../config/bucketConn.js";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 export default async function updateAuthUserController(req, res) {
   try {
@@ -19,34 +19,30 @@ export default async function updateAuthUserController(req, res) {
     resUser.lname = lname || resUser.lname;
     resUser.bio = bio || resUser.bio;
 
-    const profilePicPath = join(
-      __dirname,
-      "../../../STORAGE/ProfilePic",
-      `${resUser.id}.png`
-    );
     if (file) {
-      try {
-        await access(profilePicPath);
-        await unlink(profilePicPath);
-      } catch (error) {
-        if (error.code === "ENOENT") {
-          console.log("file missing");
-        } else {
-          throw error;
-        }
-      }
-
-      await sharp(file.buffer)
+      const editedImage = await sharp(file.buffer)
         .resize(512, 512)
         .toFormat("png")
-        .toFile(profilePicPath);
+        .toBuffer();
 
-      if (!resUser.files.profilePic) {
-        resUser.files.profilePic = `http://localhost:7777/serverStorage/ProfilePic/${resUser.id}.png`;
-      }
+      const command = new PutObjectCommand({
+        Bucket: process.env.BUCKET_NAME,
+        Key: `ProfilePic/${resUser.id}.png`,
+        Body: editedImage,
+      });
+      await s3.send(command);
+
+      const getCommand = GetObjectCommand({
+        Bucket: process.env.BUCKET_NAME,
+        Key: `ProfilePic/${resUser.id}.png`,
+      });
+
+      const url = await getSignedUrl(getCommand, s3, { expiresIn: 3600 * 24 });
+      resUser.files.profilePic = url;
     }
 
     await resUser.save();
+
     return res.json(resUser);
   } catch (error) {
     return res.status(500).json({ message: error.message });

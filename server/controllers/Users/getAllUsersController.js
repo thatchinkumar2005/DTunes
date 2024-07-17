@@ -1,4 +1,9 @@
+import dotenv from "dotenv";
+dotenv.config();
+import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { User } from "../../models/User.js";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { s3 } from "../../config/bucketConn.js";
 
 export default async function getAllUsersController(req, res) {
   try {
@@ -17,7 +22,6 @@ export default async function getAllUsersController(req, res) {
         roles: 1,
         verified: 1,
         genres: 1,
-        files: 1,
         bio: 1,
         party: 1,
         currentPlaying: 1,
@@ -25,6 +29,18 @@ export default async function getAllUsersController(req, res) {
     )
       .skip((page - 1) * limit)
       .limit(limit);
+
+    for (const user of users) {
+      const command = new GetObjectCommand({
+        Bucket: process.env.BUCKET_NAME,
+        Key: `ProfilePic/${user.id}.png`,
+      });
+      const url = await getSignedUrl(s3, command, {
+        expiresIn: 3600 * 24,
+      });
+
+      artist.files.profilePic = url;
+    }
 
     return res.json(users);
   } catch (error) {

@@ -41,13 +41,6 @@ export default async function deleteAlbumController(req, res) {
       await Song.deleteOne({ _id: song._id });
     }
 
-    const coverArtPath = join(
-      __dirname,
-      "../../STORAGE/CoverArt",
-      `${album.id}.png`
-    );
-    await unlink(coverArtPath);
-
     await Album.deleteOne({ _id: album._id });
 
     return res.status(200).json({

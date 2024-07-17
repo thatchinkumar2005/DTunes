@@ -17,12 +17,6 @@ export default async function deletePlaylistController(req, res) {
     if (!playlist.artist.equals(user.id))
       return res.status(401).json({ message: "Not your playlist" });
 
-    const coverArtPath = join(
-      __dirname,
-      "../../STORAGE/CoverArt",
-      `${playlist._id}.png`
-    );
-
     const command = new DeleteObjectCommand({
       Bucket: process.env.BUCKET_NAME,
       Key: `CoverArt/${playlist.id}.png`,

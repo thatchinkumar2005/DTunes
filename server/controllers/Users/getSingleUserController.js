@@ -1,4 +1,9 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { User } from "../../models/User.js";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { s3 } from "../../config/bucketConn.js";
+import { GetObjectCommand } from "@aws-sdk/client-s3";
 
 export default async function getSingleUserController(req, res) {
   try {
@@ -18,12 +23,19 @@ export default async function getSingleUserController(req, res) {
         roles: 1,
         verified: 1,
         genres: 1,
-        files: 1,
         bio: 1,
         party: 1,
         currentPlaying: 1,
       }
     );
+
+    const command = new GetObjectCommand({
+      Bucket: process.env.BUCKET_NAME,
+      Key: `ProfilePic/${result.id}.png`,
+    });
+    const url = await getSignedUrl(s3, command, { expiresIn: 3600 * 24 });
+
+    result.files.profilePic = url;
 
     return res.json(result);
   } catch (error) {
