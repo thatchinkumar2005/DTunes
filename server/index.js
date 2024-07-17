@@ -28,10 +28,6 @@ const __dirname = dirname(__filename);
 
 //middelwares
 
-//frontend
-app.use(express.static("dist"));
-console.log("frontend is serving");
-
 //static server
 app.use("/serverStorage", express.static(join(__dirname, "STORAGE")));
 //set Access-Control-Allow-Credentials before Cors only for allowed origins
@@ -61,6 +57,14 @@ app.use("/api/v1/search/", searchRouter);
 app.use("/api/v1/recommend/", recommendRouter);
 //error handler
 app.use(handleErr);
+
+//frontend
+app.use(express.static(join(__dirname, "dist")));
+app.get("/*", function (req, res) {
+  res.sendFile(join(__dirname, "dist", "index.html"));
+});
+console.log("frontend is serving");
+
 //server start
 mongoose.connection.once("open", () => {
   console.log("connected to mongodb");

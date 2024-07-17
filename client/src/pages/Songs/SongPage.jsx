@@ -80,7 +80,7 @@ export default function SongPage() {
               <div className=" h-full p-4 flex flex-col gap-2 justify-start grow shrink-0">
                 <h1 className="text-3xl ">{song.name}</h1>
                 {isGettingArtist ? (
-                  <Spinner className={"h-1 w-1"} />
+                  <Spinner className={"h-2 w-2"} />
                 ) : (
                   user && (
                     <span className="text-sm self-start text-gray-500">
