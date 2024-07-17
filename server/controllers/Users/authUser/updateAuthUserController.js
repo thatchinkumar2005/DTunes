@@ -3,7 +3,11 @@ dotenv.config();
 import { User } from "../../../models/User.js";
 
 import sharp from "sharp";
-import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import {
+  GetObjectCommand,
+  HeadObjectCommand,
+  PutObjectCommand,
+} from "@aws-sdk/client-s3";
 import { s3 } from "../../../config/bucketConn.js";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
@@ -32,13 +36,23 @@ export default async function updateAuthUserController(req, res) {
       });
       await s3.send(command);
 
-      const getCommand = GetObjectCommand({
-        Bucket: process.env.BUCKET_NAME,
-        Key: `ProfilePic/${resUser.id}.png`,
-      });
+      try {
+        const exists = await s3.send(
+          new HeadObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: `ProfilePic/${resUser.id}.png`,
+          })
+        );
+        const command = new GetObjectCommand({
+          Bucket: process.env.BUCKET_NAME,
+          Key: `ProfilePic/${resUser.id}.png`,
+        });
+        const url = await getSignedUrl(s3, command, { expiresIn: 3600 * 24 });
 
-      const url = await getSignedUrl(getCommand, s3, { expiresIn: 3600 * 24 });
-      resUser.files.profilePic = url;
+        resUser.files.profilePic = url;
+      } catch (error) {
+        console.log("no file");
+      }
     }
 
     await resUser.save();

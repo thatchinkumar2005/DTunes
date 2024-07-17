@@ -47,8 +47,6 @@ export default async function getSingleUserController(req, res) {
       console.log("no file");
     }
 
-    result.files.profilePic = url;
-
     return res.json(result);
   } catch (error) {
     return res.status(500).json({ message: error.message });
