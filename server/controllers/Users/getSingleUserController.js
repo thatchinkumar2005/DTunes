@@ -3,7 +3,7 @@ dotenv.config();
 import { User } from "../../models/User.js";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { s3 } from "../../config/bucketConn.js";
-import { GetObjectCommand } from "@aws-sdk/client-s3";
+import { GetObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
 
 export default async function getSingleUserController(req, res) {
   try {
@@ -29,11 +29,23 @@ export default async function getSingleUserController(req, res) {
       }
     );
 
-    const command = new GetObjectCommand({
-      Bucket: process.env.BUCKET_NAME,
-      Key: `ProfilePic/${result.id}.png`,
-    });
-    const url = await getSignedUrl(s3, command, { expiresIn: 3600 * 24 });
+    try {
+      const exists = await s3.send(
+        new HeadObjectCommand({
+          Bucket: process.env.BUCKET_NAME,
+          Key: `ProfilePic/${result.id}.png`,
+        })
+      );
+      const command = new GetObjectCommand({
+        Bucket: process.env.BUCKET_NAME,
+        Key: `ProfilePic/${result.id}.png`,
+      });
+      const url = await getSignedUrl(s3, command, { expiresIn: 3600 * 24 });
+
+      result.files.profilePic = url;
+    } catch (error) {
+      console.log("no file");
+    }
 
     result.files.profilePic = url;
 

@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 import { User } from "../../models/User.js";
-import { GetObjectCommand, S3 } from "@aws-sdk/client-s3";
+import { GetObjectCommand, HeadObjectCommand, S3 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { s3 } from "../../config/bucketConn.js";
 
@@ -35,13 +35,23 @@ export default async function getAllArtistsController(req, res) {
       .limit(limit);
 
     for (const artist of artists) {
-      const command = new GetObjectCommand({
-        Bucket: process.env.BUCKET_NAME,
-        Key: `ProfilePic/${artist.id}.png`,
-      });
-      const url = await getSignedUrl(s3, command, { expiresIn: 3600 * 24 });
+      try {
+        const exists = await s3.send(
+          new HeadObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: `ProfilePic/${artist.id}.png`,
+          })
+        );
+        const command = new GetObjectCommand({
+          Bucket: process.env.BUCKET_NAME,
+          Key: `ProfilePic/${artist.id}.png`,
+        });
+        const url = await getSignedUrl(s3, command, { expiresIn: 3600 * 24 });
 
-      artist.files.profilePic = url;
+        artist.files.profilePic = url;
+      } catch (error) {
+        console.log("no file");
+      }
     }
 
     return res.json(artists);
