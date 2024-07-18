@@ -18,10 +18,7 @@ export default async function dauth(req, res) {
     params.append("client_secret", process.env.DAUTH_CLIENT_SECRET);
     params.append("grant_type", "authorization_code");
     params.append("code", authCode);
-    params.append(
-      "redirect_uri",
-      "http://localhost:5173/auth/oauth/dauth/callback"
-    );
+    params.append("redirect_uri", process.env.DAUTH_OAUTH_REDIRECT_URI);
 
     const {
       data: { access_token },

@@ -57,14 +57,6 @@ app.use("/api/v1/search/", searchRouter);
 app.use("/api/v1/recommend/", recommendRouter);
 //error handler
 app.use(handleErr);
-
-//frontend
-app.use(express.static(join(__dirname, "dist")));
-app.get("/*", function (req, res) {
-  res.sendFile(join(__dirname, "dist", "index.html"));
-});
-console.log("frontend is serving");
-
 //server start
 mongoose.connection.once("open", () => {
   console.log("connected to mongodb");

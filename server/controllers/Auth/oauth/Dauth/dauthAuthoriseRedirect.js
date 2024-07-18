@@ -4,10 +4,7 @@ export default async function dauthAuthoriseRedirect(req, res) {
   try {
     const params = new URLSearchParams();
     params.append("client_id", process.env.DAUTH_CLIENT_ID);
-    params.append(
-      "redirect_uri",
-      "http://localhost:5173/auth/oauth/dauth/callback"
-    );
+    params.append("redirect_uri", process.env.DAUTH_OAUTH_REDIRECT_URI);
     params.append("response_type", "code");
     params.append("grant_type", "authorization_code");
     params.append("state", "dtunes");

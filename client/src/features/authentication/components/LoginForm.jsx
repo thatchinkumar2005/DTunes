@@ -114,15 +114,15 @@ export default function LoginForm() {
       <div className="w-full h-24 flex flex-col justify-center items-center gap-4">
         <div className="w-52 flex gap-1 bg-secondary p-2 justify-center items-center rounded-md hover:underline">
           <FcGoogle size={30} />
-          <Link to={`${settings.serverOrigin}/auth/oauth/google`}>
+          <a href={`${settings.serverOrigin}/auth/oauth/google`}>
             continue with google
-          </Link>
+          </a>
         </div>
         <div className="w-52 flex gap-1 bg-secondary p-2 justify-center items-center rounded-md hover:underline">
           <TbBrandAuth0 size={30} />
-          <Link to={`${settings.serverOrigin}/auth/oauth/dauth`}>
+          <a href={`${settings.serverOrigin}/auth/oauth/dauth`}>
             continue with Dauth
-          </Link>
+          </a>
         </div>
       </div>
     </form>
