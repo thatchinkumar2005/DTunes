@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 import pymongo
 import pickle
 from bson import ObjectId
@@ -5,7 +7,7 @@ import os
 import json
 
 
-client = pymongo.MongoClient("mongodb://localhost:27017")
+client = pymongo.MongoClient(os.getenv("DATABASE_URL"))
 db = client["Dtunes"]
 
 

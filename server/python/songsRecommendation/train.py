@@ -1,9 +1,12 @@
+from dotenv import load_dotenv
+load_dotenv()
 import pymongo
+import os
 from surprise import Reader, Dataset, KNNBasic
 import pandas as pd
 import pickle
 
-client = pymongo.MongoClient("mongodb://localhost:27017")
+client = pymongo.MongoClient(os.getenv("DATABASE_URL"))
 db = client["Dtunes"]
 
 interactions = db.interactions.find()

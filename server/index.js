@@ -44,6 +44,9 @@ app.use(passport.initialize());
 //routes
 
 //public
+app.get("/api/v1", (req, res) => {
+  res.send("<h1>DTUNES SERVER</h1>");
+});
 app.use("/api/v1/auth/", authRouter); //auth router
 
 //private
@@ -57,10 +60,13 @@ app.use("/api/v1/search/", searchRouter);
 app.use("/api/v1/recommend/", recommendRouter);
 //error handler
 app.use(handleErr);
+
 //server start
 mongoose.connection.once("open", () => {
   console.log("connected to mongodb");
   app.listen(process.env.SERVER_PORT || 7777, () => {
-    console.log(`server up and running in port ${process.env.SERVER_PORT}`);
+    console.log(
+      `server up and running in port ${process.env.SERVER_PORT || 7777}`
+    );
   });
 });

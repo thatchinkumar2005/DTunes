@@ -1,3 +1,3 @@
 export const settings = {
-  serverOrigin: "http://localhost:7777/api/v1",
+  serverOrigin: "https://dtunes.thatchin.in/server/api/v1",
 };
