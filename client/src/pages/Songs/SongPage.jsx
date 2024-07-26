@@ -7,7 +7,7 @@ import { FaHeart } from "react-icons/fa";
 import { CiMenuKebab } from "react-icons/ci";
 import useGetArtist from "../../features/Users/hooks/useGetUser";
 import { useQueryClient } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useGetLikedBoolean from "../../features/Songs/hooks/useGetLikedBoolean";
 import useLike from "../../features/Songs/hooks/useLike";
 import { play } from "../../features/MusicPlayer/slices/songsSlice";
@@ -15,6 +15,7 @@ import DropDown from "../../ui/components/DropDown";
 import SongDropDown from "../../features/Songs/components/SongDropDown";
 import useAuth from "../../hooks/auth/useAuth";
 import usePlaySong from "../../features/Songs/hooks/usePlaySong";
+import useSocket from "../../hooks/socket/useSocket";
 
 export default function SongPage() {
   const { id } = useParams();
@@ -28,19 +29,27 @@ export default function SongPage() {
   const queryClient = useQueryClient();
 
   const { play: playApi } = usePlaySong();
+  const socket = useSocket();
+  const { auth } = useAuth();
+
   function handlePlayPause() {
     playApi(song._id, {
       onSuccess: (respData) => {
         queryClient.invalidateQueries(["queue"]);
         dispatch(play());
+        socket.emit("change-song", {
+          userId: auth.id,
+          playback: {
+            isPlaying: true,
+            currentTime: 0,
+          },
+        });
       },
     });
   }
 
   const { isLiked } = useGetLikedBoolean({ song: song?._id });
   const { like } = useLike();
-
-  const { auth } = useAuth();
 
   const [owner, setOwner] = useState(false);
 

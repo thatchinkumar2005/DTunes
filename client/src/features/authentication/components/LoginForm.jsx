@@ -5,6 +5,7 @@ import { TbBrandAuth0 } from "react-icons/tb";
 import useLogin from "../hooks/useLogin";
 import useAuth from "../../../hooks/auth/useAuth";
 import { Link, useNavigate } from "react-router-dom";
+import useSocket from "../../../hooks/socket/useSocket";
 import { settings } from "../../../../settings";
 
 export default function LoginForm() {
@@ -15,6 +16,8 @@ export default function LoginForm() {
     handleSubmit,
     setError,
   } = useForm();
+
+  const socket = useSocket();
 
   const { login, isLoggingIn } = useLogin();
 
@@ -33,6 +36,7 @@ export default function LoginForm() {
   function onSubmit(formData) {
     login(formData, {
       onSuccess: (respData) => {
+        socket.emit("login", { userId: respData.id });
         setAuth(respData);
         navigate("/");
       },

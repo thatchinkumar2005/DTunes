@@ -19,6 +19,7 @@ import useAuth from "../../hooks/auth/useAuth";
 import PlaylistDropDown from "../../features/Playlists/components/PlaylistDropDown";
 import usePlayPlaylist from "../../features/Playlists/hooks/usePlayPlaylist";
 import { useQueryClient } from "@tanstack/react-query";
+import useSocket from "../../hooks/socket/useSocket";
 
 function DropDownMenu({ onClick }) {
   return <CiMenuKebab onClick={onClick} className="h-5 w-5" />;
@@ -70,6 +71,7 @@ export default function PlaylistPage() {
 
   const dispatch = useDispatch();
   const { play: playApi } = usePlayPlaylist();
+  const socket = useSocket();
   function handlePlayPause() {
     if (isPending) return;
     if (isSuccess && isFetchedPlaylist) {
@@ -78,16 +80,15 @@ export default function PlaylistPage() {
           onSuccess: (respData) => {
             queryClient.invalidateQueries(["queue"]);
             dispatch(play());
+            socket.emit("change-song", {
+              userId: auth.id,
+              playback: {
+                isPlaying: true,
+                currentTime: 0,
+              },
+            });
           },
         });
-        // dispatch(
-        //   setCurrentSongs({
-        //     songs: playlistSongs.pages[0].data,
-        //     clusterId: `/playlist/${id}`,
-        //     clusterName: playlist?.name,
-        //   })
-        // );
-        dispatch(play());
       }
     }
   }

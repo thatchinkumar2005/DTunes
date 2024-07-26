@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useGetUser from "../hooks/useGetUser";
 import useSong from "../../Songs/hooks/useSong";
+import useSocket from "../../../hooks/socket/useSocket";
 
 export default function UserStrip({ id }) {
   const { user, isSuccess } = useGetUser({ id });
 
   const { song, isSuccess: gotSong } = useSong({ id: user?.currentPlaying });
+  const [online, setOnline] = useState(false);
+  const socket = useSocket();
+
+  useEffect(() => {
+    socket.on("userStatus", (data) => {
+      if (data.userId !== id) return;
+      setOnline(online);
+    });
+  }, [id, online, socket]);
 
   if (isSuccess)
     return (
@@ -27,7 +37,7 @@ export default function UserStrip({ id }) {
             </Link>
           </div>
         </div>
-        {gotSong && (
+        {gotSong && online && (
           <div className="text-sm text-green-500">
             Currently Playing:
             <Link

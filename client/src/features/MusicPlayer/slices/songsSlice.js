@@ -15,6 +15,9 @@ const musicPlayerSlice = createSlice({
       state.isPlaying = false;
       state.isPlaying = true;
     },
+    setIsPlaying: (state, action) => {
+      state.isPlaying = action.payload;
+    },
     // nextSong: (state, action) => {
     //   state.currentIndex =
     //     state.currentIndex === state.currentSongs.length - 1
@@ -36,4 +39,4 @@ const musicPlayerSlice = createSlice({
 
 const musicPlayerReducer = musicPlayerSlice.reducer;
 export default musicPlayerReducer;
-export const { playPause, play } = musicPlayerSlice.actions;
+export const { playPause, play, setIsPlaying } = musicPlayerSlice.actions;

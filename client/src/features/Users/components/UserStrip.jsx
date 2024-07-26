@@ -1,16 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useGetUser from "../hooks/useGetUser";
 import useDeleteFriend from "../../Social/hooks/useDeleteFriend";
 import { useQueryClient } from "@tanstack/react-query";
 import useSong from "../../Songs/hooks/useSong";
+import useSocket from "../../../hooks/socket/useSocket";
 
 export default function UserStrip({ id }) {
   const queryClient = useQueryClient();
   const { user, isSuccess } = useGetUser({ id });
   const { deleteFriend, isDeletingFriend } = useDeleteFriend();
   const { song, isSuccess: gotSong } = useSong({ id: user?.currentPlaying });
+  const [online, setOnline] = useState(false);
+  const socket = useSocket();
+
+  useEffect(() => {
+    socket.on("userStatus", (data) => {
+      if (data.userId !== id) return;
+      setOnline(data.online);
+    });
+  }, [id, socket]);
 
   function handleDelete() {
     deleteFriend(id, {
@@ -48,7 +58,7 @@ export default function UserStrip({ id }) {
             remove
           </button>
         </div>
-        {gotSong && (
+        {gotSong && online && (
           <div className="text-md text-green-500">
             Currently Playing:
             <Link

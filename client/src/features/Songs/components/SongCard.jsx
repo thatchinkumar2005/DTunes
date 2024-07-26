@@ -10,6 +10,9 @@ import { Link, useResolvedPath } from "react-router-dom";
 import DropDown from "../../../ui/components/DropDown";
 import SongCardDropDown from "./SongCardDropDown";
 import usePlaySong from "../hooks/usePlaySong";
+import useSocket from "../../../hooks/socket/useSocket";
+import useAuth from "../../../hooks/auth/useAuth";
+import { isPlain } from "@reduxjs/toolkit";
 
 function DropDownMenu({ onClick }) {
   return <CiMenuKebab onClick={onClick} className="h-5 w-5" />;
@@ -19,13 +22,20 @@ export default function SongCard({ song }) {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const { play: playApi } = usePlaySong();
+  const socket = useSocket();
+  const { auth } = useAuth();
   function handlePlayPause() {
     playApi(song._id, {
       onSuccess: (respData) => {
-        // console.log(song);
-        // dispatch(setActiveSong({ song }));
-        // dispatch(play());
         queryClient.invalidateQueries(["queue"]);
+        dispatch(play());
+        socket.emit("change-song", {
+          userId: auth.id,
+          playback: {
+            isPlaying: true,
+            currentTime: 0,
+          },
+        });
       },
     });
   }

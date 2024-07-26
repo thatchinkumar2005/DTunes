@@ -8,6 +8,7 @@ import App from "./App.jsx";
 import AuthContextProvider from "./contexts/authContex.jsx";
 import { store } from "./redux/store.js";
 import { Toaster } from "react-hot-toast";
+import SocketContextProvider from "./contexts/socketContext.jsx";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -22,17 +23,19 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
           <AuthContextProvider>
-            <Toaster
-              toastOptions={{
-                style: {
-                  background: "#2a2a2a",
-                  color: "#F4F9F9",
-                },
-              }}
-            />
-            <Routes>
-              <Route path="*" element={<App />} />
-            </Routes>
+            <SocketContextProvider>
+              <Toaster
+                toastOptions={{
+                  style: {
+                    background: "#2a2a2a",
+                    color: "#F4F9F9",
+                  },
+                }}
+              />
+              <Routes>
+                <Route path="*" element={<App />} />
+              </Routes>
+            </SocketContextProvider>
           </AuthContextProvider>
         </Provider>
       </QueryClientProvider>

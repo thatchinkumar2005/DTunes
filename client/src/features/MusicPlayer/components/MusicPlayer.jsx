@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { CiPlay1 } from "react-icons/ci";
 import { useSelector, useDispatch } from "react-redux";
-import { playPause } from "../slices/songsSlice";
+import { play, playPause, setIsPlaying } from "../slices/songsSlice";
 import { CiPause1 } from "react-icons/ci";
 import { CiVolumeHigh } from "react-icons/ci";
 import { MdNavigateNext } from "react-icons/md";
@@ -18,6 +18,9 @@ import useSong from "../../Songs/hooks/useSong";
 import useNextSong from "../hooks/useNextSong";
 import { useQueryClient } from "@tanstack/react-query";
 import usePrevSong from "../hooks/usePrevSong";
+import useSocket from "../../../hooks/socket/useSocket";
+import { socket } from "../../../socket/socket";
+import useAuth from "../../../hooks/auth/useAuth";
 
 const MusicPlayerContext = createContext();
 const MusicPlayer = () => {
@@ -28,6 +31,9 @@ const MusicPlayer = () => {
   });
   const { nextSong } = useNextSong();
   const { prevSong } = usePrevSong();
+
+  const socket = useSocket();
+  const { auth } = useAuth();
   const audioRef = useRef(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -35,7 +41,6 @@ const MusicPlayer = () => {
 
   const dispatch = useDispatch();
   const isPlaying = useSelector((store) => store.musicPlayer.isPlaying);
-  // const activeSong = useSelector((store) => store.musicPlayer.activeSong);
   const [activeSong, setActiveSong] = useState(null);
   useEffect(() => {
     if (gotActiveSong && song && gotQueue) {
@@ -60,6 +65,21 @@ const MusicPlayer = () => {
       setCurrentClusterName(queue?.clusterName);
     }
   }, [gotQueue, queue]);
+
+  useEffect(() => {
+    socket.on("changeSong", (data) => {
+      queryClient.invalidateQueries(["queue"]);
+      dispatch(setIsPlaying(data.isPlaying));
+      setCurrentTime(data.currentTime);
+    });
+  }, [socket, queryClient, dispatch]);
+
+  useEffect(() => {
+    socket.on("playback-data", (data) => {
+      dispatch(setIsPlaying(data.isPlaying));
+      setCurrentTime(data.currentTime);
+    });
+  }, [socket, dispatch]);
 
   // const { recommendedSongs, status } = useRecommendation();
   // useEffect(() => {
@@ -88,6 +108,7 @@ const MusicPlayer = () => {
   return (
     <MusicPlayerContext.Provider
       value={{
+        auth,
         duration,
         setDuration,
         currentTime,
@@ -103,6 +124,7 @@ const MusicPlayer = () => {
         nextSong,
         prevSong,
         queryClient,
+        socket,
       }}
     >
       <div className="bg-bg p-1 flex justify-center items-center overflow-hidden">
@@ -147,7 +169,7 @@ function Player() {
         audioRef.current.pause();
       }
     }
-  }, [isPlaying, activeSong]);
+  }, [isPlaying, audioRef, activeSong]);
 
   useEffect(() => {
     audioRef.current.volume = vol;
@@ -173,12 +195,27 @@ function Player() {
 }
 
 function SeekBar() {
-  const { currentTime, setCurrentTime, duration, audioRef } =
-    useContext(MusicPlayerContext);
+  const {
+    currentTime,
+    setCurrentTime,
+    isPlaying,
+    duration,
+    audioRef,
+    socket,
+    auth,
+  } = useContext(MusicPlayerContext);
   function handleSeek(e) {
     const seekTime = e.target.value;
     setCurrentTime(seekTime);
     audioRef.current.currentTime = seekTime;
+
+    socket.emit("playback", {
+      userId: auth.id,
+      playback: {
+        currentTime: seekTime,
+        isPlaying,
+      },
+    });
   }
   return (
     <input
@@ -192,10 +229,20 @@ function SeekBar() {
 }
 
 function TogglePlayButton() {
-  const { isPlaying, audioRef } = useContext(MusicPlayerContext);
+  const { isPlaying, audioRef, socket, auth, currentTime } =
+    useContext(MusicPlayerContext);
   const dispatch = useDispatch();
   function handleToggle() {
-    if (audioRef.current) dispatch(playPause());
+    if (audioRef.current) {
+      dispatch(playPause());
+      socket.emit("playback", {
+        userId: auth.id,
+        playback: {
+          isPlaying: !isPlaying,
+          currentTime,
+        },
+      });
+    }
   }
   return (
     <div className="" onClick={handleToggle}>
@@ -270,11 +317,20 @@ function Title() {
 }
 
 function NextSong() {
-  const { nextSong, queryClient } = useContext(MusicPlayerContext);
+  const { nextSong, queryClient, auth, socket, dispatch } =
+    useContext(MusicPlayerContext);
   function handleClick() {
     nextSong(null, {
       onSuccess: () => {
         queryClient.invalidateQueries(["queue"]);
+        dispatch(play());
+        socket.emit("change-song", {
+          userId: auth.id,
+          playback: {
+            isPlaying: true,
+            currentTime: 0,
+          },
+        });
       },
     });
   }
@@ -286,11 +342,20 @@ function NextSong() {
 }
 
 function PrevSong() {
-  const { prevSong, queryClient } = useContext(MusicPlayerContext);
+  const { prevSong, queryClient, auth, socket, dispatch } =
+    useContext(MusicPlayerContext);
   function handleClick() {
     prevSong(null, {
       onSuccess: () => {
         queryClient.invalidateQueries(["queue"]);
+        dispatch(play());
+        socket.emit("change-song", {
+          userId: auth.id,
+          playback: {
+            isPlaying: true,
+            currentTime: 0,
+          },
+        });
       },
     });
   }

@@ -18,6 +18,7 @@ import { IoMdAdd } from "react-icons/io";
 import AlbumDropDown from "../../features/Albums/components/AlbumDropDown";
 import usePlayAlbum from "../../features/Albums/hooks/usePlayAlbum";
 import { useQueryClient } from "@tanstack/react-query";
+import useSocket from "../../hooks/socket/useSocket";
 
 function DropDownMenu({ onClick }) {
   return <CiMenuKebab onClick={onClick} className="h-5 w-5" />;
@@ -69,6 +70,7 @@ export default function AlbumPage() {
 
   const dispatch = useDispatch();
   const { play: playApi } = usePlayAlbum();
+  const socket = useSocket();
   function handlePlayPause() {
     if (isPending) return;
     if (isSuccess && isFetchedAlbum) {
@@ -77,16 +79,15 @@ export default function AlbumPage() {
           onSuccess: () => {
             queryClient.invalidateQueries(["queue"]);
             dispatch(play());
+            socket.emit("change-song", {
+              userId: auth.id,
+              playback: {
+                isPlaying: true,
+                currentTime: 0,
+              },
+            });
           },
         });
-        // dispatch(
-        //   setCurrentSongs({
-        //     songs: albumSongs.pages[0].data,
-        //     clusterId: `/album/${id}`,
-        //     clusterName: album?.name,
-        //   })
-        // );
-        // dispatch(play());
       }
     }
   }

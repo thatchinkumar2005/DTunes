@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
+import { createServer } from "http";
+import { Server } from "socket.io";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import dbConn from "./config/dbConn.js";
@@ -20,9 +22,20 @@ import { friendRouter } from "./routes/friendRouter.js";
 import { partyRouter } from "./routes/partyRouter.js";
 import { searchRouter } from "./routes/searchRouter.js";
 import { recommendRouter } from "./routes/recommendRouter.js";
+import { log } from "console";
+import handleSockets from "./socket/index.js";
 
 dbConn();
 const app = express();
+const server = createServer(app);
+export const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+handleSockets(io);
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -60,7 +73,7 @@ app.use(handleErr);
 //server start
 mongoose.connection.once("open", () => {
   console.log("connected to mongodb");
-  app.listen(process.env.SERVER_PORT || 7777, () => {
+  server.listen(process.env.SERVER_PORT || 7777, () => {
     console.log(`server up and running in port ${process.env.SERVER_PORT}`);
   });
 });
