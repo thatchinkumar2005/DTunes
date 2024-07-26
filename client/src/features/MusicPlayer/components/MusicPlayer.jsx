@@ -7,24 +7,27 @@ import React, {
 } from "react";
 import { CiPlay1 } from "react-icons/ci";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  nextSong,
-  play,
-  playPause,
-  prevSong,
-  setActiveSong,
-  setCurrentSongs,
-} from "../slices/songsSlice";
+import { playPause } from "../slices/songsSlice";
 import { CiPause1 } from "react-icons/ci";
 import { CiVolumeHigh } from "react-icons/ci";
 import { MdNavigateNext } from "react-icons/md";
 import { MdNavigateBefore } from "react-icons/md";
 import { Link } from "react-router-dom";
-import usePlaySong from "../../Songs/hooks/usePlaySong";
-import useRecommendation from "../../Songs/hooks/useRecommendation";
+import useQueue from "../hooks/useQueue";
+import useSong from "../../Songs/hooks/useSong";
+import useNextSong from "../hooks/useNextSong";
+import { useQueryClient } from "@tanstack/react-query";
+import usePrevSong from "../hooks/usePrevSong";
 
 const MusicPlayerContext = createContext();
 const MusicPlayer = () => {
+  const queryClient = useQueryClient();
+  const { queue, isSuccess: gotQueue } = useQueue();
+  const { song, isSuccess: gotActiveSong } = useSong({
+    id: queue?.currentSong,
+  });
+  const { nextSong } = useNextSong();
+  const { prevSong } = usePrevSong();
   const audioRef = useRef(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -32,19 +35,37 @@ const MusicPlayer = () => {
 
   const dispatch = useDispatch();
   const isPlaying = useSelector((store) => store.musicPlayer.isPlaying);
-  const activeSong = useSelector((store) => store.musicPlayer.activeSong);
-  const currentCluster = useSelector(
-    (store) => store.musicPlayer.currentCluster
-  );
-  const currentClusterName = useSelector(
-    (store) => store.musicPlayer.currentClusterName
-  );
-
-  const { recommendedSongs, status } = useRecommendation();
+  // const activeSong = useSelector((store) => store.musicPlayer.activeSong);
+  const [activeSong, setActiveSong] = useState(null);
   useEffect(() => {
-    if (status === "success")
-      dispatch(setCurrentSongs({ songs: recommendedSongs.pages[0].data }));
-  }, [dispatch, status]);
+    if (gotActiveSong && song && gotQueue) {
+      console.log(queue);
+      setActiveSong(song);
+    }
+  }, [gotActiveSong, setActiveSong, song, gotQueue, queue]);
+
+  // const currentCluster = useSelector(
+  //   (store) => store.musicPlayer.currentCluster
+  // );
+  // const currentClusterName = useSelector(
+  //   (store) => store.musicPlayer.currentClusterName
+  // );
+
+  const [currentCluster, setCurrentCluster] = useState(null);
+  const [currentClusterName, setCurrentClusterName] = useState(null);
+
+  useEffect(() => {
+    if (gotQueue && queue) {
+      setCurrentCluster(queue?.clusterId);
+      setCurrentClusterName(queue?.clusterName);
+    }
+  }, [gotQueue, queue]);
+
+  // const { recommendedSongs, status } = useRecommendation();
+  // useEffect(() => {
+  //   // if (status === "success")
+  //   // dispatch(setCurrentSongs({ songs: recommendedSongs.pages[0].data }));
+  // }, [dispatch, status, recommendedSongs]);
 
   useEffect(() => {
     function handleSpace(e) {
@@ -79,6 +100,9 @@ const MusicPlayer = () => {
         dispatch,
         currentCluster,
         currentClusterName,
+        nextSong,
+        prevSong,
+        queryClient,
       }}
     >
       <div className="bg-bg p-1 flex justify-center items-center overflow-hidden">
@@ -106,24 +130,14 @@ const MusicPlayer = () => {
 };
 
 function Player() {
-  const {
-    audioRef,
-    activeSong,
-    setCurrentTime,
-    setDuration,
-    isPlaying,
-    vol,
-    dispatch,
-  } = useContext(MusicPlayerContext);
-
-  const { play: playApi } = usePlaySong();
+  const { audioRef, activeSong, setCurrentTime, setDuration, isPlaying, vol } =
+    useContext(MusicPlayerContext);
 
   useEffect(() => {
     setCurrentTime(0);
     setDuration(0);
     audioRef.current.currentTime = 0;
-    if (activeSong) playApi(activeSong._id);
-  }, [activeSong]);
+  }, [activeSong, setDuration, setCurrentTime, audioRef]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -145,7 +159,7 @@ function Player() {
   }
 
   function handleOnEnded() {
-    dispatch(nextSong());
+    // dispatch(nextSong());
   }
   return (
     <audio
@@ -256,9 +270,13 @@ function Title() {
 }
 
 function NextSong() {
-  const { dispatch } = useContext(MusicPlayerContext);
+  const { nextSong, queryClient } = useContext(MusicPlayerContext);
   function handleClick() {
-    dispatch(nextSong());
+    nextSong(null, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["queue"]);
+      },
+    });
   }
   return (
     <div onClick={handleClick}>
@@ -268,9 +286,13 @@ function NextSong() {
 }
 
 function PrevSong() {
-  const { dispatch } = useContext(MusicPlayerContext);
+  const { prevSong, queryClient } = useContext(MusicPlayerContext);
   function handleClick() {
-    dispatch(prevSong());
+    prevSong(null, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["queue"]);
+      },
+    });
   }
   return (
     <div onClick={handleClick}>

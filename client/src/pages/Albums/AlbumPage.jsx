@@ -10,15 +10,14 @@ import useGetAlbumSongs from "../../features/Albums/hooks/useGetAlbumSongs";
 import { useInView } from "react-intersection-observer";
 import SongCard from "../../features/Songs/components/SongCard";
 import { useDispatch } from "react-redux";
-import {
-  play,
-  setCurrentSongs,
-} from "../../features/MusicPlayer/slices/songsSlice";
+import { play } from "../../features/MusicPlayer/slices/songsSlice";
 import DropDown from "../../ui/components/DropDown";
 import useAuth from "../../hooks/auth/useAuth";
 import { MdDelete } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import AlbumDropDown from "../../features/Albums/components/AlbumDropDown";
+import usePlayAlbum from "../../features/Albums/hooks/usePlayAlbum";
+import { useQueryClient } from "@tanstack/react-query";
 
 function DropDownMenu({ onClick }) {
   return <CiMenuKebab onClick={onClick} className="h-5 w-5" />;
@@ -27,6 +26,7 @@ function DropDownMenu({ onClick }) {
 export default function AlbumPage() {
   const { id } = useParams();
   const { auth } = useAuth();
+  const queryClient = useQueryClient();
   const [owner, setOwner] = useState(false);
 
   const {
@@ -39,7 +39,7 @@ export default function AlbumPage() {
     if (isFetchedAlbum) {
       setOwner(album.artist === auth.id);
     }
-  }, [album, isFetchedAlbum, owner]);
+  }, [album, isFetchedAlbum, owner, auth]);
 
   const {
     user,
@@ -68,18 +68,25 @@ export default function AlbumPage() {
   }, [inView, fetchNextPage]);
 
   const dispatch = useDispatch();
+  const { play: playApi } = usePlayAlbum();
   function handlePlayPause() {
     if (isPending) return;
     if (isSuccess && isFetchedAlbum) {
       if (albumSongs.pages[0].data.length) {
-        dispatch(
-          setCurrentSongs({
-            songs: albumSongs.pages[0].data,
-            clusterId: `/album/${id}`,
-            clusterName: album?.name,
-          })
-        );
-        dispatch(play());
+        playApi(album._id, {
+          onSuccess: () => {
+            queryClient.invalidateQueries(["queue"]);
+            dispatch(play());
+          },
+        });
+        // dispatch(
+        //   setCurrentSongs({
+        //     songs: albumSongs.pages[0].data,
+        //     clusterId: `/album/${id}`,
+        //     clusterName: album?.name,
+        //   })
+        // );
+        // dispatch(play());
       }
     }
   }

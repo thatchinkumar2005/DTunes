@@ -13,13 +13,12 @@ import useGetPlaylist from "../../features/Playlists/hooks/useGetPlaylist";
 import { CiMenuKebab, CiPlay1 } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { useDispatch } from "react-redux";
-import {
-  play,
-  setCurrentSongs,
-} from "../../features/MusicPlayer/slices/songsSlice";
+import { play } from "../../features/MusicPlayer/slices/songsSlice";
 import DropDown from "../../ui/components/DropDown";
 import useAuth from "../../hooks/auth/useAuth";
 import PlaylistDropDown from "../../features/Playlists/components/PlaylistDropDown";
+import usePlayPlaylist from "../../features/Playlists/hooks/usePlayPlaylist";
+import { useQueryClient } from "@tanstack/react-query";
 
 function DropDownMenu({ onClick }) {
   return <CiMenuKebab onClick={onClick} className="h-5 w-5" />;
@@ -29,6 +28,7 @@ export default function PlaylistPage() {
   const { id } = useParams();
   const { auth } = useAuth();
   const [owner, setOwner] = useState(false);
+  const queryClient = useQueryClient();
 
   const {
     data: playlist,
@@ -69,17 +69,24 @@ export default function PlaylistPage() {
   }, [inView, fetchNextPage]);
 
   const dispatch = useDispatch();
+  const { play: playApi } = usePlayPlaylist();
   function handlePlayPause() {
     if (isPending) return;
     if (isSuccess && isFetchedPlaylist) {
       if (playlistSongs.pages[0].data.length) {
-        dispatch(
-          setCurrentSongs({
-            songs: playlistSongs.pages[0].data,
-            clusterId: `/playlist/${id}`,
-            clusterName: playlist?.name,
-          })
-        );
+        playApi(playlist._id, {
+          onSuccess: (respData) => {
+            queryClient.invalidateQueries(["queue"]);
+            dispatch(play());
+          },
+        });
+        // dispatch(
+        //   setCurrentSongs({
+        //     songs: playlistSongs.pages[0].data,
+        //     clusterId: `/playlist/${id}`,
+        //     clusterName: playlist?.name,
+        //   })
+        // );
         dispatch(play());
       }
     }

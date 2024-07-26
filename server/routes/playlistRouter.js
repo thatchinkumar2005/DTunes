@@ -9,6 +9,7 @@ import deletePlaylistController from "../controllers/playlists/deletePlaylistCon
 import { playlistUpload } from "../middleware/multer/playlist.js";
 import getAllPlaylistSongsController from "../controllers/playlists/getAllPlaylistSongsController.js";
 import checkIfSongExistController from "../controllers/playlists/checkIfSongExistsController.js";
+import playPlaylistController from "../controllers/playlists/playPlaylistController.js";
 
 const playlistRouter = express.Router();
 
@@ -61,6 +62,13 @@ playlistRouter.get(
   verifyJwt,
   verifyRoles(2005, 2009),
   checkIfSongExistController
+);
+
+playlistRouter.post(
+  "/play/:id",
+  verifyJwt,
+  verifyRoles(2005, 2009),
+  playPlaylistController
 );
 
 export { playlistRouter };

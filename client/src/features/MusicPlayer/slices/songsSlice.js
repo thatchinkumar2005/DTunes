@@ -1,12 +1,6 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  currentSongs: [],
-  currentCluster: "/",
-  currentClusterName: "Recommendation",
-  currentIndex: 0,
-  shuffle: false,
-  activeSong: null,
   isPlaying: false,
 };
 
@@ -14,60 +8,32 @@ const musicPlayerSlice = createSlice({
   name: "musicPlayer",
   initialState,
   reducers: {
-    setActiveSong: (state, action) => {
-      if (action?.payload?.song) {
-        console.log("yes");
-        state.activeSong = action.payload.song;
-        return;
-      } else {
-        state.activeSong = state.currentSongs[state.currentIndex];
-      }
-    },
-
     playPause: (state, action) => {
-      // if (!state.activeSong) {
-      //   state.activeSong = state.currentSongs[state.currentIndex];
-      // }
-      if (state.activeSong) state.isPlaying = !state.isPlaying;
+      state.isPlaying = !state.isPlaying;
     },
     play: (state, action) => {
       state.isPlaying = false;
       state.isPlaying = true;
     },
-    nextSong: (state, payload) => {
-      state.currentIndex =
-        state.currentIndex === state.currentSongs.length - 1
-          ? 0
-          : state.currentIndex + 1;
-      state.activeSong = state.currentSongs[state.currentIndex];
-      state.isPlaying = true;
-    },
-    prevSong: (state, action) => {
-      state.currentIndex =
-        state.currentIndex === 0
-          ? state.currentSongs.length - 1
-          : state.currentIndex - 1;
-      state.activeSong = state.currentSongs[state.currentIndex];
-      state.isPlaying = true;
-    },
-    setCurrentSongs: (state, action) => {
-      state.currentSongs = action.payload.songs;
-      state.currentCluster = action.payload?.clusterId || "/";
-      state.currentClusterName =
-        action.payload?.clusterName || "Recommendation";
-      state.currentIndex = 0;
-      state.activeSong = state.currentSongs[state.currentIndex];
-    },
+    // nextSong: (state, action) => {
+    //   state.currentIndex =
+    //     state.currentIndex === state.currentSongs.length - 1
+    //       ? 0
+    //       : state.currentIndex + 1;
+    //   state.activeSong = state.currentSongs[state.currentIndex];
+    //   state.isPlaying = true;
+    // },
+    // prevSong: (state, action) => {
+    //   state.currentIndex =
+    //     state.currentIndex === 0
+    //       ? state.currentSongs.length - 1
+    //       : state.currentIndex - 1;
+    //   state.activeSong = state.currentSongs[state.currentIndex];
+    //   state.isPlaying = true;
+    // },
   },
 });
 
 const musicPlayerReducer = musicPlayerSlice.reducer;
 export default musicPlayerReducer;
-export const {
-  setActiveSong,
-  playPause,
-  nextSong,
-  prevSong,
-  play,
-  setCurrentSongs,
-} = musicPlayerSlice.actions;
+export const { playPause, play } = musicPlayerSlice.actions;

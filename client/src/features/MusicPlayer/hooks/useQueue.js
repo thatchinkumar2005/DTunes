@@ -1,19 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPrivate from "../../../hooks/axios/useAxiosPrivate";
-import getSongApi from "../../../services/Songs/getSongApi";
+import getAuthUserQueue from "../../../services/users/authUser/getAuthUserQueueApi";
 
-export default function useSong({ id }) {
+export default function useQueue() {
   const axiosPrivate = useAxiosPrivate();
   const {
-    data: song,
+    data: queue,
     isPending,
     isSuccess,
   } = useQuery({
-    queryKey: ["song", id],
-    queryFn: getSongApi(axiosPrivate),
-    enabled: !!id,
+    queryKey: ["queue"],
+    queryFn: getAuthUserQueue(axiosPrivate),
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
-  return { song, isPending, isSuccess };
+
+  return { queue, isPending, isSuccess };
 }

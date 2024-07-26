@@ -10,13 +10,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import useGetLikedBoolean from "../../features/Songs/hooks/useGetLikedBoolean";
 import useLike from "../../features/Songs/hooks/useLike";
-import {
-  play,
-  setActiveSong,
-} from "../../features/MusicPlayer/slices/songsSlice";
+import { play } from "../../features/MusicPlayer/slices/songsSlice";
 import DropDown from "../../ui/components/DropDown";
 import SongDropDown from "../../features/Songs/components/SongDropDown";
 import useAuth from "../../hooks/auth/useAuth";
+import usePlaySong from "../../features/Songs/hooks/usePlaySong";
 
 export default function SongPage() {
   const { id } = useParams();
@@ -29,9 +27,14 @@ export default function SongPage() {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
+  const { play: playApi } = usePlaySong();
   function handlePlayPause() {
-    dispatch(setActiveSong({ song }));
-    dispatch(play());
+    playApi(song._id, {
+      onSuccess: (respData) => {
+        queryClient.invalidateQueries(["queue"]);
+        dispatch(play());
+      },
+    });
   }
 
   const { isLiked } = useGetLikedBoolean({ song: song?._id });

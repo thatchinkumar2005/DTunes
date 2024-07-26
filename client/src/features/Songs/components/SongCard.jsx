@@ -3,12 +3,13 @@ import { CiMenuKebab, CiPlay1 } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useQueryClient } from "@tanstack/react-query";
-import { play, setActiveSong } from "../../MusicPlayer/slices/songsSlice";
+import { play } from "../../MusicPlayer/slices/songsSlice";
 import useLike from "../hooks/useLike";
 import useGetLikedBoolean from "../hooks/useGetLikedBoolean";
-import { Link } from "react-router-dom";
+import { Link, useResolvedPath } from "react-router-dom";
 import DropDown from "../../../ui/components/DropDown";
 import SongCardDropDown from "./SongCardDropDown";
+import usePlaySong from "../hooks/usePlaySong";
 
 function DropDownMenu({ onClick }) {
   return <CiMenuKebab onClick={onClick} className="h-5 w-5" />;
@@ -17,9 +18,16 @@ function DropDownMenu({ onClick }) {
 export default function SongCard({ song }) {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
+  const { play: playApi } = usePlaySong();
   function handlePlayPause() {
-    dispatch(setActiveSong({ song }));
-    dispatch(play());
+    playApi(song._id, {
+      onSuccess: (respData) => {
+        // console.log(song);
+        // dispatch(setActiveSong({ song }));
+        // dispatch(play());
+        queryClient.invalidateQueries(["queue"]);
+      },
+    });
   }
   const { isLiked } = useGetLikedBoolean({ song: song._id });
   const { like, isLiking } = useLike();

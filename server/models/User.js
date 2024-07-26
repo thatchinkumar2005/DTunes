@@ -59,9 +59,23 @@ const userSchema = new Schema({
     },
   },
 
-  currentPlaying: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Song",
+  queue: {
+    currentSong: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Song",
+    },
+    currentSongs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Song" }],
+    currentIndex: {
+      type: Number,
+    },
+    clusterName: {
+      type: String,
+      default: "recommendation",
+    },
+    clusterId: {
+      type: String,
+      value: "/recommend",
+    },
   },
 });
 

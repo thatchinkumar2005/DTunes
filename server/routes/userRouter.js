@@ -27,6 +27,9 @@ import checkIfLikedController from "../controllers/Users/authUser/checkIfLikedCo
 import getAllArtistsController from "../controllers/Users/getAllArtistsController.js";
 import getAuthUserPartyRequestsController from "../controllers/Users/authUser/getAuthUserPartyRequestsController.js";
 import getArtistPlays from "../controllers/Users/getArtistPlays.js";
+import getAuthUserQueueController from "../controllers/Users/authUser/getAuthUserQueueController.js";
+import nextSongController from "../controllers/Songs/nextSongController.js";
+import prevSongController from "../controllers/Songs/prevSongController.js";
 
 const userRouter = express.Router();
 
@@ -37,6 +40,27 @@ userRouter.get(
   verifyJwt,
   verifyRoles(2005, 2009),
   getAuthUserController
+);
+
+userRouter.get(
+  "/authUser/queue",
+  verifyJwt,
+  verifyRoles(2005, 2009),
+  getAuthUserQueueController
+);
+
+userRouter.post(
+  "/authUser/queue/next",
+  verifyJwt,
+  verifyRoles(2005, 2009),
+  nextSongController
+);
+
+userRouter.post(
+  "/authUser/queue/previous",
+  verifyJwt,
+  verifyRoles(2005, 2009),
+  prevSongController
 );
 
 userRouter.get(

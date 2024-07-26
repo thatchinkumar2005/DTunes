@@ -8,6 +8,7 @@ import { albumUpload } from "../middleware/multer/album.js";
 import updateAlbumController from "../controllers/Albums/updateAlbumController.js";
 import deleteAlbumController from "../controllers/Albums/deleteAlbumController.js";
 import getAlbumSongsController from "../controllers/Albums/getAlbumSongsController.js";
+import playAlbumController from "../controllers/Albums/playAlbumController.js";
 
 const albumRouter = express.Router();
 
@@ -37,6 +38,12 @@ albumRouter.get(
   verifyJwt,
   verifyRoles(2005, 2009),
   getAlbumSongsController
+);
+albumRouter.post(
+  "/play/:id",
+  verifyJwt,
+  verifyRoles(2009, 2005),
+  playAlbumController
 );
 albumRouter.delete("/:id", verifyJwt, verifyRoles(2009), deleteAlbumController);
 
