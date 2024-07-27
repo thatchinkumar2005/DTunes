@@ -53,42 +53,9 @@ const MusicPlayer = () => {
     }
   }, [gotActiveSong, setActiveSong, song, gotQueue, queue]);
 
-  // const currentCluster = useSelector(
-  //   (store) => store.musicPlayer.currentCluster
-  // );
-  // const currentClusterName = useSelector(
-  //   (store) => store.musicPlayer.currentClusterName
-  // );
-
   function handleDj(e) {
     setDj(!dj);
   }
-
-  useEffect(() => {
-    if (dj) {
-      setCurrentTime(activeSong?.highlight?.from || 0);
-      audioRef.current.currentTime = activeSong?.highlight?.from || 0;
-    }
-  }, [dj, activeSong]);
-  useEffect(() => {
-    if (dj) {
-      const end = activeSong?.highlight?.to || 30;
-      if (currentTime >= end) {
-        nextSong(null, {
-          onSuccess: () => {
-            queryClient.invalidateQueries(["queue"]);
-            socket.emit("change-song", {
-              userId: auth.id,
-              playback: {
-                isPlaying: true,
-                currentTime: 0,
-              },
-            });
-          },
-        });
-      }
-    }
-  }, [currentTime, dj, activeSong, queryClient, nextSong]);
 
   const [currentCluster, setCurrentCluster] = useState(null);
   const [currentClusterName, setCurrentClusterName] = useState(null);
@@ -128,12 +95,6 @@ const MusicPlayer = () => {
     };
   }, [socket, dispatch, audioRef]);
 
-  // const { recommendedSongs, status } = useRecommendation();
-  // useEffect(() => {
-  //   // if (status === "success")
-  //   // dispatch(setCurrentSongs({ songs: recommendedSongs.pages[0].data }));
-  // }, [dispatch, status, recommendedSongs]);
-
   useEffect(() => {
     function handleSpace(e) {
       if (e.key === " ") {
@@ -172,6 +133,7 @@ const MusicPlayer = () => {
         prevSong,
         queryClient,
         socket,
+        dj,
       }}
     >
       <div className="bg-bg p-1 flex justify-center items-center overflow-hidden">
@@ -190,6 +152,7 @@ const MusicPlayer = () => {
                 <PiVinylRecordLight className="h-7 w-7" onClick={handleDj} />
               )}
             </div>
+
             <div className="flex flex-col justify-center items-center mr-1 mt-1">
               <VolumeBar />
               <TimeStamp />
@@ -216,6 +179,9 @@ function Player() {
     auth,
     dispatch,
     queryClient,
+    dj,
+    currentTime,
+    duration,
   } = useContext(MusicPlayerContext);
 
   useEffect(() => {
@@ -236,11 +202,36 @@ function Player() {
 
   useEffect(() => {
     audioRef.current.volume = vol;
-  }, [vol]);
+  }, [vol, audioRef]);
+
+  useEffect(() => {
+    if (dj) {
+      setCurrentTime(activeSong?.highlight?.from || 0);
+      audioRef.current.currentTime = activeSong?.highlight?.from || 0;
+    }
+  }, [dj, activeSong, audioRef, setCurrentTime]);
 
   function handleTimeUpdate() {
     setCurrentTime(audioRef.current.currentTime);
     setDuration(audioRef.current.duration);
+
+    const end = activeSong?.highlight?.to || 30;
+    if (dj) {
+      if (currentTime >= end) {
+        nextSong(null, {
+          onSuccess: () => {
+            queryClient.invalidateQueries(["queue"]);
+            socket.emit("change-song", {
+              userId: auth.id,
+              playback: {
+                isPlaying: true,
+                currentTime: 0,
+              },
+            });
+          },
+        });
+      }
+    }
   }
 
   function handleOnEnded() {
