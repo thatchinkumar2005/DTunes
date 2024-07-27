@@ -77,6 +77,13 @@ const MusicPlayer = () => {
         nextSong(null, {
           onSuccess: () => {
             queryClient.invalidateQueries(["queue"]);
+            socket.emit("change-song", {
+              userId: auth.id,
+              playback: {
+                isPlaying: true,
+                currentTime: 0,
+              },
+            });
           },
         });
       }
