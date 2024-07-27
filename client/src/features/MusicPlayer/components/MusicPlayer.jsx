@@ -21,6 +21,7 @@ import usePrevSong from "../hooks/usePrevSong";
 import useSocket from "../../../hooks/socket/useSocket";
 import { socket } from "../../../socket/socket";
 import useAuth from "../../../hooks/auth/useAuth";
+import { current } from "@reduxjs/toolkit";
 
 const MusicPlayerContext = createContext();
 const MusicPlayer = () => {
@@ -71,14 +72,27 @@ const MusicPlayer = () => {
       queryClient.invalidateQueries(["queue"]);
       dispatch(setIsPlaying(data.isPlaying));
       setCurrentTime(data.currentTime);
+      if (audioRef.current) {
+        audioRef.current.currentTime = data.currentTime;
+      }
     });
+
+    return () => {
+      socket.off("changeSong");
+    };
   }, [socket, queryClient, dispatch]);
 
   useEffect(() => {
     socket.on("playback-data", (data) => {
       dispatch(setIsPlaying(data.isPlaying));
       setCurrentTime(data.currentTime);
+      if (audioRef.current) {
+        audioRef.current.currentTime = data.currentTime;
+      }
     });
+    return () => {
+      socket.off("playback-data");
+    };
   }, [socket, dispatch]);
 
   // const { recommendedSongs, status } = useRecommendation();
@@ -152,8 +166,19 @@ const MusicPlayer = () => {
 };
 
 function Player() {
-  const { audioRef, activeSong, setCurrentTime, setDuration, isPlaying, vol } =
-    useContext(MusicPlayerContext);
+  const {
+    audioRef,
+    activeSong,
+    setCurrentTime,
+    setDuration,
+    isPlaying,
+    vol,
+    nextSong,
+    socket,
+    auth,
+    dispatch,
+    queryClient,
+  } = useContext(MusicPlayerContext);
 
   useEffect(() => {
     setCurrentTime(0);
@@ -181,7 +206,19 @@ function Player() {
   }
 
   function handleOnEnded() {
-    // dispatch(nextSong());
+    nextSong(null, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["queue"]);
+        dispatch(play());
+        socket.emit("change-song", {
+          userId: auth.id,
+          playback: {
+            isPlaying: true,
+            currentTime: 0,
+          },
+        });
+      },
+    });
   }
   return (
     <audio
@@ -206,8 +243,6 @@ function SeekBar() {
   } = useContext(MusicPlayerContext);
   function handleSeek(e) {
     const seekTime = e.target.value;
-    setCurrentTime(seekTime);
-    audioRef.current.currentTime = seekTime;
 
     socket.emit("playback", {
       userId: auth.id,
@@ -216,6 +251,8 @@ function SeekBar() {
         isPlaying,
       },
     });
+    setCurrentTime(seekTime);
+    audioRef.current.currentTime = seekTime;
   }
   return (
     <input
@@ -234,7 +271,6 @@ function TogglePlayButton() {
   const dispatch = useDispatch();
   function handleToggle() {
     if (audioRef.current) {
-      dispatch(playPause());
       socket.emit("playback", {
         userId: auth.id,
         playback: {
@@ -242,6 +278,7 @@ function TogglePlayButton() {
           currentTime,
         },
       });
+      dispatch(playPause());
     }
   }
   return (
