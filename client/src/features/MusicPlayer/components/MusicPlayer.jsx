@@ -80,7 +80,7 @@ const MusicPlayer = () => {
     return () => {
       socket.off("changeSong");
     };
-  }, [socket, queryClient, dispatch]);
+  }, [socket, queryClient, dispatch, audioRef]);
 
   useEffect(() => {
     socket.on("playback-data", (data) => {
@@ -93,7 +93,7 @@ const MusicPlayer = () => {
     return () => {
       socket.off("playback-data");
     };
-  }, [socket, dispatch]);
+  }, [socket, dispatch, audioRef]);
 
   // const { recommendedSongs, status } = useRecommendation();
   // useEffect(() => {

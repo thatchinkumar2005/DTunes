@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 import pymongo
 import pickle
 from bson import ObjectId
@@ -5,9 +7,9 @@ import os
 import json
 
 
-client = pymongo.MongoClient("mongodb://localhost:27017")
-db = client["Dtunes"]
 
+client = pymongo.MongoClient(os.getenv("DATABASE_URL"), tls=True, tlsAllowInvalidCertificates=True)
+db = client["Dtunes"]
 
 def getRecommended(user_id, page, limit):
 

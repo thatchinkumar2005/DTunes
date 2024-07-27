@@ -58,10 +58,12 @@ export default async function recommendSongsController(req, res) {
     });
 
     const result = JSON.parse(resp);
+    console.log(result);
 
     const songs = await Promise.all(
       result.map(async (res) => {
         const song = await Song.findById(res.song);
+
         const imageCommand = new GetObjectCommand({
           Bucket: process.env.BUCKET_NAME,
           Key: `CoverArt/${song.id}.png`,
@@ -88,6 +90,7 @@ export default async function recommendSongsController(req, res) {
 
     // return res.json();
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }
