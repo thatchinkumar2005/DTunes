@@ -6,6 +6,8 @@ import React, {
   useContext,
 } from "react";
 import { CiPlay1 } from "react-icons/ci";
+import { PiVinylRecordLight } from "react-icons/pi";
+import { PiVinylRecordFill } from "react-icons/pi";
 import { useSelector, useDispatch } from "react-redux";
 import { play, playPause, setIsPlaying } from "../slices/songsSlice";
 import { CiPause1 } from "react-icons/ci";
@@ -40,6 +42,7 @@ const MusicPlayer = () => {
   const [duration, setDuration] = useState(0);
   const [vol, setVol] = useState(0.3);
 
+  const [dj, setDj] = useState(false);
   const dispatch = useDispatch();
   const isPlaying = useSelector((store) => store.musicPlayer.isPlaying);
   const [activeSong, setActiveSong] = useState(null);
@@ -56,6 +59,29 @@ const MusicPlayer = () => {
   // const currentClusterName = useSelector(
   //   (store) => store.musicPlayer.currentClusterName
   // );
+
+  function handleDj(e) {
+    setDj(!dj);
+  }
+
+  useEffect(() => {
+    if (dj) {
+      setCurrentTime(activeSong?.highlight?.from || 0);
+      audioRef.current.currentTime = activeSong?.highlight?.from || 0;
+    }
+  }, [dj, activeSong]);
+  useEffect(() => {
+    if (dj) {
+      const end = activeSong?.highlight?.to || 30;
+      if (currentTime >= end) {
+        nextSong(null, {
+          onSuccess: () => {
+            queryClient.invalidateQueries(["queue"]);
+          },
+        });
+      }
+    }
+  }, [currentTime, dj, activeSong, queryClient, nextSong]);
 
   const [currentCluster, setCurrentCluster] = useState(null);
   const [currentClusterName, setCurrentClusterName] = useState(null);
@@ -151,6 +177,11 @@ const MusicPlayer = () => {
               <PrevSong />
               <TogglePlayButton />
               <NextSong />
+              {dj ? (
+                <PiVinylRecordFill className="h-7 w-7" onClick={handleDj} />
+              ) : (
+                <PiVinylRecordLight className="h-7 w-7" onClick={handleDj} />
+              )}
             </div>
             <div className="flex flex-col justify-center items-center mr-1 mt-1">
               <VolumeBar />

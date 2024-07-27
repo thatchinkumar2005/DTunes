@@ -4,14 +4,19 @@ import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import Modal from "../../../ui/components/Modal";
+import DjModeEditPopUp from "./DjModeEditPopUp";
 
 export default function CreateSongForm({ albumId }) {
   const [error, setError] = useState(null);
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
   const [audio, setAudio] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [lyric, setLyric] = useState("");
   const [genre, setGenre] = useState("");
+  const [start, setStart] = useState(0);
+  const [end, setEnd] = useState(30);
   const form = useRef();
 
   const { createSong, isCreatingSong } = useCreateSong();
@@ -23,6 +28,11 @@ export default function CreateSongForm({ albumId }) {
   });
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   const navigate = useNavigate();
+
+  function handleAudioUpload(e) {
+    setAudio(e.target.files[0]);
+    setPreview(URL.createObjectURL(e.target.files[0]));
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -67,8 +77,10 @@ export default function CreateSongForm({ albumId }) {
     formData.append("genre", JSON.stringify(genre.split(",")));
     formData.append("albumId", albumId);
     formData.append("lyric", lyric);
+    console.log(audio);
     formData.append("file", audio);
     formData.append("coverArt", image);
+    formData.append("highlight", JSON.stringify({ from: start, to: end }));
     createSong(formData, {
       onSuccess: (data) => {
         toast("New Song Uploaded!");
@@ -129,11 +141,22 @@ export default function CreateSongForm({ albumId }) {
           className="outline-none bg-primary rounded-lg w-60 md:w-80"
           type="file"
           placeholder="Image File"
-          onChange={(e) => {
-            setAudio(e.target.files[0]);
-          }}
+          onChange={handleAudioUpload}
         />
       </div>
+
+      <Modal
+        ToggleElement={({ ...props }) => {
+          return <div {...props}>DJ highlights</div>;
+        }}
+        preview={preview}
+        start={start}
+        end={end}
+        setStart={setStart}
+        setEnd={setEnd}
+      >
+        <DjModeEditPopUp />
+      </Modal>
 
       <textarea
         className="h-32 w-60 md:w-80 outline-none rounded-lg bg-secondary p-2 resize-none disable-scrollbars shrink-0"

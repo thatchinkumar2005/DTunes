@@ -14,10 +14,12 @@ export default async function newSongController(req, res) {
 
     const { name, artists, genre, albumId, highlight, lyric } = req.body; //body
     const genreLst = JSON.parse(genre); //genre list from string
+    const hightlightObj = JSON.parse(highlight);
     //bad requests
     if (!(name && albumId && genre))
       return res.status(400).json({ message: "Enter the mandatory fields" });
     const files = req.files;
+    console.log(files);
     if (!files?.coverArt || !files?.file)
       return res.status(400).json({ message: "Select files" });
 
@@ -48,7 +50,7 @@ export default async function newSongController(req, res) {
       artists: artistsObjIds,
       album: album._id,
       genre: genreLst,
-      highlight,
+      highlight: hightlightObj,
       lyric,
     });
 
