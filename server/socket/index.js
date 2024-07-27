@@ -16,8 +16,20 @@ export default function handleSockets(io) {
       io.emit("userStatus", { userId, online });
     });
 
+    socket.on("get-userStatus", ({ userId }) => {
+      const room = io.sockets.adapter.rooms.get(userId);
+      const online = room ? (room.size === 0 ? false : true) : false;
+      console.log(online);
+      io.emit("userStatus", { userId, online });
+    });
+
+    // socket.on("update-user-queue", () => {
+    //   io.emit("update-user-queue", null);
+    // });
+
     socket.on("change-song", ({ userId, playback }) => {
       socket.broadcast.to(userId).emit("changeSong", playback);
+      io.emit("update-user-queue", null);
     });
     socket.on("playback", ({ userId, playback }) => {
       socket.broadcast.to(userId).emit("playback-data", playback);

@@ -11,16 +11,26 @@ export default function UserStrip({ id }) {
   const queryClient = useQueryClient();
   const { user, isSuccess } = useGetUser({ id });
   const { deleteFriend, isDeletingFriend } = useDeleteFriend();
-  const { song, isSuccess: gotSong } = useSong({ id: user?.currentPlaying });
+  const { song, isSuccess: gotSong } = useSong({
+    id: user?.queue?.currentSong,
+  });
   const [online, setOnline] = useState(false);
   const socket = useSocket();
 
   useEffect(() => {
+    socket.emit("get-userStatus", { userId: id });
     socket.on("userStatus", (data) => {
       if (data.userId !== id) return;
       setOnline(data.online);
     });
-  }, [id, socket]);
+    socket.on("update-user-queue", () => {
+      queryClient.invalidateQueries(["artist"]);
+    });
+    return () => {
+      socket.off("userStatus");
+      socket.off("update-user-queue");
+    };
+  }, [id, socket, queryClient]);
 
   function handleDelete() {
     deleteFriend(id, {

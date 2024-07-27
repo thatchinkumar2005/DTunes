@@ -27,7 +27,7 @@ export default async function nextSongController(req, res) {
       userDoc.queue.currentIndex = 0;
       userDoc.queue.currentSongs = songs;
       userDoc.queue.clusterName = "Recommended";
-      userDoc.queue.clusterId = "/recommend";
+      userDoc.queue.clusterId = "/";
     } else {
       userDoc.queue.currentIndex++;
     }
