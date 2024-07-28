@@ -148,7 +148,7 @@ export default function PlaylistPage() {
               </div>
             </div>
 
-            <div className="flex flex-col justify-center items-center grow p-3 ">
+            <div className="flex flex-col justify-center overflow-scroll items-center grow p-3 ">
               <div className="w-[80%] rounded-lg grow overflow-scroll disable-scrollbars bg-secondary p-3">
                 {isError && <div>{error}</div>}
                 {isPending && <Spinner />}

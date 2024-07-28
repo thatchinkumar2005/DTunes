@@ -140,7 +140,7 @@ export default function AlbumPage() {
               </div>
             </div>
 
-            <div className="flex flex-col justify-center items-center grow p-3 ">
+            <div className="flex flex-col justify-center items-center grow overflow-scroll p-3 ">
               <div className="w-[80%] rounded-lg grow overflow-scroll disable-scrollbars bg-secondary p-3">
                 {isError && <div>{error}</div>}
                 {isPending && <Spinner />}

@@ -59,7 +59,7 @@ function ModalWindow({ className }) {
     >
       <div
         ref={modalRef}
-        className={` p-5 bg-secondary rounded-lg ${className}`}
+        className={` p-5 bg-secondary rounded-lg absolute ${className}`}
       >
         <div className="flex flex-col mb-2">
           <button onClick={handleClose} className="self-start">

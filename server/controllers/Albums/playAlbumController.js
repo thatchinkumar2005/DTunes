@@ -4,6 +4,7 @@ import { Song } from "../../models/Song.js";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { s3 } from "../../config/bucketConn.js";
 import { User } from "../../models/User.js";
+import { Interaction } from "../../models/InteractionData.js";
 
 export default async function playAlbumController(req, res) {
   try {
@@ -48,6 +49,25 @@ export default async function playAlbumController(req, res) {
     userDoc.queue.clusterName = album.name;
 
     await userDoc.save();
+
+    const intData = await Interaction.findOne({
+      song: userDoc.queue.currentSong,
+      user: user.id,
+      intType: "play",
+    });
+
+    if (!intData) {
+      const newIntData = await Interaction.create({
+        song: userDoc.queue.currentSong,
+        user: user.id,
+        intType: "play",
+        count: 1,
+      });
+    } else {
+      intData.count++;
+      intData.timeStamp = Date.now();
+      await intData.save();
+    }
 
     return res.json(userDoc.queue);
   } catch (error) {
