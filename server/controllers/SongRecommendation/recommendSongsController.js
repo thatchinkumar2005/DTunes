@@ -23,7 +23,6 @@ export default async function recommendSongsController(req, res) {
     });
 
     const result = JSON.parse(resp);
-    console.log(result);
 
     const songs = await Promise.all(
       result.map(async (res) => {
@@ -55,7 +54,6 @@ export default async function recommendSongsController(req, res) {
 
     // return res.json();
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

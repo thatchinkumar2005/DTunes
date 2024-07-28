@@ -19,7 +19,6 @@ export default async function newSongController(req, res) {
     if (!(name && albumId && genre))
       return res.status(400).json({ message: "Enter the mandatory fields" });
     const files = req.files;
-    console.log(files);
     if (!files?.coverArt || !files?.file)
       return res.status(400).json({ message: "Select files" });
 
@@ -64,8 +63,6 @@ export default async function newSongController(req, res) {
       buffer: files.file[0].buffer,
     });
 
-    console.log(editedAudio);
-
     const imageCommand = new PutObjectCommand({
       Bucket: process.env.BUCKET_NAME,
       Key: `CoverArt/${song.id}.png`,
@@ -85,7 +82,6 @@ export default async function newSongController(req, res) {
     return res.json(song);
   } catch (error) {
     //error handling
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

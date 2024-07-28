@@ -41,6 +41,12 @@ export default async function deleteAlbumController(req, res) {
       await Song.deleteOne({ _id: song._id });
     }
 
+    const command = new DeleteObjectCommand({
+      Bucket: process.env.BUCKET_NAME,
+      Key: `CoverArt/${album.id}.png`,
+    });
+    await s3.send(command);
+
     await Album.deleteOne({ _id: album._id });
 
     return res.status(200).json({

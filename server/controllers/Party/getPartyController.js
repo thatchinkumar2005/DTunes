@@ -23,9 +23,7 @@ export default async function getPartyController(req, res) {
       const url = await getSignedUrl(s3, command, { expiresIn: 3600 * 24 });
 
       party.file.coverArt = url;
-    } catch (error) {
-      console.log("no file");
-    }
+    } catch (error) {}
     return res.json(party);
   } catch (error) {
     return res.json({ message: error.message });

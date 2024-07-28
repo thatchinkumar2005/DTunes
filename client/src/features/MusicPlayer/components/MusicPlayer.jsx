@@ -48,7 +48,6 @@ const MusicPlayer = () => {
   const [activeSong, setActiveSong] = useState(null);
   useEffect(() => {
     if (gotActiveSong && song && gotQueue) {
-      console.log(queue);
       setActiveSong(song);
     }
   }, [gotActiveSong, setActiveSong, song, gotQueue, queue]);

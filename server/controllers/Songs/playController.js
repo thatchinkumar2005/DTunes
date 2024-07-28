@@ -14,7 +14,6 @@ export default async function playController(req, res) {
     const { id } = req.params;
     if (!id) return res.status(400).json({ message: "id not given" });
     const song = await Song.findById(id);
-    console.log(song);
     if (!song) return res.status(400).json({ message: "No such song" });
 
     userDoc.queue.currentSong = song._id;
@@ -46,7 +45,6 @@ export default async function playController(req, res) {
 
     return res.json(song);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: error.message,
     });

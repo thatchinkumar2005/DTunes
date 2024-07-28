@@ -14,7 +14,6 @@ export default async function prevSongController(req, res) {
     await userDoc.save();
     return res.json(userDoc.queue.currentSong);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

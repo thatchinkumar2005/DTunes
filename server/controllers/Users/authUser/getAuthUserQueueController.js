@@ -12,7 +12,6 @@ export default async function getAuthUserQueueController(req, res) {
 
     return res.json(result.queue);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

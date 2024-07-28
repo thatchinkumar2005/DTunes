@@ -50,9 +50,7 @@ export default async function updateAuthUserController(req, res) {
         const url = await getSignedUrl(s3, command, { expiresIn: 3600 * 24 });
 
         resUser.files.profilePic = url;
-      } catch (error) {
-        console.log("no file");
-      }
+      } catch (error) {}
     }
 
     await resUser.save();

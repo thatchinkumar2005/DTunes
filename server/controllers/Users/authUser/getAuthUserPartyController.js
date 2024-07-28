@@ -29,9 +29,7 @@ export default async function getAuthUserPartyController(req, res) {
         });
         const url = await getSignedUrl(s3, command, { expiresIn: 3600 * 24 });
         party.file.coverArt = url;
-      } catch (error) {
-        console.log("no file");
-      }
+      } catch (error) {}
     }
 
     return res.json(party);

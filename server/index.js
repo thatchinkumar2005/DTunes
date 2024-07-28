@@ -74,6 +74,8 @@ app.use(handleErr);
 mongoose.connection.once("open", () => {
   console.log("connected to mongodb");
   server.listen(process.env.SERVER_PORT || 7777, () => {
-    console.log(`server up and running in port ${process.env.SERVER_PORT}`);
+    console.log(
+      `server up and running in port ${process.env.SERVER_PORT || 7777}`
+    );
   });
 });

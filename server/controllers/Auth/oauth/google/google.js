@@ -33,7 +33,7 @@ passport.use(
             user: 2005,
           },
         });
-        console.log("register oauth");
+        console.log("google register");
 
         const likePlaylist = await Playlist.create({
           name: "Likes",
@@ -43,7 +43,7 @@ passport.use(
         });
         done(null, user);
       } else {
-        console.log("login oauth");
+        console.log("google oauth");
         done(null, foundUser);
       }
     }

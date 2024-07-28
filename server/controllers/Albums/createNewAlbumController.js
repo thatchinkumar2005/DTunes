@@ -50,8 +50,7 @@ export default async function createNewAlbumController(req, res) {
 
     return res.json(album);
   } catch (error) {
-    //handle errors
-    console.log(error);
+    //handle error
     return res.status(500).json({
       message: error.message,
     });

@@ -29,9 +29,7 @@ export default async function getSinglePlaylistController(req, res) {
       const url = await getSignedUrl(s3, command, { expiresIn: 3600 * 24 });
 
       playlist.files.coverArt = url;
-    } catch (error) {
-      console.log("no file");
-    }
+    } catch (error) {}
 
     return res.json(playlist);
   } catch (error) {

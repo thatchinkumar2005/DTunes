@@ -44,9 +44,7 @@ export default async function getSingleUserController(req, res) {
       const url = await getSignedUrl(s3, command, { expiresIn: 3600 * 24 });
 
       result.files.profilePic = url;
-    } catch (error) {
-      console.log("no file");
-    }
+    } catch (error) {}
 
     return res.json(result);
   } catch (error) {

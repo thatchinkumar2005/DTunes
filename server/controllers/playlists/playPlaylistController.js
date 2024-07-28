@@ -62,7 +62,6 @@ export default async function playPlaylistController(req, res) {
 
     return res.json(userDoc.queue);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 }

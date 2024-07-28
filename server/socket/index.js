@@ -5,21 +5,18 @@ export default function handleSockets(io) {
     socket.on("login", async ({ userId }) => {
       socket.join(userId);
       io.emit("userStatus", { userId, online: true });
-      console.log(userId);
     });
 
     socket.on("logout", async ({ userId }) => {
       socket.leave(userId);
       const room = io.sockets.adapter.rooms.get(userId);
       const online = room ? (room.size === 0 ? false : true) : false;
-      console.log(online);
       io.emit("userStatus", { userId, online });
     });
 
     socket.on("get-userStatus", ({ userId }) => {
       const room = io.sockets.adapter.rooms.get(userId);
       const online = room ? (room.size === 0 ? false : true) : false;
-      console.log(online);
       io.emit("userStatus", { userId, online });
     });
 
